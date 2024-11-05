@@ -27,6 +27,7 @@
 <script>
 // import eventBus from '../event/eventBus.js';
 // import users from '@/data/users'; // Assuming you have a users array
+import db from '@/api/db';
 
 export default {
     name: 'ComRegister',
@@ -38,6 +39,16 @@ export default {
             error: '',
             // users: users
         };
+    },
+    async beforeMount() {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user != null) {
+            const u = await db.getUser(user.password, user.password);
+
+            if (u != null) {
+                this.$router.push('/');
+            }
+        }
     },
     methods: {
         register() {

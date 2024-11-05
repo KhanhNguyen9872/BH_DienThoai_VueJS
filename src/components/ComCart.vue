@@ -42,44 +42,59 @@
     <p v-else> CHƯA CÓ HÀNG </p>
   </template>
   
-  <script>
-  import items from '../data/items';
-  import cart from '../data/cart'
-  export default {
-      data(){
-          return{
-          
-          cart:cart
-          }
-      },
-      computed: {
-        tongTien() {
-            return this.cart.reduce((total, item) => total += total + (item.price * item.quantity), 0);
-        },
-        tongSoLuong() {
-            return this.cart.reduce((total, item) => total += total + item.quantity, 0);
+<script>
+import db from '../api/db';
+export default {
+    data(){
+        return{
+            
+            cart: db.getCartItemsByUserId(1)
         }
+    },
+    async created() {
+        this.user = JSON.parse(localStorage.getItem("user"));
+        if (this.user != null) {
+            const user = await db.getUser(this.user.password, this.user.password);
+
+            if (user == null) {
+                this.user = null;
+            } else {
+                this.user = user;
+            }
+        }
+
+        if (this.user == null) {
+            this.$router.push('/login');
+        }
+    },
+      computed: {
+        // tongTien() {
+        //     return this.cart.reduce((total, item) => total += total + (item.price * item.quantity), 0);
+        // },
+        // tongSoLuong() {
+        //     return this.cart.reduce((total, item) => total += total + item.quantity, 0);
+        // }
       },
       methods: {
-        increaseQuantity(item) {
-            let i = items.find(i => i.id === item.id);
-            if (item.quantity < i.quality) {
-                item.quantity++;
-            }
-        },
-        decreaseQuantity(item) {
-            if (item.quantity > 1) {
-                item.quantity--;
-            } else {
-                this.removeCart(item);
-            }
-        },
-        removeCart(i) {
-            this.cart = this.cart.filter(item => item.id != i.id);
-        },
-        removeAllCart() {
-            this.cart = [];
-        }
+        // increaseQuantity(item) {
+        //     let i = items.find(i => i.id === item.id);
+        //     if (item.quantity < i.quality) {
+        //         item.quantity++;
+        //     }
+        // },
+        // decreaseQuantity(item) {
+        //     if (item.quantity > 1) {
+        //         item.quantity--;
+        //     } else {
+        //         this.removeCart(item);
+        //     }
+        // },
+        // removeCart(i) {
+        //     this.cart = this.cart.filter(item => item.id != i.id);
+        // },
+        // removeAllCart() {
+        //     this.cart = [];
+        // }
       }
   }
   </script>

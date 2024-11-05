@@ -1,156 +1,323 @@
 <template>
     <main>  
-         <div class="menu">
-             <h2 class="menu-title">Taste Our Foods & Enjoy</h2>
-             <div class="menu-carousel">
-                 <div class="menu-item">
-                    
-                        <img :src="product.image" alt="Pumpkin Spice Juice">
-                        <div class="menu-item-info">
-                            <h3>{{product.name}}</h3>
-                            <p>{{product.description}}</p>
-                            <p>{{product.price}}</p>
+        <div class="product-detail">
+            <div class="product-content">
+                <div class="image-gallery">
+                    <img :src="currentImg" alt="{{ product.name }}" class="main-image" />
+                    <div class="thumbnail-container">
+                        <img v-for="(color, index) in product.color" :key="index" :src="getURLImage(color.img)" alt="Thumbnail" class="thumbnail" @click="updateImage(color.img)" />
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h2>{{ product.name }}</h2>
+                    <h4>Giá: {{ moneyProduct }} VND</h4>
+
+                    <div class="color-selector">
+                        <h3 style="margin-right: 20px;">Chọn màu sắc:</h3>
+                        <div class="colors">
+                            <span 
+                            v-for="(color, index) in product.color" 
+                            :key="index" 
+                            class="color-swatch" 
+                            :style="{ backgroundColor: getColor(color.name) }" 
+                            @click="selectColor(color)"
+                            :class="{ selected: selectedColor === color.name }">
+                            </span>
                         </div>
-                 </div>
-                 <div>
-                    <button @click="addToCart(product)" v-if="product.quality > 0 && this.isFull == false">Add to cart</button>
-                    <p v-else>ĐÃ HẾT HÀNG</p>
-                </div> 
-             </div>
-         </div>  
+                    </div>
+
+                    <div class="quantity-selector">
+                        <h3 style="margin-right: 20px;">Số lượng:</h3>
+                        <button @click="decreaseQuantity" :disabled="quantity <= 1">-</button>
+                        <input type="number" v-model="quantity" min="1" readonly />
+                        <button @click="increaseQuantity" :disabled="quantity >= product.quantity">+</button>
+                    </div>
+
+                    <div class="total-money">
+                        <h3>Tổng tiền: {{ totalMoney }} VND</h3>
+                    </div>
+                    
+                    <button class="add-to-cart" @click="addToCart()">Thêm vào giỏ hàng</button>
+
+                    <h2>Mô tả sản phẩm</h2>
+                    <p class="description">
+                        {{ product.description }}
+                    </p>
+                </div>
+            </div>
+        </div>
      </main>
  </template>
  
  <script>
 
- import items from '../data/items';
- import cart from '../data/cart';
+import db from '../api/db';
+import tools from '../api/tools';
 
- export default {
+export default {
      // nhận giá trị từ cha props:['bientruyen']
     //  props:['product']
-    data () {
+    data() {
         return {
             product:{
                 
             },
-            cart: cart,
-            isFull: false
+            selectedColor: null, // Store the selected color
+            quantity: 1,
+            currentImg: null,
+            isLoggedIn: false,
         }
     },
-    mounted() {
+    async mounted() {
         let id = this.$route.params.id;
         // db
-        this.product = items.find(item => item.id == id);
-    },
-    methods: {
-        addToCart(product) {
-            if (this.product.quality == 0) {
-                return;
-            }
-            const infoProduct = this.cart.find(item => item.id === product.id);
-            if (infoProduct) {
-                if (infoProduct.quantity < this.product.quality) {
-                    infoProduct.quantity++;
-                } else {
-                    this.isFull = true;
-                }
-            } else {
-                const newProduct = {...this.product, quantity: 1};
-                this.cart.push(newProduct);
+        const data = await db.getProduct(id);
+        this.product = data;
+
+        // format money
+        this.updateImage(this.product.main_img);
+
+        // is logged in
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user != null) {
+            const u = await db.getUser(user.password, user.password);
+
+            if (u != null) {
+                this.isLoggedIn = true;
             }
         }
+    },
+    computed: {
+        moneyProduct() {
+            if (this.product.money == undefined) {
+                return '0';
+            }
+            return tools.formatMoney(this.product.money);
+        },
+        totalMoney() {
+            return tools.formatMoney(parseInt(this.product.money) * this.quantity);
+        },
+    },
+    methods: {
+        getURLImage(image) {
+            return db.getAPI_URL() + image;
+        },
+        selectColor(color) {
+            this.selectedColor = color.name;
+            this.updateImage(color.img);
+        },
+        updateImage(image) {
+            this.currentImg = this.getURLImage(image);
+        },
+        getColor(color) {
+            return tools.getColor(color);
+        },
+        increaseQuantity() {
+            this.quantity++;
+        },
+        decreaseQuantity() {
+            if (this.quantity > 1) {
+                this.quantity--; 
+            }
+        },
+        addToCart() {
+            
+            if (!this.isLoggedIn) {
+                this.$router.push('/login'); // Redirect to login page
+            } else {
+                // Proceed with adding to cart
+                // Your logic to add the product to the cart
+                
+            }
+        },
     }
  }
- </script>
+</script>
  
- <style>
- .menu {
-     text-align: center;
-     padding: 40px 20px;
-     background-color: #fff;
- }
- 
- .menu-title {
-     font-size: 32px;
-     margin-bottom: 20px;
- }
- 
- .menu-carousel {
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     overflow: hidden;
-     position: relative;
-     max-width: 100%;
-     animation: slideIn 1s ease-in-out;
- }
- 
- .menu-item {
-     position: relative;
-     flex: 0 0 25%;
-     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-     border-radius: 8px;
-     margin: 0 10px;
-     overflow: hidden;
-     transition: transform 0.3s ease;
- }
- 
- .menu-item img {
-     width: 100%;
-     transition: transform 0.3s ease;
- }
- 
- .menu-item-info {
-     position: absolute;
-     bottom: 0;
-     left: 0;
-     right: 0;
-     background-color: rgba(0, 0, 0, 0.7);
-     color: #fff;
-     text-align: left;
-     padding: 20px;
-     opacity: 0;
-     transition: opacity 0.3s ease;
- }
- 
- .menu-item:hover .menu-item-info {
-     opacity: 1;
- }
- 
- .menu-item:hover img {
-     transform: scale(1.1);
- }
- 
- .menu-item-info h3 {
-     font-size: 18px;
-     margin: 0 0 10px;
- }
- 
- .menu-item-info p {
-     margin: 0;
-     color: #ccc;
- }
- 
- .menu-navigation {
-     position: absolute;
-     top: 50%;
-     width: 100%;
-     display: flex;
-     justify-content: space-between;
-     transform: translateY(-50%);
- }
- 
- .menu-navigation i {
-     background-color: rgba(0, 0, 0, 0.5);
-     color: #fff;
-     padding: 10px;
-     border-radius: 50%;
-     cursor: pointer;
-     transition: background-color 0.3s ease;
- }
- 
- .menu-navigation i:hover {
-     background-color: #fcb034;
- }
- </style>
+<style scoped>
+.color-selector {
+    display: flex;                /* Use flexbox for layout */
+    align-items: center;         /* Vertically center items */
+    margin-bottom: 20px;         /* Space below the color selector */
+}
+
+.color-selector h3 {
+    margin: 0;                   /* Remove default margins */
+    margin-right: 10px;          /* Add space between heading and swatches */
+}
+
+.colors {
+    display: flex;               /* Align color swatches in a row */
+    gap: 10px;                  /* Adds space between swatches */
+}
+
+.color-swatch {
+    width: 30px;                /* Fixed width for color swatches */
+    height: 30px;               /* Fixed height for color swatches */
+    border-radius: 50%;         /* Make swatches circular */
+    cursor: pointer;            /* Change cursor to pointer on hover */
+    border: 2px solid transparent; /* Border for the selected state */
+    transition: border-color 0.3s; /* Smooth transition for border color */
+}
+
+.color-swatch.selected {
+    border-color: #000;         /* Change border color for the selected swatch */
+}
+
+/* General Styles */
+.product-detail {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+/* Flexbox layout for product content */
+.product-content {
+    display: flex;
+    flex-direction: column; /* Stacks elements on small screens */
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Image gallery styles */
+.image-gallery {
+    margin-bottom: 20px; /* Space below image gallery on mobile */
+}
+
+.main-image {
+    width: 100%; /* Full width for main image */
+    max-width: 600px; /* Max width for larger screens */
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.thumbnail-container {
+    display: flex;
+    margin-top: 10px;
+    justify-content: center;
+    flex-wrap: wrap; /* Wrap thumbnails on smaller screens */
+}
+
+.thumbnail {
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.thumbnail:hover {
+    transform: scale(1.1);
+    border: 2px solid #4CAF50;
+}
+
+/* Product information styles */
+.product-info {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive typography and margins */
+.product-info h2 {
+    color: #333;
+    font-size: 24px; /* Base font size */
+}
+
+.description {
+    font-size: 16px;
+    color: #555;
+    margin: 15px 0;
+}
+
+/* Button styles */
+.add-to-cart {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%; /* Full width for mobile */
+}
+
+.add-to-cart:hover {
+    background-color: #45a049;
+}
+
+/* Quantity selector styles */
+.quantity-selector {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-selector button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.quantity-selector button:disabled {
+    background-color: #ccc; /* Gray out button when disabled */
+    cursor: not-allowed;
+}
+
+.quantity-selector input {
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 0 10px; /* Space between buttons and input */
+    font-size: 16px; /* Input font size */
+}
+
+/* Responsive design for screens larger than 600px */
+@media (min-width: 600px) {
+    .product-content {
+        flex-direction: row; /* Side-by-side layout */
+    }
+
+    .image-gallery {
+        flex: 1;
+        margin-right: 20px; /* Space between image and product info */
+    }
+
+    .product-info {
+        flex: 1;
+    }
+
+    /* Adjust font sizes for larger screens */
+    .product-info h2 {
+        font-size: 28px;
+    }
+
+    .description {
+        font-size: 18px;
+    }
+
+    /* Responsive button sizes */
+    .add-to-cart {
+        padding: 12px; /* Slightly smaller padding on larger screens */
+    }
+}
+
+/* Responsive design for screens larger than 900px */
+@media (min-width: 900px) {
+    .main-image {
+        max-width: 100%; /* Allow main image to scale fully */
+    }
+
+    .thumbnail {
+        width: 80px; /* Increase thumbnail size for larger screens */
+        height: 80px;
+    }
+}
+</style>

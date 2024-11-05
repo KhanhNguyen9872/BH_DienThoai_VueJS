@@ -1,16 +1,17 @@
 <template>
     <div class="center">
         <div class="container">
-            <form class="login-form">
+            <form class="login-form" @submit.prevent="handleSubmit">
                 <h2>Đăng nhập tài khoản</h2>
                 <div class="input-group">
                     <label for="username">Username</label>
-                    <input type="text" id="username" name="username" required>
+                    <input type="text" v-model="username" name="username" required>
                 </div>
                 <div class="input-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" v-model="password" name="password" required>
                 </div>
+                <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
                 <button @click="login">Đăng nhập</button>
                 <div class="links">
                     <a><router-link to="/register" class="register">Đăng ký</router-link></a>
@@ -24,6 +25,7 @@
 <script>
 // import eventBus from '../event/eventBus.js'
 // import users from '@/data/users'
+import db from '../api/db';
 export default {
     name:'ComLogin',
     data() {
@@ -34,27 +36,45 @@ export default {
             // users:users
         };
     },
+    async beforeMount() {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user != null) {
+            const u = await db.getUser(user.password, user.password);
+
+            if (u != null) {
+                this.$router.push('/');
+            }
+        }
+    },
     methods:{
-        login() {
-            // // tìm user và pass có trong database tên là users
-            // const user=this.users.find(x=>x.username===this.username && x.password===this.password)
-            // if(user)
-            // {
-            //     // lưu vào localStorage
-            //     localStorage.setItem('currentuser',JSON.stringify(user))
-            //     eventBus.emit('loginSuccess',user)
-            //     this.$router.push('/')
-            // }
-            // else
-            // {
-            //     this.error="Đăng nhập không thành công";
-            // }
+        async login() {
+            const user = await db.getUser(this.username, this.password);
+
+            if (user == null) {
+                this.error = 'Tên tài khoản hoặc mật khẩu không đúng!';
+                return;
+            }
+
+            localStorage.setItem('user', JSON.stringify({id: user.id, username: user.username, password: user.password}));
+            window.location.href = '/';
         }
     }
 }
 </script>
   
 <style scoped>
+.error-message {
+    color: #d9534f; /* Bootstrap's danger color */
+    background-color: #f2dede; /* Light red background */
+    border: 1px solid #ebccd1; /* Border color matching the background */
+    padding: 10px; /* Some padding for better spacing */
+    border-radius: 5px; /* Rounded corners */
+    margin: 15px 0; /* Margin to separate from other content */
+    font-size: 14px; /* Font size */
+    display: flex; /* Optional: Flexbox for better alignment */
+    align-items: center; /* Center vertically */
+}
+
   * {
     box-sizing: border-box;
     margin: 0;
