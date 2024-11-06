@@ -1,123 +1,319 @@
 {
   "product": [
-    { "id": 1, "name": "Google Pixel 3", "description": "a pixel 3 phone", "main_img": "/img/google-pixel-3-black.jpg",
+    {
+      "id": 1,
+      "name": "Google Pixel 3",
+      "description": "a pixel 3 phone",
+      "main_img": "/img/google-pixel-3-black.jpg",
       "color": [
-        { "name": "Đen", "img": "/img/google-pixel-3-black.jpg" },
-        { "name": "Trắng", "img": "/img/google-pixel-3-white.jpg" },
-        { "name": "Hồng", "img": "/img/google-pixel-3-pink.jpg" }
-      ], 
-      "quantity": "3", "money": 3000000 
+        {
+          "name": "Đen",
+          "img": "/img/google-pixel-3-black.jpg"
+        },
+        {
+          "name": "Trắng",
+          "img": "/img/google-pixel-3-white.jpg"
+        },
+        {
+          "name": "Hồng",
+          "img": "/img/google-pixel-3-pink.jpg"
+        }
+      ],
+      "quantity": 3,
+      "money": 3000000
     },
-    { "id": 2, "name": "iPhone 12", "description": "latest iPhone model", "main_img": "/img/iphone-12-blue.jpg",
+    {
+      "id": 2,
+      "name": "iPhone 12",
+      "description": "latest iPhone model",
+      "main_img": "/img/iphone-12-blue.jpg",
       "color": [
-        { "name": "Xanh dương", "img": "/img/iphone-12-blue.jpg" },
-        { "name": "Đen", "img": "/img/iphone-12-blue.jpg" },
-        { "name": "Trắng", "img": "/img/iphone-12-white.webp" }
-      ], 
-      "quantity": "15", "money": 25000000 
+        {
+          "name": "Xanh dương",
+          "img": "/img/iphone-12-blue.jpg"
+        },
+        {
+          "name": "Đen",
+          "img": "/img/iphone-12-blue.jpg"
+        },
+        {
+          "name": "Trắng",
+          "img": "/img/iphone-12-white.webp"
+        }
+      ],
+      "quantity": 15,
+      "money": 25000000
     },
-    { "id": 3, "name": "Samsung Galaxy S21", "description": "high-end Samsung phone", "main_img": "img3.png",
+    {
+      "id": 3,
+      "name": "Samsung Galaxy S21",
+      "description": "high-end Samsung phone",
+      "main_img": "img3.png",
       "color": [
-        { "name": "Xám", "img": "img3_gray.png" },
-        { "name": "Tím", "img": "img3_purple.png" }
-      ], 
-      "quantity": "10", "money": 22000000 
+        {
+          "name": "Xám",
+          "img": "img3_gray.png"
+        },
+        {
+          "name": "Tím",
+          "img": "img3_purple.png"
+        }
+      ],
+      "quantity": 10,
+      "money": 22000000
     },
-    { "id": 4, "name": "OnePlus 9", "description": "premium OnePlus device", "main_img": "img4.png",
+    {
+      "id": 4,
+      "name": "OnePlus 9",
+      "description": "premium OnePlus device",
+      "main_img": "img4.png",
       "color": [
-        { "name": "Xanh", "img": "img4_blue.png" },
-        { "name": "Bạc", "img": "img4_silver.png" }
-      ], 
-      "quantity": "8", "money": 20000000 
+        {
+          "name": "Xanh",
+          "img": "img4_blue.png"
+        },
+        {
+          "name": "Bạc",
+          "img": "img4_silver.png"
+        }
+      ],
+      "quantity": 8,
+      "money": 20000000
     },
-    { "id": 5, "name": "Xiaomi Mi 11", "description": "flagship Xiaomi model", "main_img": "img5.png",
+    {
+      "id": 5,
+      "name": "Xiaomi Mi 11",
+      "description": "flagship Xiaomi model",
+      "main_img": "img5.png",
       "color": [
-        { "name": "Xanh", "img": "img5_blue.png" },
-        { "name": "Đen", "img": "img5_black.png" },
-        { "name": "Vàng", "img": "img5_yellow.png" }
-      ], 
-      "quantity": "12", "money": 18000000 
+        {
+          "name": "Xanh",
+          "img": "img5_blue.png"
+        },
+        {
+          "name": "Đen",
+          "img": "img5_black.png"
+        },
+        {
+          "name": "Vàng",
+          "img": "img5_yellow.png"
+        }
+      ],
+      "quantity": 12,
+      "money": 18000000
     },
-    { "id": 6, "name": "Oppo Find X3", "description": "Oppo's top phone", "main_img": "img6.png",
+    {
+      "id": 6,
+      "name": "Oppo Find X3",
+      "description": "Oppo's top phone",
+      "main_img": "img6.png",
       "color": [
-        { "name": "Trắng", "img": "img6_white.png" },
-        { "name": "Xanh", "img": "img6_blue.png" }
-      ], 
-      "quantity": "5", "money": 21000000 
+        {
+          "name": "Trắng",
+          "img": "img6_white.png"
+        },
+        {
+          "name": "Xanh",
+          "img": "img6_blue.png"
+        }
+      ],
+      "quantity": 5,
+      "money": 21000000
     },
-    { "id": 7, "name": "Vivo X60", "description": "high-quality Vivo phone", "main_img": "img7.png",
+    {
+      "id": 7,
+      "name": "Vivo X60",
+      "description": "high-quality Vivo phone",
+      "main_img": "img7.png",
       "color": [
-        { "name": "Đen", "img": "img7_black.png" },
-        { "name": "Bạc", "img": "img7_silver.png" }
-      ], 
-      "quantity": "6", "money": 17000000 
+        {
+          "name": "Đen",
+          "img": "img7_black.png"
+        },
+        {
+          "name": "Bạc",
+          "img": "img7_silver.png"
+        }
+      ],
+      "quantity": 6,
+      "money": 17000000
     },
-    { "id": 8, "name": "Google Pixel 6", "description": "new Google phone", "main_img": "img8.png",
+    {
+      "id": 8,
+      "name": "Google Pixel 6",
+      "description": "new Google phone",
+      "main_img": "img8.png",
       "color": [
-        { "name": "Xanh lá cây", "img": "img8_green.png" },
-        { "name": "Đen", "img": "img8_black.png" }
-      ], 
-      "quantity": "9", "money": 27000000 
+        {
+          "name": "Xanh lá cây",
+          "img": "img8_green.png"
+        },
+        {
+          "name": "Đen",
+          "img": "img8_black.png"
+        }
+      ],
+      "quantity": 9,
+      "money": 27000000
     },
-    { "id": 9, "name": "Realme GT", "description": "flagship Realme device", "main_img": "img9.png",
+    {
+      "id": 9,
+      "name": "Realme GT",
+      "description": "flagship Realme device",
+      "main_img": "img9.png",
       "color": [
-        { "name": "Vàng", "img": "img9_yellow.png" },
-        { "name": "Bạc", "img": "img9_silver.png" }
-      ], 
-      "quantity": "14", "money": 15000000 
+        {
+          "name": "Vàng",
+          "img": "img9_yellow.png"
+        },
+        {
+          "name": "Bạc",
+          "img": "img9_silver.png"
+        }
+      ],
+      "quantity": 14,
+      "money": 15000000
     },
-    { "id": 10, "name": "Nokia X20", "description": "affordable Nokia phone", "main_img": "img10.png",
+    {
+      "id": 10,
+      "name": "Nokia X20",
+      "description": "affordable Nokia phone",
+      "main_img": "img10.png",
       "color": [
-        { "name": "Xanh dương", "img": "img10_blue.png" },
-        { "name": "Đen", "img": "img10_black.png" }
-      ], 
-      "quantity": "20", "money": 8000000 
+        {
+          "name": "Xanh dương",
+          "img": "img10_blue.png"
+        },
+        {
+          "name": "Đen",
+          "img": "img10_black.png"
+        }
+      ],
+      "quantity": 20,
+      "money": 8000000
     },
-    { "id": 11, "name": "iPhone 11", "description": "previous-gen iPhone", "main_img": "img11.png",
+    {
+      "id": 11,
+      "name": "iPhone 11",
+      "description": "previous-gen iPhone",
+      "main_img": "img11.png",
       "color": [
-        { "name": "Đen", "img": "img11_black.png" },
-        { "name": "Xanh", "img": "img11_green.png" }
-      ], 
-      "quantity": "11", "money": 16000000 
+        {
+          "name": "Đen",
+          "img": "img11_black.png"
+        },
+        {
+          "name": "Xanh",
+          "img": "img11_green.png"
+        }
+      ],
+      "quantity": 11,
+      "money": 16000000
     },
-    { "id": 12, "name": "Samsung Galaxy A52", "description": "mid-range Samsung", "main_img": "img12.png",
+    {
+      "id": 12,
+      "name": "Samsung Galaxy A52",
+      "description": "mid-range Samsung",
+      "main_img": "img12.png",
       "color": [
-        { "name": "Xanh dương", "img": "img12_blue.png" },
-        { "name": "Đen", "img": "img12_black.png" }
-      ], 
-      "quantity": "7", "money": 9000000 
+        {
+          "name": "Xanh dương",
+          "img": "img12_blue.png"
+        },
+        {
+          "name": "Đen",
+          "img": "img12_black.png"
+        }
+      ],
+      "quantity": 7,
+      "money": 9000000
     },
-    { "id": 13, "name": "Poco F3", "description": "powerful and affordable", "main_img": "img13.png",
+    {
+      "id": 13,
+      "name": "Poco F3",
+      "description": "powerful and affordable",
+      "main_img": "img13.png",
       "color": [
-        { "name": "Trắng", "img": "img13_white.png" },
-        { "name": "Đen", "img": "img13_black.png" }
-      ], 
-      "quantity": "17", "money": 7500000 
+        {
+          "name": "Trắng",
+          "img": "img13_white.png"
+        },
+        {
+          "name": "Đen",
+          "img": "img13_black.png"
+        }
+      ],
+      "quantity": 17,
+      "money": 7500000
     },
-    { "id": 14, "name": "Sony Xperia 1 III", "description": "high-end Sony phone", "main_img": "img14.png",
+    {
+      "id": 14,
+      "name": "Sony Xperia 1 III",
+      "description": "high-end Sony phone",
+      "main_img": "img14.png",
       "color": [
-        { "name": "Tím", "img": "img14_purple.png" },
-        { "name": "Đen", "img": "img14_black.png" }
-      ], 
-      "quantity": "4", "money": 30000000 
+        {
+          "name": "Tím",
+          "img": "img14_purple.png"
+        },
+        {
+          "name": "Đen",
+          "img": "img14_black.png"
+        }
+      ],
+      "quantity": 4,
+      "money": 30000000
     },
-    { "id": 15, "name": "Motorola Edge 20", "description": "Motorola flagship", "main_img": "img15.png",
+    {
+      "id": 15,
+      "name": "Motorola Edge 20",
+      "description": "Motorola flagship",
+      "main_img": "img15.png",
       "color": [
-        { "name": "Trắng", "img": "img15_white.png" },
-        { "name": "Xanh lá cây", "img": "img15_green.png" }
-      ], 
-      "quantity": "13", "money": 14000000 
+        {
+          "name": "Trắng",
+          "img": "img15_white.png"
+        },
+        {
+          "name": "Xanh lá cây",
+          "img": "img15_green.png"
+        }
+      ],
+      "quantity": 13,
+      "money": 14000000
     }
   ],
   "users": [
-    { "id": 1, "username": "tester", "password": "tester", "firstName": "Khánh", "lastName": "Nguyễn", "information": [{ "fullName": "Nguyễn Văn Khánh", "address": "Ho Chi Minh", "phone": "0123210" }] }
+    {
+      "id": "1",
+      "username": "tester",
+      "password": "tester",
+      "firstName": "Khánh",
+      "lastName": "Nguyễn",
+      "information": [
+        {
+          "fullName": "Nguyễn Văn Khánh",
+          "address": "Ho Chi Minh",
+          "phone": "0123210"
+        }
+      ]
+    }
   ],
   "cart": [
     {
-      "id": 1,
-      "userId": 1, 
-      "productId": 1,
-      "quantity": 2
+      "carts": [
+        {
+          "productId": 1,
+          "quantity": 1,
+          "color": "Trắng"
+        },
+        {
+          "productId": 2,
+          "quantity": 15,
+          "color": "Xanh dương"
+        }
+      ],
+      "id": "1"
     }
   ]
 }

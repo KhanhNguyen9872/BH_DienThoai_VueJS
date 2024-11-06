@@ -18,7 +18,7 @@
                         <router-link to="/settings">Cài đặt</router-link>
                         <router-link to="/logout">Đăng xuất</router-link>
                     </div>
-                    <router-link to="/cart" class="cart-link">🛒 Giỏ hàng</router-link>
+                    <router-link to="/cart" class="cart-link" exact-active-class="active">🛒 Giỏ hàng</router-link>
                 </div>
             </div>
         </div>

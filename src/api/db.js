@@ -1,4 +1,4 @@
-const API_URL = "http://192.168.1.51:5000";
+const API_URL = "http://127.0.0.1:5000";
 
 export default {
     getAPI_URL() {
@@ -24,7 +24,6 @@ export default {
       const response = await fetch(`${API_URL}/product/?id=${productId}`);
       if (!response.ok) throw new Error(`Failed to fetch product with ID ${productId}`);
       const data = await response.json();
-      console.log(data[0]);
       return data[0];
     } catch (error) {
       console.error(error);
@@ -99,19 +98,18 @@ export default {
     }
   },
 
-  // Modify a product in the cart by ID
-  async modifyProductInCart(cartId, updatedQuantity) {
+  async updateCarts(id, updatedCarts) {
     try {
-      const response = await fetch(`${API_URL}/cart/${cartId}`, {
+      const response = await fetch(`${API_URL}/cart/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          quantity: updatedQuantity,
+          carts: updatedCarts
         }),
       });
-      if (!response.ok) throw new Error(`Failed to modify cart item with ID ${cartId}`);
+      if (!response.ok) throw new Error(`Failed to modify cart item with ID ${id}`);
       return await response.json();
     } catch (error) {
       console.error(error);
@@ -136,7 +134,8 @@ export default {
     try {
       const response = await fetch(`${API_URL}/cart?userId=${userId}`);
       if (!response.ok) throw new Error(`Failed to fetch cart items for user ID ${userId}`);
-      return await response.json();
+      const data = await response.json();
+      return data[0];
     } catch (error) {
       console.error(error);
     }

@@ -31,7 +31,7 @@ export default {
             { name: 'Tím than', hex: '#663399' }
         ];
 
-        const color = colors.find((color) => color.name === colorName);
+        const color = colors.find((color) => color.name == colorName);
         return color.hex;
     },
 }
