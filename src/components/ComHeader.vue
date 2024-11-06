@@ -15,7 +15,6 @@
                     <p class="user-button" @click="toggleMenu">Xin chào, {{ user.firstName }}</p>
                     <div v-show="showMenu" class="dropdown-menu">
                         <router-link to="/profile">Hồ sơ</router-link>
-                        <router-link to="/settings">Cài đặt</router-link>
                         <router-link to="/logout">Đăng xuất</router-link>
                     </div>
                     <router-link to="/cart" class="cart-link" exact-active-class="active">🛒 Giỏ hàng</router-link>

@@ -1,5 +1,7 @@
 <template>
     <main>  
+        <!-- Overlay and Popup -->
+        <CartPopup :visible="isPopupVisible" @close="isPopupVisible = false" />
         <div class="product-detail">
             <div class="product-content">
                 <div class="image-gallery">
@@ -28,17 +30,19 @@
 
                     <div class="quantity-selector">
                         <h3 style="margin-right: 20px;">Số lượng:</h3>
-                        <button @click="decreaseQuantity" :disabled="quantity <= 1">-</button>
+                        <button @click="decreaseQuantity" :disabled="quantity <= 0 || this.selectedColor == null">-</button>
                         <input type="number" v-model="quantity" min="1" readonly />
-                        <button @click="increaseQuantity" :disabled="quantity >= product.quantity">+</button>
+                        <button @click="increaseQuantity" :disabled="quantity >= product.quantity || this.selectedColor == null">+</button>
                     </div>
 
                     <div class="total-money">
                         <h3>Tổng tiền: {{ totalMoney }} VND</h3>
                     </div>
                     
-                    <button class="add-to-cart" @click="addToCart()">Thêm vào giỏ hàng</button>
-
+                    <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
+                    <button v-if="this.selectedColor === null || this.product.quantity > 0" :disabled="this.selectedColor == null" class="add-to-cart" @click="addToCart()">Thêm vào giỏ hàng</button>
+                    <button v-else class="out-of-stock" disabled>Đã hết hàng</button>
+                    <hr style="margin-top: 30px;">
                     <h2>Mô tả sản phẩm</h2>
                     <p class="description">
                         {{ product.description }}
@@ -50,22 +54,24 @@
  </template>
  
  <script>
-
+import CartPopup from '@/components/CartPopup.vue';
 import db from '../api/db';
 import tools from '../api/tools';
 
 export default {
-     // nhận giá trị từ cha props:['bientruyen']
-    //  props:['product']
+    components: {
+        CartPopup,
+    },
     data() {
         return {
-            product:{
-                
-            },
+            product:{},
             selectedColor: null, // Store the selected color
-            quantity: 1,
+            quantity: 0,
             currentImg: null,
+            userId: -1,
             isLoggedIn: false,
+            error: '',
+            isPopupVisible: false,
         }
     },
     async mounted() {
@@ -83,6 +89,7 @@ export default {
             const u = await db.getUser(user.password, user.password);
 
             if (u != null) {
+                this.userId = u.id;
                 this.isLoggedIn = true;
             }
         }
@@ -99,11 +106,18 @@ export default {
         },
     },
     methods: {
+        showPopup() {
+            this.isPopupVisible = true;
+        },
         getURLImage(image) {
             return db.getAPI_URL() + image;
         },
         selectColor(color) {
             this.selectedColor = color.name;
+            this.product.quantity = color.quantity;
+            if (this.quantity > this.product.quantity) {
+                this.quantity = 0;
+            }
             this.updateImage(color.img);
         },
         updateImage(image) {
@@ -116,18 +130,47 @@ export default {
             this.quantity++;
         },
         decreaseQuantity() {
-            if (this.quantity > 1) {
+            if (this.quantity > 0) {
                 this.quantity--; 
             }
         },
-        addToCart() {
-            
+        async addToCart() {
             if (!this.isLoggedIn) {
                 this.$router.push('/login'); // Redirect to login page
             } else {
+                if (this.selectedColor == null) {
+                    this.error = 'Vui lòng chọn màu sắc';
+                    return;
+                }
+
+                if (this.product.quantity < 1) {
+                    this.error = 'Số lượng sản phẩm không hợp lệ';
+                    return;
+                }
+
                 // Proceed with adding to cart
                 // Your logic to add the product to the cart
+
+                this.error = "";
                 
+                const infoCart = await db.getCartItemsByUserId(this.userId);
+                const cartItems = infoCart.carts;
+
+                const cart = cartItems.find((item) => {
+                    return item.productId == this.product.id && this.selectedColor == item.color;
+                });
+
+                if (cart == undefined) {
+                    let newCart = {productId: this.product.id, quantity: this.quantity, color: this.selectedColor};
+                    cartItems.push(newCart);
+                } else {
+                    cart.quantity = cart.quantity + this.product.quantity;
+                }
+
+                db.updateCarts(this.userId, cartItems);
+                this.showPopup();
+                this.quantity = 0;
+                this.selectedColor = null;
             }
         },
     }
@@ -135,6 +178,36 @@ export default {
 </script>
  
 <style scoped>
+.out-of-stock {
+  background-color: #D32F2F; /* Red color for out of stock */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: not-allowed;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  opacity: 0.9;
+  transition: opacity 0.3s;
+}
+
+.out-of-stock:hover {
+  opacity: 1; /* Slight increase in opacity on hover */
+}
+
+.error-message {
+    color: #d9534f; /* Bootstrap's danger color */
+    background-color: #f2dede; /* Light red background */
+    border: 1px solid #ebccd1; /* Border color matching the background */
+    padding: 10px; /* Some padding for better spacing */
+    border-radius: 5px; /* Rounded corners */
+    margin: 15px 0; /* Margin to separate from other content */
+    font-size: 14px; /* Font size */
+    display: flex; /* Optional: Flexbox for better alignment */
+    align-items: center; /* Center vertically */
+}
+
 .color-selector {
     display: flex;                /* Use flexbox for layout */
     align-items: center;         /* Vertically center items */

@@ -6,7 +6,7 @@
             <!-- Cart Items -->
             <div v-if="this.cartItems.length > 0">
                 <div class="cart-item" v-for="(item) in this.cartItems" :key="item.id">
-                    <input type="checkbox" style="margin-left: 25px; margin-right: 25px;" v-model="item.selected">
+                    <input type="checkbox" style="margin-left: 25px; margin-right: 25px;" v-model="item.selected" @change="calcTotalPrice()">
                     <div class="item-details">
                         <img :src="item.img" :alt="item.name">
                         <div class="item-info">
@@ -14,18 +14,15 @@
                             <p>Giá: {{ formatMoney(item.price) }} VND</p>
 
                             <div class="color-select">
-                                <label for="color" style="margin-right: 10px;">Màu sắc: </label>
-                                <select v-model="item.selectedColor" :style="{ backgroundColor: item.selectedColor }">
-                                    <option :value="color">{{ color }}</option>
-                                </select>
+                                <label for="color">Màu sắc: </label>
                                 <div class="color-preview" :style="{ backgroundColor: item.hex }"></div>
                             </div>
                         </div>
                     </div>
                     <div class="quantity-control">
-                        <button @click="decreaseQuantity(item.id)">-</button>
+                        <button @click="decreaseQuantity(item.id, item.color)">-</button>
                         <input type="number" v-model="item.quantity" min="1" readonly>
-                        <button @click="increaseQuantity(item.id)" :disabled="item.isDisabledIncrease">+</button>
+                        <button @click="increaseQuantity(item.id, item.color)" :disabled="item.isDisabledIncrease">+</button>
                     </div>
                     <div class="price">{{ formatMoney(item.price * item.quantity) }} VND</div>
                 </div>
@@ -49,7 +46,8 @@ import db from '../api/db';
 export default {
     data(){
         return{
-            cartItems: []
+            cartItems: [],
+            totalPrice: 0,
         }
     },
     async created() {
@@ -90,55 +88,66 @@ export default {
         });
     },
       computed: {
-        totalPrice() {
-            return 0;
-        },
-        // tongTien() {
-        //     return this.cart.reduce((total, item) => total += total + (item.price * item.quantity), 0);
-        // },
-        // tongSoLuong() {
-        //     return this.cart.reduce((total, item) => total += total + item.quantity, 0);
-        // }
+        
       },
       methods: {
+        calcTotalPrice() {
+            let total = 0;
+            this.cartItems.forEach((item) => {
+                if (item.selected) {
+                    total = total + (item.price * item.quantity);
+                }
+            })
+            this.totalPrice = total;
+        },
         formatMoney(money) {
             return tools.formatMoney(money);
         },
-        getItemFromId(itemId) {
-            const item = this.cartItems.find((item) => item.id === itemId);
+        getItem(itemId, color) {
+            const item = this.cartItems.find((item) => item.id === itemId && item.color === color);
             return item;
         },
         async getProductItemFromId(itemId) {
             const item = await db.getProduct(itemId);
             return item;
         },
-        removeItem(itemId) {
-            this.cartItems = this.cartItems.filter((item) => item.id != itemId);
+        removeItem(itemId, color) {
+            this.cartItems = this.cartItems.filter((i) => {
+                return (i.productId == itemId && color == i.color) === false;
+            });
+            
             this.saveCarts();
         },
-        decreaseQuantity(itemId) {
-            const item = this.getItemFromId(itemId);
+        decreaseQuantity(itemId, color) {
+            const item = this.getItem(itemId, color);
             if (item.quantity > 1) {
                 item.isDisabledIncrease = false;
                 item.quantity--;
 
                 this.saveCarts();
             } else {
-                this.removeItem(itemId);
+                console.log(itemId, color);
+                this.removeItem(itemId, color);
             }
 
         },
-        async increaseQuantity(itemId) {
-            const item = this.getItemFromId(itemId);
+        async increaseQuantity(itemId, color) {
+            const item = this.getItem(itemId, color);
             const productItem = await this.getProductItemFromId(itemId);
-            if (item.quantity < productItem.quantity) {
-                item.quantity++;
-                
-                this.saveCarts();
-            }
+            const colorItem = productItem.color.find((c) => c.name == color);
 
-            if (item.quantity == productItem.quantity) {
-                item.isDisabledIncrease = true;
+            if (colorItem) {
+                if (item.quantity < colorItem.quantity) {
+                    item.quantity++;
+                    
+                    this.saveCarts();
+                }
+
+                if (item.quantity == colorItem.quantity) {
+                    item.isDisabledIncrease = true;
+                }
+            } else {
+                console.log('color item null');
             }
         },
         saveCarts() {
@@ -154,25 +163,6 @@ export default {
 
             db.updateCarts(this.user.id, newCarts);
         }
-        // increaseQuantity(item) {
-        //     let i = items.find(i => i.id === item.id);
-        //     if (item.quantity < i.quality) {
-        //         item.quantity++;
-        //     }
-        // },
-        // decreaseQuantity(item) {
-        //     if (item.quantity > 1) {
-        //         item.quantity--;
-        //     } else {
-        //         this.removeCart(item);
-        //     }
-        // },
-        // removeCart(i) {
-        //     this.cart = this.cart.filter(item => item.id != i.id);
-        // },
-        // removeAllCart() {
-        //     this.cart = [];
-        // }
       }
   }
   </script>
@@ -340,7 +330,6 @@ body {
 .cart-summary {
     margin-top: 30px;
     text-align: center;
-    border-top: 1px solid #ddd;
     padding-top: 20px;
 }
 

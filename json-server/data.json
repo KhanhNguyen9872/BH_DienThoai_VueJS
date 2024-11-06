@@ -1,145 +1,150 @@
 {
   "product": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Google Pixel 3",
       "description": "a pixel 3 phone",
       "main_img": "/img/google-pixel-3-black.jpg",
       "color": [
         {
           "name": "Đen",
-          "img": "/img/google-pixel-3-black.jpg"
+          "img": "/img/google-pixel-3-black.jpg",
+          "quantity": 0
         },
         {
           "name": "Trắng",
-          "img": "/img/google-pixel-3-white.jpg"
+          "img": "/img/google-pixel-3-white.jpg",
+          "quantity": 4
         },
         {
           "name": "Hồng",
-          "img": "/img/google-pixel-3-pink.jpg"
+          "img": "/img/google-pixel-3-pink.jpg",
+          "quantity": 1
         }
       ],
-      "quantity": 3,
       "money": 3000000
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "iPhone 12",
       "description": "latest iPhone model",
-      "main_img": "/img/iphone-12-blue.jpg",
+      "main_img": "/img/iphone-12-black.webp",
       "color": [
         {
-          "name": "Xanh dương",
-          "img": "/img/iphone-12-blue.jpg"
+          "name": "Đen",
+          "img": "/img/iphone-12-black.webp",
+          "quantity": 2
         },
         {
-          "name": "Đen",
-          "img": "/img/iphone-12-blue.jpg"
+          "name": "Xanh dương",
+          "img": "/img/iphone-12-blue.jpg",
+          "quantity": 6
         },
         {
           "name": "Trắng",
-          "img": "/img/iphone-12-white.webp"
+          "img": "/img/iphone-12-white.webp",
+          "quantity": 3
         }
       ],
-      "quantity": 15,
       "money": 25000000
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Samsung Galaxy S21",
       "description": "high-end Samsung phone",
-      "main_img": "img3.png",
+      "main_img": "/img/samsung-s21-gray.webp",
       "color": [
         {
           "name": "Xám",
-          "img": "img3_gray.png"
+          "img": "/img/samsung-s21-gray.webp",
+          "quantity": 1
         },
         {
           "name": "Tím",
-          "img": "img3_purple.png"
+          "img": "/img/samsung-s21-pink.jpg",
+          "quantity": 4
         }
       ],
-      "quantity": 10,
       "money": 22000000
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "OnePlus 9",
       "description": "premium OnePlus device",
-      "main_img": "img4.png",
+      "main_img": "/img/oneplus-9-blue.png",
       "color": [
         {
-          "name": "Xanh",
-          "img": "img4_blue.png"
+          "name": "Xanh dương",
+          "img": "/img/oneplus-9-blue.png",
+          "quantity": 4
         },
         {
           "name": "Bạc",
-          "img": "img4_silver.png"
+          "img": "/img/oneplus-9-sliver.png",
+          "quantity": 3
         }
       ],
       "quantity": 8,
       "money": 20000000
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "Xiaomi Mi 11",
       "description": "flagship Xiaomi model",
-      "main_img": "img5.png",
+      "main_img": "/img/xiaomi-mi11-black.jpg",
       "color": [
         {
-          "name": "Xanh",
-          "img": "img5_blue.png"
-        },
-        {
           "name": "Đen",
-          "img": "img5_black.png"
+          "img": "/img/xiaomi-mi11-black.jpg",
+          "quantity": 3
         },
         {
-          "name": "Vàng",
-          "img": "img5_yellow.png"
+          "name": "Xanh dương",
+          "img": "/img/xiaomi-mi11-blue.jpg",
+          "quantity": 6
         }
       ],
       "quantity": 12,
       "money": 18000000
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "Oppo Find X3",
       "description": "Oppo's top phone",
-      "main_img": "img6.png",
+      "main_img": "/img/oppo-find-x3-white.jpg",
       "color": [
         {
           "name": "Trắng",
-          "img": "img6_white.png"
+          "img": "/img/oppo-find-x3-white.jpg"
         },
         {
-          "name": "Xanh",
-          "img": "img6_blue.png"
+          "name": "Xanh dương",
+          "img": "/img/oppo-find-x3-blue.jpg"
         }
       ],
       "quantity": 5,
       "money": 21000000
     },
     {
-      "id": 7,
+      "id": "7",
       "name": "Vivo X60",
       "description": "high-quality Vivo phone",
-      "main_img": "img7.png",
+      "main_img": "/img/vivo-x60-black.png",
       "color": [
         {
           "name": "Đen",
-          "img": "img7_black.png"
+          "img": "/img/vivo-x60-black.png"
         },
         {
           "name": "Bạc",
-          "img": "img7_silver.png"
+          "img": "/img/vivo-x60-sliver.jpg"
         }
       ],
       "quantity": 6,
       "money": 17000000
     },
     {
-      "id": 8,
+      "id": "8",
       "name": "Google Pixel 6",
       "description": "new Google phone",
       "main_img": "img8.png",
@@ -157,7 +162,7 @@
       "money": 27000000
     },
     {
-      "id": 9,
+      "id": "9",
       "name": "Realme GT",
       "description": "flagship Realme device",
       "main_img": "img9.png",
@@ -175,7 +180,7 @@
       "money": 15000000
     },
     {
-      "id": 10,
+      "id": "10",
       "name": "Nokia X20",
       "description": "affordable Nokia phone",
       "main_img": "img10.png",
@@ -193,7 +198,7 @@
       "money": 8000000
     },
     {
-      "id": 11,
+      "id": "11",
       "name": "iPhone 11",
       "description": "previous-gen iPhone",
       "main_img": "img11.png",
@@ -211,7 +216,7 @@
       "money": 16000000
     },
     {
-      "id": 12,
+      "id": "12",
       "name": "Samsung Galaxy A52",
       "description": "mid-range Samsung",
       "main_img": "img12.png",
@@ -229,7 +234,7 @@
       "money": 9000000
     },
     {
-      "id": 13,
+      "id": "13",
       "name": "Poco F3",
       "description": "powerful and affordable",
       "main_img": "img13.png",
@@ -247,7 +252,7 @@
       "money": 7500000
     },
     {
-      "id": 14,
+      "id": "14",
       "name": "Sony Xperia 1 III",
       "description": "high-end Sony phone",
       "main_img": "img14.png",
@@ -265,7 +270,7 @@
       "money": 30000000
     },
     {
-      "id": 15,
+      "id": "15",
       "name": "Motorola Edge 20",
       "description": "Motorola flagship",
       "main_img": "img15.png",
@@ -285,7 +290,7 @@
   ],
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "username": "tester",
       "password": "tester",
       "firstName": "Khánh",
@@ -299,7 +304,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "username": "root",
       "password": "root",
       "firstName": "Khánh root",
@@ -317,21 +322,32 @@
     {
       "carts": [
         {
-          "productId": 1,
+          "productId": "1",
           "quantity": 1,
-          "color": "Trắng"
+          "color": "Hồng"
         },
         {
-          "productId": 2,
-          "quantity": 15,
-          "color": "Xanh dương"
+          "productId": "3",
+          "quantity": 1,
+          "color": "Xám"
+        },
+        {
+          "productId": "3",
+          "quantity": 3,
+          "color": "Tím"
         }
       ],
-      "id": 1
+      "id": "1"
     },
     {
-      "carts": [],
-      "id": 2
+      "carts": [
+        {
+          "productId": "1",
+          "quantity": 2,
+          "color": "Trắng"
+        }
+      ],
+      "id": "2"
     }
   ]
 }
