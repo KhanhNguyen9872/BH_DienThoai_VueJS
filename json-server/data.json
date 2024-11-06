@@ -285,10 +285,24 @@
   ],
   "users": [
     {
-      "id": "1",
+      "id": 1,
       "username": "tester",
       "password": "tester",
       "firstName": "Khánh",
+      "lastName": "Nguyễn",
+      "information": [
+        {
+          "fullName": "Nguyễn Văn Khánh",
+          "address": "Ho Chi Minh",
+          "phone": "0123210"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "username": "root",
+      "password": "root",
+      "firstName": "Khánh root",
       "lastName": "Nguyễn",
       "information": [
         {
@@ -313,7 +327,11 @@
           "color": "Xanh dương"
         }
       ],
-      "id": "1"
+      "id": 1
+    },
+    {
+      "carts": [],
+      "id": 2
     }
   ]
 }

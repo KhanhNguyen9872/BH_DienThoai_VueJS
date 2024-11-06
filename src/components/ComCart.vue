@@ -4,37 +4,40 @@
             <div class="cart-title">Giỏ hàng của bạn</div>
 
             <!-- Cart Items -->
-            <div class="cart-item" v-for="(item) in this.cartItems" :key="item.id">
-                <input type="checkbox" style="margin-left: 25px; margin-right: 25px;" v-model="item.selected">
-                <div class="item-details">
-                    <img :src="item.img" :alt="item.name">
-                    <div class="item-info">
-                        <h4>{{ item.name }}</h4>
-                        <p>Giá: {{ formatMoney(item.price) }} VND</p>
+            <div v-if="this.cartItems.length > 0">
+                <div class="cart-item" v-for="(item) in this.cartItems" :key="item.id">
+                    <input type="checkbox" style="margin-left: 25px; margin-right: 25px;" v-model="item.selected">
+                    <div class="item-details">
+                        <img :src="item.img" :alt="item.name">
+                        <div class="item-info">
+                            <h4>{{ item.name }}</h4>
+                            <p>Giá: {{ formatMoney(item.price) }} VND</p>
 
-                        <div class="color-select">
-                            <label for="color" style="margin-right: 10px;">Màu sắc: </label>
-                            <select v-model="item.selectedColor" :style="{ backgroundColor: item.selectedColor }">
-                                <option :value="color">{{ color }}</option>
-                            </select>
-                            <div class="color-preview" :style="{ backgroundColor: item.hex }"></div>
+                            <div class="color-select">
+                                <label for="color" style="margin-right: 10px;">Màu sắc: </label>
+                                <select v-model="item.selectedColor" :style="{ backgroundColor: item.selectedColor }">
+                                    <option :value="color">{{ color }}</option>
+                                </select>
+                                <div class="color-preview" :style="{ backgroundColor: item.hex }"></div>
+                            </div>
                         </div>
                     </div>
+                    <div class="quantity-control">
+                        <button @click="decreaseQuantity(item.id)">-</button>
+                        <input type="number" v-model="item.quantity" min="1" readonly>
+                        <button @click="increaseQuantity(item.id)" :disabled="item.isDisabledIncrease">+</button>
+                    </div>
+                    <div class="price">{{ formatMoney(item.price * item.quantity) }} VND</div>
                 </div>
-                <div class="quantity-control">
-                    <button @click="decreaseQuantity(item.id)">-</button>
-                    <input type="number" v-model="item.quantity" min="1" readonly>
-                    <button @click="increaseQuantity(item.id)" :disabled="item.isDisabledIncrease">+</button>
-                </div>
-                <div class="price">{{ formatMoney(item.price * item.quantity) }} VND</div>
-            </div>
 
-            <!-- Cart Summary -->
-            <div class="cart-summary">
-                <div class="summary-title">Order Summary</div>
-                <div class="total-price">Total: {{ formatMoney(totalPrice) }} VND</div>
-                <button class="checkout-btn" @click="proceedToCheckout">Proceed to Checkout</button>
+                <!-- Cart Summary -->
+                <div class="cart-summary">
+                    <div class="summary-title">Order Summary</div>
+                    <div class="total-price">Total: {{ formatMoney(totalPrice) }} VND</div>
+                    <button class="checkout-btn" @click="proceedToCheckout">Proceed to Checkout</button>
+                </div>
             </div>
+            <div v-else class="no-items">Chưa có hàng</div>
         </div>
     </div>
 </template>
@@ -175,6 +178,13 @@ export default {
   </script>
 
   <style scoped>
+.no-items {
+    font-size: 20px;
+    font-weight: bold;
+    color: #777;
+    text-align: center;
+    margin-top: 50px;
+}
 .center {
     display: flex;
     justify-content: center; /* Center horizontally */

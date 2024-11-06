@@ -132,7 +132,7 @@ export default {
   // Get a cart by UserID
   async getCartItemsByUserId(userId) {
     try {
-      const response = await fetch(`${API_URL}/cart?userId=${userId}`);
+      const response = await fetch(`${API_URL}/cart?id=${userId}`);
       if (!response.ok) throw new Error(`Failed to fetch cart items for user ID ${userId}`);
       const data = await response.json();
       return data[0];
