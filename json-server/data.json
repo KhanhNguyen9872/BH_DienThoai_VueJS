@@ -84,7 +84,6 @@
           "quantity": 3
         }
       ],
-      "quantity": 8,
       "money": 20000000
     },
     {
@@ -104,7 +103,6 @@
           "quantity": 6
         }
       ],
-      "quantity": 12,
       "money": 18000000
     },
     {
@@ -115,14 +113,15 @@
       "color": [
         {
           "name": "Trắng",
-          "img": "/img/oppo-find-x3-white.jpg"
+          "img": "/img/oppo-find-x3-white.jpg",
+          "quantity": 3
         },
         {
           "name": "Xanh dương",
-          "img": "/img/oppo-find-x3-blue.jpg"
+          "img": "/img/oppo-find-x3-blue.jpg",
+          "quantity": 5
         }
       ],
-      "quantity": 5,
       "money": 21000000
     },
     {
@@ -133,158 +132,206 @@
       "color": [
         {
           "name": "Đen",
-          "img": "/img/vivo-x60-black.png"
+          "img": "/img/vivo-x60-black.png",
+          "quantity": 7
         },
         {
           "name": "Bạc",
-          "img": "/img/vivo-x60-sliver.jpg"
+          "img": "/img/vivo-x60-sliver.jpg",
+          "quantity": 6
         }
       ],
-      "quantity": 6,
       "money": 17000000
     },
     {
       "id": "8",
       "name": "Google Pixel 6",
       "description": "new Google phone",
-      "main_img": "img8.png",
+      "main_img": "/img/google-pixel-6-black.jpg",
       "color": [
         {
-          "name": "Xanh lá cây",
-          "img": "img8_green.png"
+          "name": "Đen",
+          "img": "/img/google-pixel-6-black.jpg",
+          "quantity": 5
         },
         {
-          "name": "Đen",
-          "img": "img8_black.png"
+          "name": "Xanh lá cây",
+          "img": "/img/google-pixel-6-green.png",
+          "quantity": 0
         }
       ],
-      "quantity": 9,
       "money": 27000000
     },
     {
       "id": "9",
       "name": "Realme GT",
       "description": "flagship Realme device",
-      "main_img": "img9.png",
+      "main_img": "/img/realme-gt-yellow.jpg",
       "color": [
         {
           "name": "Vàng",
-          "img": "img9_yellow.png"
+          "img": "/img/realme-gt-yellow.jpg",
+          "quantity": 3
         },
         {
-          "name": "Bạc",
-          "img": "img9_silver.png"
+          "name": "Xanh dương",
+          "img": "/img/realme-gt-blue.webp",
+          "quantity": 2
         }
       ],
-      "quantity": 14,
       "money": 15000000
     },
     {
       "id": "10",
       "name": "Nokia X20",
       "description": "affordable Nokia phone",
-      "main_img": "img10.png",
+      "main_img": "/img/nokia-x20-blue.jpg",
       "color": [
         {
           "name": "Xanh dương",
-          "img": "img10_blue.png"
+          "img": "/img/nokia-x20-blue.jpg",
+          "quantity": 0
         },
         {
           "name": "Đen",
-          "img": "img10_black.png"
+          "img": "/img/nokia-x20-black.jpg",
+          "quantity": 0
         }
       ],
-      "quantity": 20,
       "money": 8000000
     },
     {
       "id": "11",
       "name": "iPhone 11",
       "description": "previous-gen iPhone",
-      "main_img": "img11.png",
+      "main_img": "/img/iphone-11-black.jpg",
       "color": [
         {
           "name": "Đen",
-          "img": "img11_black.png"
+          "img": "/img/iphone-11-black.jpg",
+          "quantity": 3
         },
         {
-          "name": "Xanh",
-          "img": "img11_green.png"
+          "name": "Xanh dương",
+          "img": "/img/iphone-11-blue.jpg",
+          "quantity": 2
+        },
+        {
+          "name": "Trắng",
+          "img": "/img/iphone-11-white.jpg",
+          "quantity": 1
         }
       ],
-      "quantity": 11,
       "money": 16000000
     },
     {
       "id": "12",
       "name": "Samsung Galaxy A52",
       "description": "mid-range Samsung",
-      "main_img": "img12.png",
+      "main_img": "/img/samsung-a52-blue.webp",
       "color": [
         {
           "name": "Xanh dương",
-          "img": "img12_blue.png"
+          "img": "/img/samsung-a52-blue.webp",
+          "quantity": 10
         },
         {
           "name": "Đen",
-          "img": "img12_black.png"
+          "img": "/img/samsung-a52-black.jpg",
+          "quantity": 8
         }
       ],
-      "quantity": 7,
       "money": 9000000
     },
     {
       "id": "13",
       "name": "Poco F3",
       "description": "powerful and affordable",
-      "main_img": "img13.png",
+      "main_img": "/img/poco-f3-white.webp",
       "color": [
         {
           "name": "Trắng",
-          "img": "img13_white.png"
+          "img": "/img/poco-f3-white.webp",
+          "quantity": 5
         },
         {
           "name": "Đen",
-          "img": "img13_black.png"
+          "img": "/img/poco-f3-white.jpg",
+          "quantity": 2
         }
       ],
-      "quantity": 17,
       "money": 7500000
     },
     {
       "id": "14",
       "name": "Sony Xperia 1 III",
       "description": "high-end Sony phone",
-      "main_img": "img14.png",
+      "main_img": "/img/sony-xperia-1-iii-purple.jpg",
       "color": [
         {
           "name": "Tím",
-          "img": "img14_purple.png"
+          "img": "/img/sony-xperia-1-iii-purple.jpg",
+          "quantity": 3
         },
         {
           "name": "Đen",
-          "img": "img14_black.png"
+          "img": "/img/sony-xperia-1-iii-black.jpg",
+          "quantity": 0
         }
       ],
-      "quantity": 4,
       "money": 30000000
     },
     {
       "id": "15",
       "name": "Motorola Edge 20",
       "description": "Motorola flagship",
-      "main_img": "img15.png",
+      "main_img": "/img/motorola-edge-20-white.png",
       "color": [
         {
           "name": "Trắng",
-          "img": "img15_white.png"
+          "img": "/img/motorola-edge-20-white.png",
+          "quantity": 0
         },
         {
-          "name": "Xanh lá cây",
-          "img": "img15_green.png"
+          "name": "Xanh dương",
+          "img": "/img/motorola-edge-20-blue.jpg",
+          "quantity": 1
         }
       ],
-      "quantity": 13,
+      "money": 14000000
+    },
+    {
+      "id": "16",
+      "name": "Xiaomi Mi 11 Lite 5G",
+      "description": "mid-range phone",
+      "main_img": "/img/xiaomi-mi11-lite-black.jpg",
+      "color": [
+        {
+          "name": "Đen",
+          "img": "/img/xiaomi-mi11-lite-black.jpg",
+          "quantity": 3
+        },
+        {
+          "name": "Trắng",
+          "img": "/img/xiaomi-mi11-lite-white.webp",
+          "quantity": 4
+        },
+        {
+          "name": "Hồng",
+          "img": "/img/xiaomi-mi11-lite-pink.jpg",
+          "quantity": 1
+        },
+        {
+          "name": "Xanh dương",
+          "img": "/img/xiaomi-mi11-lite-blue.webp",
+          "quantity": 4
+        },
+        {
+          "name": "Vàng",
+          "img": "/img/xiaomi-mi11-lite-yellow.png",
+          "quantity": 2
+        }
+      ],
       "money": 14000000
     }
   ],
@@ -345,6 +392,21 @@
           "productId": "1",
           "quantity": 2,
           "color": "Trắng"
+        },
+        {
+          "productId": "16",
+          "quantity": 2,
+          "color": "Đen"
+        },
+        {
+          "productId": "16",
+          "quantity": 1,
+          "color": "Vàng"
+        },
+        {
+          "productId": "16",
+          "quantity": 1,
+          "color": "Hồng"
         }
       ],
       "id": "2"
