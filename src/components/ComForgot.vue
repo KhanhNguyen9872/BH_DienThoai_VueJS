@@ -1,21 +1,15 @@
 <template>
     <div class="center">
         <div class="container">
-            <form class="login-form" @submit.prevent="register">
-                <h2>Đăng ký tài khoản</h2>
+            <form class="login-form" @submit.prevent="forgot">
+                <h2>Quên mật khẩu</h2>
                 <div class="input-group">
-                    <label for="username">Username</label>
+                    <label for="username">Tên đăng nhập</label>
                     <input type="text" id="username" v-model="username" required>
                 </div>
-                <div class="input-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" v-model="password" required>
-                </div>
-                <div class="input-group">
-                    <label for="phone">Số điện thoại</label>
-                    <input type="text" id="phone" v-model="phone" required>
-                </div>
-                <button type="submit">Đăng ký</button>
+                <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
+                <p class="result-message" v-if="this.result.length > 0">{{ this.result }}</p>
+                <button type="submit">Quên mật khẩu</button>
                 <div class="links">
                     <a><router-link to="/login" class="login">Đăng nhập</router-link></a>
                 </div>
@@ -32,10 +26,8 @@ export default {
     data() {
         return {
             username: '',
-            password: '',
-            phone: '',
             error: '',
-            // users: users
+            result: '',
         };
     },
     async beforeMount() {
@@ -49,26 +41,21 @@ export default {
         }
     },
     methods: {
-        register() {
-            // Check if username already exists
-            // const existingUser = this.users.find(user => user.username === this.username);
-            // if (existingUser) {
-            //     this.error = "Tên người dùng đã tồn tại.";
-            //     return;
-            // }
+        async forgot() {
+            if (this.username.length < 1) {
+                this.error = 'Tên đăng nhập không được để trống!';
+                return;
+            }
 
-            // // Create a new user object
-            // const newUser = {
-            //     username: this.username,
-            //     password: this.password,
-            //     phone: this.phone
-            // };
+            const isExistUser = await db.isExistUser(this.username);
+            if (!isExistUser) {
+                this.error = 'Tên người dùng này không tồn tại!';
+                return;
+            }
 
-            // // Save to localStorage or send to server
-            // this.users.push(newUser);
-            // localStorage.setItem('users', JSON.stringify(this.users)); // Save updated user list to localStorage
-            // eventBus.emit('registerSuccess', newUser); // Emit event for successful registration
-            // this.$router.push('/'); // Redirect after registration
+            const result = await db.getPasswordUser(this.username);
+
+            this.result = "Mật khẩu của bạn là: " + result.password;
         }
     }
 }
@@ -76,6 +63,29 @@ export default {
 
   
 <style scoped>
+.result-message {
+    color: #4CAF50; /* Green color to indicate success */
+    background-color: #e7f5e9; /* Light green background for better visibility */
+    border: 1px solid #4CAF50; /* Green border to match the text color */
+    padding: 10px; /* Some padding for better spacing */
+    border-radius: 5px; /* Rounded corners */
+    margin: 15px 0; /* Margin to separate from other content */
+    font-size: 14px; /* Font size */
+    display: flex; /* Optional: Flexbox for better alignment */
+    align-items: center; /* Center vertically */
+}
+
+.error-message {
+    color: #d9534f; /* Bootstrap's danger color */
+    background-color: #f2dede; /* Light red background */
+    border: 1px solid #ebccd1; /* Border color matching the background */
+    padding: 10px; /* Some padding for better spacing */
+    border-radius: 5px; /* Rounded corners */
+    margin: 15px 0; /* Margin to separate from other content */
+    font-size: 14px; /* Font size */
+    display: flex; /* Optional: Flexbox for better alignment */
+    align-items: center; /* Center vertically */
+}
   * {
     box-sizing: border-box;
     margin: 0;

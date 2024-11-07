@@ -100,6 +100,22 @@ export default {
     }
   },
 
+  async getPasswordUser(username) {
+    try {
+      const response = await fetch(`${API_URL}/users?username=${username}`);
+      if (!response.ok) throw new Error(`Failed to fetch user`);
+      const data = await response.json();
+      if (data.length == 0) {
+        return null;
+      }
+
+      return data[0];
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  },
+
   // Get a user by username
   async getUser(username, password) {
     try {
