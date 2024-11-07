@@ -231,7 +231,8 @@ export default {
     cursor: pointer;            /* Change cursor to pointer on hover */
     border: 2px solid transparent; /* Border for the selected state */
     transition: border-color 0.3s; /* Smooth transition for border color */
-    border-color: #000;         /* Change border color for the selected swatch */
+    border-color: #c5c5c5;
+    border-width: 4px; /* Increase the border width */
 }
 
 .color-swatch.selected {

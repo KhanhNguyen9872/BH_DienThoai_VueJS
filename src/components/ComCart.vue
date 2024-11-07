@@ -11,7 +11,7 @@
                         <img :src="item.img" :alt="item.name">
                         <div class="item-info">
                             <h4>{{ item.name }}</h4>
-                            <p>Giá: {{ formatMoney(item.price) }} VND</p>
+                            <p style="text-align: left;">Giá: {{ formatMoney(item.price) }} VND</p>
 
                             <div class="color-select">
                                 <label for="color">Màu sắc: </label>
@@ -69,7 +69,14 @@ export default {
         }
 
         // get items from cart
-        const infoCart = await db.getCartItemsByUserId(this.user.id);
+        let infoCart = await db.getCartItemsByUserId(this.user.id);
+        if (infoCart == undefined) {
+            // create a new cart
+            db.createCart(this.user.id);
+            infoCart = {};
+            infoCart.carts = [];
+        }
+
         this.cartItems = [];
         infoCart.carts.forEach(async(item) => {
             let cart = {};
@@ -275,7 +282,6 @@ body {
     height: 20px;
     border-radius: 50%;
     margin-left: 10px;
-    border: 1px solid #ddd;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 

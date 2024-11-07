@@ -3,19 +3,36 @@
         <div class="container">
             <form class="login-form" @submit.prevent="register">
                 <h2>Đăng ký tài khoản</h2>
+                
                 <div class="input-group">
-                    <label for="username">Username</label>
+                    <label for="firstname">Tên của bạn</label>
+                    <input type="text" id="firstname" v-model="firstname" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="lastname">Họ của bạn</label>
+                    <input type="text" id="lastname" v-model="lastname" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="username">Tên đăng nhập</label>
                     <input type="text" id="username" v-model="username" required>
                 </div>
+
                 <div class="input-group">
-                    <label for="password">Password</label>
+                    <label for="password">Mật khẩu</label>
                     <input type="password" id="password" v-model="password" required>
                 </div>
+
                 <div class="input-group">
-                    <label for="phone">Số điện thoại</label>
-                    <input type="text" id="phone" v-model="phone" required>
+                    <label for="repassword">Nhập lại mật khẩu</label>
+                    <input type="password" id="repassword" v-model="repassword" required>
                 </div>
+
+                <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
+                <p class="result-message" v-if="this.result.length > 0">{{ this.result }} <a style="margin-left: 10px;" href="/login">Đăng nhập ngay</a></p>
                 <button type="submit">Đăng ký</button>
+                
                 <div class="links">
                     <a><router-link to="/login" class="login">Đăng nhập</router-link></a>
                 </div>
@@ -23,61 +40,98 @@
         </div>
     </div>
 </template>
-  
+
 <script>
-// import eventBus from '../event/eventBus.js';
-// import users from '@/data/users'; // Assuming you have a users array
 import db from '@/api/db';
 
 export default {
     name: 'ComRegister',
     data() {
         return {
+            firstname: '',
+            lastname: '',
             username: '',
             password: '',
-            phone: '',
+            repassword: '',
             error: '',
-            // users: users
+            result: '',
         };
     },
     async beforeMount() {
         const user = JSON.parse(localStorage.getItem("user"));
         if (user != null) {
             const u = await db.getUser(user.password, user.password);
-
             if (u != null) {
                 this.$router.push('/');
             }
         }
     },
     methods: {
-        register() {
-            // Check if username already exists
-            // const existingUser = this.users.find(user => user.username === this.username);
-            // if (existingUser) {
-            //     this.error = "Tên người dùng đã tồn tại.";
-            //     return;
-            // }
+        async register() {
+            if (this.password.length < 1) {
+                this.error = 'Mật khẩu không được để trống!';
+                return;
+            }
 
-            // // Create a new user object
-            // const newUser = {
-            //     username: this.username,
-            //     password: this.password,
-            //     phone: this.phone
-            // };
+            if (this.password === this.repassword) {
+                if (this.firstname.length < 1) {
+                    this.error = 'Tên của bạn không được để trống!';
+                    return;
+                }
+                if (this.lastname.length < 1) {
+                    this.error = 'Họ của bạn không được để trống!';
+                    return;
+                }
+                if (this.username.length < 1) {
+                    this.error = 'Tên đăng nhập không được để trống!';
+                    return;
+                }
 
-            // // Save to localStorage or send to server
-            // this.users.push(newUser);
-            // localStorage.setItem('users', JSON.stringify(this.users)); // Save updated user list to localStorage
-            // eventBus.emit('registerSuccess', newUser); // Emit event for successful registration
-            // this.$router.push('/'); // Redirect after registration
+                const isExistUser = await db.isExistUser(this.username);
+                if (isExistUser) {
+                    this.error = 'Tên người dùng này đã tồn tại!';
+                    return;
+                }
+
+                let newUser = { username: this.username, password: this.password, firstName: this.firstname, lastName: this.lastname, lock: false, information: [] };
+                const result = await db.addUser(newUser);
+                console.log(result);
+
+                this.result = 'Đăng ký thành công!';
+            } else {
+                this.error = 'Hai mật khẩu phải trùng khớp với nhau!';
+                return;
+            }
         }
     }
 }
 </script>
 
-  
 <style scoped>
+.result-message {
+    color: #4CAF50; /* Green color to indicate success */
+    background-color: #e7f5e9; /* Light green background for better visibility */
+    border: 1px solid #4CAF50; /* Green border to match the text color */
+    padding: 10px; /* Some padding for better spacing */
+    border-radius: 5px; /* Rounded corners */
+    margin: 15px 0; /* Margin to separate from other content */
+    font-size: 14px; /* Font size */
+    display: flex; /* Optional: Flexbox for better alignment */
+    align-items: center; /* Center vertically */
+}
+
+.error-message {
+    color: #d9534f; /* Bootstrap's danger color */
+    background-color: #f2dede; /* Light red background */
+    border: 1px solid #ebccd1; /* Border color matching the background */
+    padding: 10px; /* Some padding for better spacing */
+    border-radius: 5px; /* Rounded corners */
+    margin: 15px 0; /* Margin to separate from other content */
+    font-size: 14px; /* Font size */
+    display: flex; /* Optional: Flexbox for better alignment */
+    align-items: center; /* Center vertically */
+}
+
   * {
     box-sizing: border-box;
     margin: 0;
@@ -86,24 +140,13 @@ export default {
 
 .center {
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 100%; /* Full height of the parent (body) */
-}
-
-body {
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
-    display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
 }
 
 .container {
     background-color: white;
     border-radius: 10px;
-    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); */
     padding: 40px;
     width: 500px;
 }
@@ -119,25 +162,26 @@ h2 {
 }
 
 .input-group {
-    display: flex; /* Use flexbox for layout */
-    align-items: center; /* Center items vertically */
-    margin-bottom: 15px; /* Space between input groups */
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
 .input-group label {
-    flex: 0 0 30%; /* Fixed width for the label (30% of the container) */
-    margin-right: 20px; /* Space between label and input */
-    font-weight: bold; /* Make label text bold */
-    text-align: right; /* Align text to the right for better alignment with input */
+    flex: 0 0 30%;
+    margin-right: 20px;
+    font-weight: bold;
+    text-align: right;
 }
 
 .input-group input {
-    flex: 1; /* Allow the input to take the remaining space */
-    padding: 10px; /* Padding inside the input */
-    border: 1px solid #ccc; /* Border for the input */
-    border-radius: 5px; /* Rounded corners */
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     margin-right: 20px;
 }
+
 label {
     margin-bottom: 5px;
     font-weight: bold;
@@ -172,31 +216,11 @@ button:hover {
 .links a {
     margin: 0 5px;
     text-decoration: none;
-    color: #007BFF; /* Default link color */
-    font-weight: bold; /* Make the text bold */
-    padding: 10px 15px; /* Add padding for a button-like appearance */
-    border-radius: 5px; /* Rounded corners */
-    border: 1px solid transparent; /* Default border */
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Smooth transition for hover effects */
-}
-
-.links a.register {
-    background-color: #4CAF50; /* Green background for Register */
-    color: white; /* White text color */
-}
-
-.links a.register:hover {
-    background-color: #45a049; /* Darker green on hover */
-    border-color: #4CAF50; /* Optional: Border color on hover */
-}
-
-.links a.forgot-password {
-    background-color: #f0f0f0; /* Light gray background for Forgot Password */
-    color: #007BFF; /* Link color */
-}
-
-.links a.forgot-password:hover {
-    background-color: #e0e0e0; /* Slightly darker gray on hover */
-    border-color: #007BFF; /* Optional: Border color on hover */
+    color: #007BFF;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 </style>

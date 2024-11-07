@@ -337,11 +337,12 @@
   ],
   "users": [
     {
-      "id": "1",
+      "id": 1,
       "username": "tester",
       "password": "tester",
       "firstName": "Khánh",
       "lastName": "Nguyễn",
+      "lock": false,
       "information": [
         {
           "fullName": "Nguyễn Văn Khánh",
@@ -351,11 +352,12 @@
       ]
     },
     {
-      "id": "2",
+      "id": 2,
       "username": "root",
       "password": "root",
       "firstName": "Khánh root",
       "lastName": "Nguyễn",
+      "lock": false,
       "information": [
         {
           "fullName": "Nguyễn Văn Khánh",
@@ -363,6 +365,15 @@
           "phone": "0123210"
         }
       ]
+    },
+    {
+      "id": "a747",
+      "username": "khanh",
+      "password": "khanh",
+      "firstName": "khánh",
+      "lastName": "nguyễn",
+      "lock": false,
+      "information": []
     }
   ],
   "cart": [
@@ -382,6 +393,11 @@
           "productId": "3",
           "quantity": 3,
           "color": "Tím"
+        },
+        {
+          "productId": "16",
+          "quantity": 1,
+          "color": "Hồng"
         }
       ],
       "id": "1"
@@ -410,6 +426,10 @@
         }
       ],
       "id": "2"
+    },
+    {
+      "carts": [],
+      "id": "a747"
     }
   ]
 }

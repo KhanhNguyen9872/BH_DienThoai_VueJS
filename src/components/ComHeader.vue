@@ -14,8 +14,8 @@
                 <div v-else class="user-info">
                     <p class="user-button" @click="toggleMenu">Xin chào, {{ user.firstName }}</p>
                     <div v-show="showMenu" class="dropdown-menu">
-                        <router-link to="/profile">Hồ sơ</router-link>
-                        <router-link to="/logout">Đăng xuất</router-link>
+                        <router-link to="/profile" @click="handleProfile">Hồ sơ</router-link>
+                        <router-link to="/logout" @click="handleLogout">Đăng xuất</router-link>
                     </div>
                     <router-link to="/cart" class="cart-link" exact-active-class="active">🛒 Giỏ hàng</router-link>
                 </div>
@@ -51,6 +51,16 @@ export default {
     methods: {
         toggleMenu() {
             this.showMenu = !this.showMenu;
+        },
+        handleProfile(event) {
+            event.preventDefault(); // Prevents immediate navigation
+            this.toggleMenu();
+            this.$router.push('/profile');
+        },
+        handleLogout(event) {
+            event.preventDefault(); // Prevents immediate navigation
+            this.toggleMenu();
+            this.$router.push('/logout');
         }
     }
 }

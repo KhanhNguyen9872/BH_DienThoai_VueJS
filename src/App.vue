@@ -1,4 +1,5 @@
 <template>
+  <GoToTopButton />
  <Header/>
 
  
@@ -9,12 +10,12 @@
 // b1: import vào
 
 import Header from './components/ComHeader.vue'
-
+import GoToTopButton from './components/ComGoToUp.vue';
 import Footer from './components/ComFooter.vue'
 export default {
   name: 'App',
   components: {
-
+    GoToTopButton,
     Header,
     Footer,
  

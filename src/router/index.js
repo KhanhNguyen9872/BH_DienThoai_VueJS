@@ -8,8 +8,8 @@ import Login from '@/components/ComLogin.vue'
 import Register from '@/components/ComRegister.vue'
 import Forgot from '@/components/ComForgot.vue'
 import Logout from '@/components/ComLogout.vue'
-import NotFound from '@/components/ComNotFound.vue'; // For handling 404
-
+import NotFound from '@/components/ComNotFound.vue'; 
+import ComProfile from "@/components/ComProfile.vue";
 
 // tạo mảng chứa những đường link
 const routes=[
@@ -21,32 +21,32 @@ const routes=[
     },
     {
         path:"/login",
-        name:"Đăng nhập",
+        name:"Login",
         component:Login
     },
     {
         path:"/register",
-        name:"Đăng ký",
+        name:"Register",
         component:Register
     },
     {
         path:"/forgot",
-        name:"Quên mật khẩu",
+        name:"Forgot",
         component:Forgot
     },
     {
         path:"/logout",
-        name:"Đăng xuất",
+        name:"Logout",
         component:Logout
     },
     {
         path:"/about",
-        name:"Giới thiệu",
+        name:"About",
         component:GioiThieu
     },
     {
         path:"/contact",
-        name:"Liên hệ",
+        name:"Contact",
         component:LienHe
     },
     {
@@ -56,12 +56,17 @@ const routes=[
     },
     {
         path:"/cart",
-        name:"ComCart",
+        name:"Cart",
         component:ComCart
     },
     {
+        path:"/profile",
+        name:"Profile",
+        component:ComProfile
+    },
+    {
         path: '/:pathMatch(.*)*',
-        name: 'not-found',
+        name: 'NotFound',
         component: NotFound
     }
 ]

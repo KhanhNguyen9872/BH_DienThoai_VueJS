@@ -55,6 +55,11 @@ export default {
                 return;
             }
 
+            if (user.lock) {
+                this.error = 'Tài khoản này đã bị khóa!';
+                return;
+            }
+
             localStorage.setItem('user', JSON.stringify({id: user.id, username: user.username, password: user.password}));
             window.location.href = '/';
         }

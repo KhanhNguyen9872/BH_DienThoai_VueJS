@@ -64,6 +64,42 @@ export default {
     }
   },
 
+  // Add a new user
+  async createCart(userId) {
+    try {
+      const cartData = {
+        id: userId,
+        carts: []
+      };
+      const response = await fetch(`${API_URL}/cart`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cartData),
+      });
+      if (!response.ok) throw new Error("Failed to create cart");
+      await response.json();
+    } catch (error) {
+      console.error("Error creating cart:", error);
+    }
+  },
+
+  async isExistUser(username) {
+    try {
+      const response = await fetch(`${API_URL}/users?username=${username}`);
+      if (!response.ok) throw new Error(`Failed to fetch user`);
+      const data = await response.json();
+      if (data.length == 0) {
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  },
+
   // Get a user by username
   async getUser(username, password) {
     try {
