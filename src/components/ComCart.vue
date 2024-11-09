@@ -25,13 +25,17 @@
                         <button @click="increaseQuantity(item.id, item.color)" :disabled="item.isDisabledIncrease">+</button>
                     </div>
                     <div class="price">{{ formatMoney(item.price * item.quantity) }} VND</div>
+                    <button class="delete-btn" @click="removeItem(item.id, item.color)">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
                 </div>
 
                 <!-- Cart Summary -->
                 <div class="cart-summary">
-                    <div class="summary-title">Order Summary</div>
+                    <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
+                    <div class="summary-title">Tóm tắt đơn hàng</div>
                     <div class="total-price">Total: {{ formatMoney(totalPrice) }} VND</div>
-                    <button class="checkout-btn" @click="proceedToCheckout">Proceed to Checkout</button>
+                    <button class="checkout-btn" @click="proceedToCheckout()">Thanh toán</button>
                 </div>
             </div>
             <div v-else class="no-items">Chưa có hàng</div>
@@ -40,6 +44,7 @@
 </template>
   
 <script>
+import '@/styles/css/font-awesome.css';
 import tools from '@/api/tools';
 import db from '../api/db';
 
@@ -47,7 +52,9 @@ export default {
     data(){
         return{
             cartItems: [],
+            selectedItem: 0,
             totalPrice: 0,
+            error: '',
         }
     },
     async created() {
@@ -74,6 +81,7 @@ export default {
             // create a new cart
             db.createCart(this.user.id);
             infoCart = {};
+            infoCart.id = this.user.id;
             infoCart.carts = [];
         }
 
@@ -86,26 +94,34 @@ export default {
             const data = await db.getProduct(productId);
             const API_URL = db.getAPI_URL();
             const color = data.color.find((c) => c.name === item.color);
+            let isDisabledIncrease = false;
 
-            cart = { ...cart, id: data.id, name: data.name, img: API_URL + color.img, price: data.money, isDisabledIncrease: false, hex: tools.getColor(item.color) };
+            if (color.quantity > 0) {
+                if (item.quantity >= color.quantity) {
+                    item.quantity = color.quantity;
+                    isDisabledIncrease = true;
+                }
 
-            // add cart into carts
-            cart = {...item, ...cart, selected: false};
-            this.cartItems.push(cart);
+                cart = { ...cart, id: data.id, name: data.name, img: API_URL + color.img, price: color.money, isDisabledIncrease: isDisabledIncrease, hex: tools.getColor(item.color) };
+
+                // add cart into carts
+                cart = {...item, ...cart, selected: false};
+                this.cartItems.push(cart);
+            }
         });
     },
-      computed: {
-        
-      },
-      methods: {
+    methods: {
         calcTotalPrice() {
+            let selected = 0;
             let total = 0;
             this.cartItems.forEach((item) => {
                 if (item.selected) {
                     total = total + (item.price * item.quantity);
+                    selected = selected + 1;
                 }
             })
             this.totalPrice = total;
+            this.selectedItem = selected;
         },
         formatMoney(money) {
             return tools.formatMoney(money);
@@ -137,6 +153,7 @@ export default {
                 this.removeItem(itemId, color);
             }
 
+            this.calcTotalPrice();
         },
         async increaseQuantity(itemId, color) {
             const item = this.getItem(itemId, color);
@@ -153,6 +170,8 @@ export default {
                 if (item.quantity == colorItem.quantity) {
                     item.isDisabledIncrease = true;
                 }
+
+                this.calcTotalPrice();
             } else {
                 console.log('color item null');
             }
@@ -169,12 +188,66 @@ export default {
             });
 
             db.updateCarts(this.user.id, newCarts);
+        },
+        proceedToCheckout() {
+            if (this.selectedItem > 0) {
+                this.error = '';
+            } else {
+                this.error = 'Vui lòng chọn ít nhất 1 món hàng để thanh toán';
+            }
         }
       }
   }
   </script>
 
   <style scoped>
+  .error-message {
+    color: #d9534f; /* Bootstrap's danger color */
+    background-color: #f2dede; /* Light red background */
+    border: 1px solid #ebccd1; /* Border color matching the background */
+    padding: 10px; /* Some padding for better spacing */
+    border-radius: 5px; /* Rounded corners */
+    margin: 15px 0; /* Margin to separate from other content */
+    font-size: 14px; /* Font size */
+    display: flex; /* Optional: Flexbox for better alignment */
+    align-items: center; /* Center vertically */
+}
+.delete-btn {
+    margin-right: 20px;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 60px;
+    justify-content: center;
+}
+
+.delete-btn i {
+    font-size: 18px; /* Icon size */
+}
+
+.delete-btn:hover {
+    background-color: #ff0000;
+    transform: translateY(-2px);
+}
+
+.delete-btn:focus {
+    outline: none;
+}
+
+.delete-btn:active {
+    background-color: #e60000;
+    transform: translateY(2px);
+}
+
 .no-items {
     font-size: 20px;
     font-weight: bold;
@@ -182,12 +255,14 @@ export default {
     text-align: center;
     margin-top: 50px;
 }
+
 .center {
     display: flex;
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     height: 100%; /* Full height of the parent (body) */
 }
+
 /* Basic styling for the body */
 body {
     font-family: Arial, sans-serif;
@@ -375,4 +450,58 @@ body {
     from { opacity: 0; }
     to { opacity: 1; }
 }
+
+/* Media Query for Mobile Responsiveness */
+@media (max-width: 650px) {
+    /* Delete button adjustments */
+    .delete-btn {
+        font-size: 12px; /* Smaller font size */
+        padding: 6px 12px; /* Smaller padding */
+        width: 80px; /* Adjust button width */
+    }
+
+    .delete-btn i {
+        font-size: 16px; /* Smaller icon */
+    }
+
+    .cart-container {
+        width: 95%; /* Make the cart container take more width on small screens */
+        padding: 15px; /* Reduce padding */
+    }
+
+    .cart-title {
+        font-size: 22px; /* Smaller title font size */
+    }
+
+    .cart-item {
+        flex-direction: column; /* Stack the items vertically */
+        align-items: flex-start; /* Align items to the left */
+    }
+
+    .cart-item img {
+        width: 60px; /* Smaller image */
+        height: 60px; /* Smaller image */
+    }
+
+    .item-info h4 {
+        font-size: 16px; /* Smaller font for item names */
+    }
+
+    .price {
+        font-size: 16px; /* Smaller price font */
+    }
+
+    .checkout-btn {
+        padding: 10px 20px; /* Smaller checkout button */
+    }
+
+    .summary-title {
+        font-size: 18px; /* Smaller summary title */
+    }
+
+    .total-price {
+        font-size: 20px; /* Smaller total price */
+    }
+}
+
   </style>

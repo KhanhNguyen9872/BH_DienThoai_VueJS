@@ -4,342 +4,349 @@
       "id": "1",
       "name": "Google Pixel 3",
       "description": "a pixel 3 phone",
-      "main_img": "/img/google-pixel-3-black.jpg",
       "color": [
         {
           "name": "Đen",
           "img": "/img/google-pixel-3-black.jpg",
-          "quantity": 0
+          "quantity": 0,
+          "money": 3000000
         },
         {
           "name": "Trắng",
           "img": "/img/google-pixel-3-white.jpg",
-          "quantity": 4
+          "quantity": 4,
+          "money": 3100000
         },
         {
           "name": "Hồng",
           "img": "/img/google-pixel-3-pink.jpg",
-          "quantity": 1
+          "quantity": 1,
+          "money": 3200000
         }
-      ],
-      "money": 3000000
+      ]
     },
     {
       "id": "2",
       "name": "iPhone 12",
       "description": "latest iPhone model",
-      "main_img": "/img/iphone-12-black.webp",
       "color": [
         {
           "name": "Đen",
           "img": "/img/iphone-12-black.webp",
-          "quantity": 2
+          "quantity": 2,
+          "money": 25000000
         },
         {
           "name": "Xanh dương",
           "img": "/img/iphone-12-blue.jpg",
-          "quantity": 6
+          "quantity": 6,
+          "money": 26000000
         },
         {
           "name": "Trắng",
           "img": "/img/iphone-12-white.webp",
-          "quantity": 3
+          "quantity": 3,
+          "money": 27000000
         }
-      ],
-      "money": 25000000
+      ]
     },
     {
       "id": "3",
       "name": "Samsung Galaxy S21",
       "description": "high-end Samsung phone",
-      "main_img": "/img/samsung-s21-gray.webp",
       "color": [
         {
           "name": "Xám",
           "img": "/img/samsung-s21-gray.webp",
-          "quantity": 1
+          "quantity": 1,
+          "money": 22000000
         },
         {
           "name": "Tím",
           "img": "/img/samsung-s21-pink.jpg",
-          "quantity": 4
+          "quantity": 4,
+          "money": 22000000
         }
-      ],
-      "money": 22000000
+      ]
     },
     {
       "id": "4",
       "name": "OnePlus 9",
       "description": "premium OnePlus device",
-      "main_img": "/img/oneplus-9-blue.png",
       "color": [
         {
           "name": "Xanh dương",
           "img": "/img/oneplus-9-blue.png",
-          "quantity": 4
+          "quantity": 4,
+          "money": 20000000
         },
         {
           "name": "Bạc",
           "img": "/img/oneplus-9-sliver.png",
-          "quantity": 3
+          "quantity": 3,
+          "money": 20000000
         }
-      ],
-      "money": 20000000
+      ]
     },
     {
       "id": "5",
       "name": "Xiaomi Mi 11",
       "description": "flagship Xiaomi model",
-      "main_img": "/img/xiaomi-mi11-black.jpg",
       "color": [
         {
           "name": "Đen",
           "img": "/img/xiaomi-mi11-black.jpg",
-          "quantity": 3
+          "quantity": 3,
+          "money": 18000000
         },
         {
           "name": "Xanh dương",
           "img": "/img/xiaomi-mi11-blue.jpg",
-          "quantity": 6
+          "quantity": 6,
+          "money": 18000000
         }
-      ],
-      "money": 18000000
+      ]
     },
     {
       "id": "6",
       "name": "Oppo Find X3",
       "description": "Oppo's top phone",
-      "main_img": "/img/oppo-find-x3-white.jpg",
       "color": [
         {
           "name": "Trắng",
           "img": "/img/oppo-find-x3-white.jpg",
-          "quantity": 3
+          "quantity": 3,
+          "money": 21000000
         },
         {
           "name": "Xanh dương",
           "img": "/img/oppo-find-x3-blue.jpg",
-          "quantity": 5
+          "quantity": 5,
+          "money": 21000000
         }
-      ],
-      "money": 21000000
+      ]
     },
     {
       "id": "7",
       "name": "Vivo X60",
       "description": "high-quality Vivo phone",
-      "main_img": "/img/vivo-x60-black.png",
       "color": [
         {
           "name": "Đen",
           "img": "/img/vivo-x60-black.png",
-          "quantity": 7
+          "quantity": 7,
+          "money": 17000000
         },
         {
           "name": "Bạc",
           "img": "/img/vivo-x60-sliver.jpg",
-          "quantity": 6
+          "quantity": 6,
+          "money": 17000000
         }
-      ],
-      "money": 17000000
+      ]
     },
     {
       "id": "8",
       "name": "Google Pixel 6",
       "description": "new Google phone",
-      "main_img": "/img/google-pixel-6-black.jpg",
       "color": [
         {
           "name": "Đen",
           "img": "/img/google-pixel-6-black.jpg",
-          "quantity": 5
+          "quantity": 5,
+          "money": 27000000
         },
         {
           "name": "Xanh lá cây",
           "img": "/img/google-pixel-6-green.png",
-          "quantity": 0
+          "quantity": 0,
+          "money": 27000000
         }
-      ],
-      "money": 27000000
+      ]
     },
     {
       "id": "9",
       "name": "Realme GT",
       "description": "flagship Realme device",
-      "main_img": "/img/realme-gt-yellow.jpg",
       "color": [
         {
           "name": "Vàng",
           "img": "/img/realme-gt-yellow.jpg",
-          "quantity": 3
+          "quantity": 3,
+          "money": 15000000
         },
         {
           "name": "Xanh dương",
           "img": "/img/realme-gt-blue.webp",
-          "quantity": 2
+          "quantity": 2,
+          "money": 15000000
         }
-      ],
-      "money": 15000000
+      ]
     },
     {
       "id": "10",
       "name": "Nokia X20",
       "description": "affordable Nokia phone",
-      "main_img": "/img/nokia-x20-blue.jpg",
       "color": [
         {
           "name": "Xanh dương",
           "img": "/img/nokia-x20-blue.jpg",
-          "quantity": 0
+          "quantity": 0,
+          "money": 8000000
         },
         {
           "name": "Đen",
           "img": "/img/nokia-x20-black.jpg",
-          "quantity": 0
+          "quantity": 0,
+          "money": 8000000
         }
-      ],
-      "money": 8000000
+      ]
     },
     {
       "id": "11",
       "name": "iPhone 11",
       "description": "previous-gen iPhone",
-      "main_img": "/img/iphone-11-black.jpg",
       "color": [
         {
           "name": "Đen",
           "img": "/img/iphone-11-black.jpg",
-          "quantity": 3
+          "quantity": 3,
+          "money": 16000000
         },
         {
           "name": "Xanh dương",
           "img": "/img/iphone-11-blue.jpg",
-          "quantity": 2
+          "quantity": 2,
+          "money": 16000000
         },
         {
           "name": "Trắng",
           "img": "/img/iphone-11-white.jpg",
-          "quantity": 1
+          "quantity": 1,
+          "money": 16000000
         }
-      ],
-      "money": 16000000
+      ]
     },
     {
       "id": "12",
       "name": "Samsung Galaxy A52",
       "description": "mid-range Samsung",
-      "main_img": "/img/samsung-a52-blue.webp",
       "color": [
         {
           "name": "Xanh dương",
           "img": "/img/samsung-a52-blue.webp",
-          "quantity": 10
+          "quantity": 10,
+          "money": 9000000
         },
         {
           "name": "Đen",
           "img": "/img/samsung-a52-black.jpg",
-          "quantity": 8
+          "quantity": 8,
+          "money": 9000000
         }
-      ],
-      "money": 9000000
+      ]
     },
     {
       "id": "13",
       "name": "Poco F3",
       "description": "powerful and affordable",
-      "main_img": "/img/poco-f3-white.webp",
       "color": [
         {
           "name": "Trắng",
           "img": "/img/poco-f3-white.webp",
-          "quantity": 5
+          "quantity": 5,
+          "money": 7500000
         },
         {
           "name": "Đen",
           "img": "/img/poco-f3-white.jpg",
-          "quantity": 2
+          "quantity": 2,
+          "money": 7500000
         }
-      ],
-      "money": 7500000
+      ]
     },
     {
       "id": "14",
       "name": "Sony Xperia 1 III",
       "description": "high-end Sony phone",
-      "main_img": "/img/sony-xperia-1-iii-purple.jpg",
       "color": [
         {
           "name": "Tím",
           "img": "/img/sony-xperia-1-iii-purple.jpg",
-          "quantity": 3
+          "quantity": 3,
+          "money": 30000000
         },
         {
           "name": "Đen",
           "img": "/img/sony-xperia-1-iii-black.jpg",
-          "quantity": 0
+          "quantity": 0,
+          "money": 30000000
         }
-      ],
-      "money": 30000000
+      ]
     },
     {
       "id": "15",
       "name": "Motorola Edge 20",
       "description": "Motorola flagship",
-      "main_img": "/img/motorola-edge-20-white.png",
       "color": [
         {
           "name": "Trắng",
           "img": "/img/motorola-edge-20-white.png",
-          "quantity": 0
+          "quantity": 0,
+          "money": 14000000
         },
         {
           "name": "Xanh dương",
           "img": "/img/motorola-edge-20-blue.jpg",
-          "quantity": 1
+          "quantity": 1,
+          "money": 14000000
         }
-      ],
-      "money": 14000000
+      ]
     },
     {
       "id": "16",
       "name": "Xiaomi Mi 11 Lite 5G",
       "description": "mid-range phone",
-      "main_img": "/img/xiaomi-mi11-lite-black.jpg",
       "color": [
         {
           "name": "Đen",
           "img": "/img/xiaomi-mi11-lite-black.jpg",
-          "quantity": 3
+          "quantity": 3,
+          "money": 14000000
         },
         {
           "name": "Trắng",
           "img": "/img/xiaomi-mi11-lite-white.webp",
-          "quantity": 4
+          "quantity": 4,
+          "money": 14500000
         },
         {
           "name": "Hồng",
           "img": "/img/xiaomi-mi11-lite-pink.jpg",
-          "quantity": 1
+          "quantity": 1,
+          "money": 14000000
         },
         {
           "name": "Xanh dương",
           "img": "/img/xiaomi-mi11-lite-blue.webp",
-          "quantity": 4
+          "quantity": 4,
+          "money": 15000000
         },
         {
           "name": "Vàng",
           "img": "/img/xiaomi-mi11-lite-yellow.png",
-          "quantity": 2
+          "quantity": 2,
+          "money": 16000000
         }
-      ],
-      "money": 14000000
+      ]
     }
   ],
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "username": "tester",
       "password": "tester",
+      "email": "khanh2@localhost.com",
       "firstName": "Khánh",
       "lastName": "Nguyễn",
       "lock": false,
@@ -352,9 +359,10 @@
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "username": "root",
       "password": "root",
+      "email": "khanh2@localhost.com",
       "firstName": "Khánh root",
       "lastName": "Nguyễn",
       "lock": false,
@@ -370,8 +378,19 @@
       "id": "a747",
       "username": "khanh",
       "password": "khanh",
+      "email": "khanh@localhost.com",
       "firstName": "khánh",
       "lastName": "nguyễn",
+      "lock": false,
+      "information": []
+    },
+    {
+      "id": "8de6",
+      "username": "test",
+      "password": "test",
+      "email": "testuser@gmail.com",
+      "firstName": "test",
+      "lastName": "test",
       "lock": false,
       "information": []
     }
@@ -385,19 +404,14 @@
           "color": "Hồng"
         },
         {
-          "productId": "3",
-          "quantity": 1,
-          "color": "Xám"
+          "productId": "12",
+          "quantity": 2,
+          "color": "Xanh dương"
         },
         {
-          "productId": "3",
-          "quantity": 3,
-          "color": "Tím"
-        },
-        {
-          "productId": "16",
-          "quantity": 1,
-          "color": "Hồng"
+          "productId": "1",
+          "quantity": 4,
+          "color": "Trắng"
         }
       ],
       "id": "1"
@@ -428,8 +442,19 @@
       "id": "2"
     },
     {
-      "carts": [],
-      "id": "a747"
+      "carts": [
+        {
+          "productId": "1",
+          "quantity": 4,
+          "color": "Trắng"
+        },
+        {
+          "productId": "1",
+          "quantity": 1,
+          "color": "Hồng"
+        }
+      ],
+      "id": "8de6"
     }
   ]
 }

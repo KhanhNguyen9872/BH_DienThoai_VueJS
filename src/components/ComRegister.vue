@@ -15,6 +15,11 @@
                 </div>
 
                 <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" v-model="email" required>
+                </div>
+
+                <div class="input-group">
                     <label for="username">Tên đăng nhập</label>
                     <input type="text" id="username" v-model="username" required>
                 </div>
@@ -50,6 +55,7 @@ export default {
         return {
             firstname: '',
             lastname: '',
+            email: '',
             username: '',
             password: '',
             repassword: '',
@@ -82,6 +88,10 @@ export default {
                     this.error = 'Họ của bạn không được để trống!';
                     return;
                 }
+                if (this.email.length < 1) {
+                    this.error = 'Email không được để trống!';
+                    return;
+                }
                 if (this.username.length < 1) {
                     this.error = 'Tên đăng nhập không được để trống!';
                     return;
@@ -93,7 +103,7 @@ export default {
                     return;
                 }
 
-                let newUser = { username: this.username, password: this.password, firstName: this.firstname, lastName: this.lastname, lock: false, information: [] };
+                let newUser = { username: this.username, password: this.password, email: this.email, firstName: this.firstname, lastName: this.lastname, lock: false, information: [] };
                 const result = await db.addUser(newUser);
                 console.log(result);
 
@@ -180,6 +190,15 @@ h2 {
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-right: 20px;
+}
+
+.input-group input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 20px;
+    font-size: 16px;
 }
 
 label {

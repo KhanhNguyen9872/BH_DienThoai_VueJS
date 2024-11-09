@@ -5,7 +5,7 @@
             <img :src="img" alt="Điện thoại 1">
             <h2>{{ product.name }}</h2>
             <!-- <p class="description">{{ product.description }}</p> -->
-            <p class="price">Giá: {{ tools.formatMoney(product.money) }} VND</p>
+            <p class="price">Giá: {{ tools.formatMoney(this.money) }} VND</p>
             <button>Mua</button>
         </div>
     </router-link>
@@ -18,13 +18,13 @@ import db from '../api/db.js'
 import tools from '../api/tools'
 
 export default {
-    // nhận giá trị từ cha props:['bientruyen']
     props:['product'],
     data() {
         return {
             id : this.product.id,
             tools: tools,
-            img: db.getAPI_URL() + this.product.main_img
+            money: this.product.color[0].money,
+            img: db.getAPI_URL() + this.product.color[0].img
         }
     }
 }

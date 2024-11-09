@@ -2,11 +2,11 @@
     <div v-if="visible" class="overlay" @click.self="closePopup">
       <div class="popup">
         <button class="btn-close" @click="closePopup">×</button>
-        <h2>Product Added!</h2>
-        <p>Your product has been added to the cart.</p>
+        <h2>Đã thêm thành công</h2>
+        <p>Sản phẩm của bạn đã được thêm vào giỏ hàng</p>
         <div class="button-group">
-          <button class="btn" @click="closePopup">Continue Shopping</button>
-          <button class="btn go-to-cart" @click="goToCart">Go to Cart</button>
+          <button class="btn" @click="closePopup">Tiếp tục mua sắp</button>
+          <button class="btn go-to-cart" @click="goToCart">Đi tới giỏ hàng</button>
         </div>
       </div>
     </div>

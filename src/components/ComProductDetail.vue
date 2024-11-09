@@ -12,7 +12,8 @@
                 </div>
                 <div class="product-info">
                     <h2>{{ product.name }}</h2>
-                    <h4>Giá: {{ moneyProduct }} VND</h4>
+                    <h4>Giá: {{ this.formatMoney(currentMoney) }} VND</h4>
+                    <h4 v-if="this.selectedColor !== null">Hiện còn: {{ this.product.quantity || 0 }} sản phẩm</h4>
 
                     <div class="color-selector">
                         <h3 style="margin-right: 20px;">Chọn màu sắc:</h3>
@@ -30,9 +31,9 @@
 
                     <div class="quantity-selector">
                         <h3 style="margin-right: 20px;">Số lượng:</h3>
-                        <button @click="decreaseQuantity" :disabled="quantity <= 0 || this.selectedColor == null">-</button>
-                        <input type="number" v-model="quantity" min="1" readonly />
-                        <button @click="increaseQuantity" :disabled="quantity >= product.quantity || this.selectedColor == null">+</button>
+                        <button @click="decreaseQuantity" :disabled="currentQuantity <= 0 || this.selectedColor == null">-</button>
+                        <input type="number" v-model="currentQuantity" min="1" readonly />
+                        <button @click="increaseQuantity" :disabled="currentQuantity >= product.quantity || this.selectedColor == null">+</button>
                     </div>
 
                     <div class="total-money">
@@ -66,8 +67,10 @@ export default {
         return {
             product:{},
             selectedColor: null, // Store the selected color
-            quantity: 0,
+            currentQuantity: 0,
+
             currentImg: null,
+            currentMoney: 0,
             userId: -1,
             isLoggedIn: false,
             error: '',
@@ -81,7 +84,8 @@ export default {
         this.product = data;
 
         // format money
-        this.updateImage(this.product.main_img);
+        this.updateImage(this.product.color[0].img);
+        this.updateMoney(this.product.color[0].money);
 
         // is logged in
         const user = JSON.parse(localStorage.getItem("user"));
@@ -95,17 +99,14 @@ export default {
         }
     },
     computed: {
-        moneyProduct() {
-            if (this.product.money == undefined) {
-                return '0';
-            }
-            return tools.formatMoney(this.product.money);
-        },
         totalMoney() {
-            return tools.formatMoney(parseInt(this.product.money) * this.quantity);
+            return this.formatMoney(parseInt(this.currentMoney) * this.currentQuantity);
         },
     },
     methods: {
+        formatMoney(money) {
+            return tools.formatMoney(money);
+        },
         showPopup() {
             this.isPopupVisible = true;
         },
@@ -115,23 +116,27 @@ export default {
         selectColor(color) {
             this.selectedColor = color.name;
             this.product.quantity = color.quantity;
-            if (this.quantity > this.product.quantity) {
-                this.quantity = 0;
+            if (this.currentQuantity > this.product.quantity) {
+                this.currentQuantity = 0;
             }
             this.updateImage(color.img);
+            this.updateMoney(color.money);
         },
         updateImage(image) {
             this.currentImg = this.getURLImage(image);
+        },
+        updateMoney(money) {
+            this.currentMoney = money;
         },
         getColor(color) {
             return tools.getColor(color);
         },
         increaseQuantity() {
-            this.quantity++;
+            this.currentQuantity++;
         },
         decreaseQuantity() {
-            if (this.quantity > 0) {
-                this.quantity--; 
+            if (this.currentQuantity > 0) {
+                this.currentQuantity--; 
             }
         },
         async addToCart() {
@@ -143,8 +148,8 @@ export default {
                     return;
                 }
 
-                if (this.product.quantity < 1) {
-                    this.error = 'Số lượng sản phẩm không hợp lệ';
+                if (this.currentQuantity < 1) {
+                    this.error = 'Vui lòng chọn số lượng';
                     return;
                 }
 
@@ -153,7 +158,14 @@ export default {
 
                 this.error = "";
                 
-                const infoCart = await db.getCartItemsByUserId(this.userId);
+                let infoCart = await db.getCartItemsByUserId(this.userId);
+                if (infoCart == undefined) {
+                    // create a new cart
+                    db.createCart(this.userId);
+                    infoCart = {};
+                    infoCart.id = this.userId;
+                    infoCart.carts = [];
+                }
                 const cartItems = infoCart.carts;
 
                 const cart = cartItems.find((item) => {
@@ -161,16 +173,23 @@ export default {
                 });
 
                 if (cart == undefined) {
-                    let newCart = {productId: this.product.id, quantity: this.quantity, color: this.selectedColor};
+                    let newCart = {productId: this.product.id, quantity: this.currentQuantity, color: this.selectedColor};
                     cartItems.push(newCart);
                 } else {
-                    cart.quantity = cart.quantity + this.product.quantity;
+                    //
+                    if ((cart.quantity + this.currentQuantity) > this.product.quantity) {
+                        this.error = 'Bạn đã có ' + cart.quantity + ' sản phẩm trong giỏ hàng. Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn!';
+                        return;
+                    }
+
+                    cart.quantity = cart.quantity + this.currentQuantity;
                 }
 
                 db.updateCarts(this.userId, cartItems);
-                this.showPopup();
-                this.quantity = 0;
+                this.currentQuantity = 0;
                 this.selectedColor = null;
+
+                this.showPopup();
             }
         },
     }

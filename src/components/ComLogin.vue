@@ -4,11 +4,11 @@
             <form class="login-form" @submit.prevent="handleSubmit">
                 <h2>Đăng nhập tài khoản</h2>
                 <div class="input-group">
-                    <label for="username">Username</label>
+                    <label for="username">Tên đăng nhập</label>
                     <input type="text" v-model="username" name="username" required>
                 </div>
                 <div class="input-group">
-                    <label for="password">Password</label>
+                    <label for="password">Mật khẩu</label>
                     <input type="password" v-model="password" name="password" required>
                 </div>
                 <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
