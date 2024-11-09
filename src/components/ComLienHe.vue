@@ -38,6 +38,9 @@
 <script>
 export default {
   name: "Contact KhanhStore",
+  mounted() {
+    document.title = "Liên hệ | KhanhStore";
+  },
   data() {
     return {
       name: "",

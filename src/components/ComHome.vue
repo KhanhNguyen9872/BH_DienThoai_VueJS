@@ -24,6 +24,7 @@ export default {
     async mounted() {
       const allProductsResult = await db.getAllProducts();
       this.products = allProductsResult; // Assign the product list
+      document.title = "Trang chủ | KhanhStore";
     },
 }
 </script>

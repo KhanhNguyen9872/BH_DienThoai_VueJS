@@ -8,7 +8,6 @@
 
 <script>
 // b1: import vào
-
 import Header from './components/ComHeader.vue'
 import GoToTopButton from './components/ComGoToUp.vue';
 import Footer from './components/ComFooter.vue'

@@ -30,10 +30,10 @@ export default {
     name:'ComLogin',
     data() {
         return {
-            username: '',//an
-            password: '',//1234
+            username: '', 
+            password: '', 
             error: '',
-            // users:users
+            productId: '',
         };
     },
     async beforeMount() {
@@ -44,6 +44,14 @@ export default {
             if (u != null) {
                 this.$router.push('/');
             }
+        }
+    },
+    mounted() {
+        document.title = "Đăng nhập | KhanhStore";
+        const editData = this.$route.query;
+        if (editData) {
+            this.productId = editData.productId;
+            this.error = editData.error;
         }
     },
     methods:{
@@ -61,13 +69,18 @@ export default {
             }
 
             localStorage.setItem('user', JSON.stringify({id: user.id, username: user.username, password: user.password}));
-            window.location.href = '/';
+            if (this.productId) {
+                window.location.href = '/product/' + this.productId;
+            } else {
+                window.location.href = '/';
+            }
         }
     }
 }
 </script>
   
 <style scoped>
+@import '../styles/css/font-awesome.css';
 .error-message {
     color: #d9534f; /* Bootstrap's danger color */
     background-color: #f2dede; /* Light red background */

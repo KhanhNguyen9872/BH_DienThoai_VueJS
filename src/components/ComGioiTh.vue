@@ -51,7 +51,10 @@
 
 <script>
 export default {
-  name: "About KhanhStore"
+  name: "About KhanhStore",
+  mounted() {
+    document.title = "Giới thiệu | KhanhStore";
+  },
 };
 </script>
 

@@ -90,13 +90,15 @@ export default {
         // is logged in
         const user = JSON.parse(localStorage.getItem("user"));
         if (user != null) {
-            const u = await db.getUser(user.password, user.password);
+            const u = await db.getUser(user.username, user.password);
 
             if (u != null) {
                 this.userId = u.id;
                 this.isLoggedIn = true;
             }
         }
+
+        document.title = this.product.name + " | KhanhStore";
     },
     computed: {
         totalMoney() {
@@ -141,7 +143,9 @@ export default {
         },
         async addToCart() {
             if (!this.isLoggedIn) {
-                this.$router.push('/login'); // Redirect to login page
+                localStorage.clear();
+                const data = { productId: this.product.id, error: "Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng!" };
+                this.$router.push({ name: 'Login', query: data}); // Redirect to login page
             } else {
                 if (this.selectedColor == null) {
                     this.error = 'Vui lòng chọn màu sắc';
@@ -152,9 +156,6 @@ export default {
                     this.error = 'Vui lòng chọn số lượng';
                     return;
                 }
-
-                // Proceed with adding to cart
-                // Your logic to add the product to the cart
 
                 this.error = "";
                 
@@ -281,6 +282,8 @@ export default {
 .main-image {
     width: 100%; /* Full width for main image */
     max-width: 600px; /* Max width for larger screens */
+    max-height: 450px; /* Adjust this value to control the maximum height */
+    object-fit: contain; /* This will keep the image aspect ratio */
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }

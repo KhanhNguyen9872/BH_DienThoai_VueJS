@@ -100,9 +100,9 @@ export default {
     }
   },
 
-  async getPasswordUser(username) {
+  async getPasswordUser(username, email) {
     try {
-      const response = await fetch(`${API_URL}/users?username=${username}`);
+      const response = await fetch(`${API_URL}/users?username=${username}&email=${email}`);
       if (!response.ok) throw new Error(`Failed to fetch user`);
       const data = await response.json();
       if (data.length == 0) {
@@ -192,4 +192,53 @@ export default {
       console.error(error);
     }
   },
+
+  async getAllAddress(userId) {
+    try {
+      const response = await fetch(`${API_URL}/users?id=${userId}`);
+      if (!response.ok) throw new Error(`Failed to fetch information for user ID ${userId}`);
+      const data = await response.json();
+      return data[0].information;
+    } catch (error) {
+      console.error(error);
+    }
+  },
+
+  // Add new Address by UserID
+  async updateAddress(userId, address) {
+    try {
+      const response = await fetch(`${API_URL}/users/${userId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          information: address
+        }),
+      });
+      if (!response.ok) throw new Error(`Failed to modify cart item with ID ${userId}`);
+      return await response.json();
+    } catch (error) {
+      console.error(error);
+    }
+  },
+
+  async updateUser(updatedUser) {
+    const userId = updatedUser.id;
+    try {
+      const response = await fetch(`${API_URL}/users/${userId}`, {
+        method: "PATCH", // Use PATCH method for updating
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedUser),
+      });
+  
+      if (!response.ok) throw new Error("Failed to update user");
+      return await response.json(); // Return the updated user object
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
+  },
+  
 };

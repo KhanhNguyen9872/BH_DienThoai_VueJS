@@ -1,7 +1,7 @@
 <template>
     <header>
         <div class="header">
-            <a href="/" class="logo">Khanh Store</a>
+            <router-link to="/" class="logo">Khanh Store</router-link>
             <div class="header-left">
                 <router-link to="/" exact-active-class="active">Trang chủ</router-link>
                 <router-link to="/about" exact-active-class="active">Giới thiệu</router-link>
@@ -38,14 +38,9 @@ export default {
     async mounted() {
         this.user = JSON.parse(localStorage.getItem("user"));
         if (this.user != null) {
-            const user = await db.getUser(this.user.password, this.user.password);
+            const user = await db.getUser(this.user.username, this.user.password);
 
-            if (user == null) {
-                this.user = null;
-            } else {
-                this.user = user;
-                return;
-            }
+            this.user = user;
         }
     },
     methods: {

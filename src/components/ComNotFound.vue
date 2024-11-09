@@ -9,6 +9,9 @@
   <script>
   export default {
     name: 'NotFound',
+    mounted() {
+      document.title = "Không tìm thấy | KhanhStore";
+    }
   };
   </script>
   

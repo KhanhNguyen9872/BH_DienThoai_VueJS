@@ -343,56 +343,21 @@
   ],
   "users": [
     {
-      "id": "1",
-      "username": "tester",
-      "password": "tester",
-      "email": "khanh2@localhost.com",
+      "id": "5727",
+      "username": "root",
+      "password": "1",
+      "email": "nguyenkhanhlitev20@gmail.com",
       "firstName": "Khánh",
       "lastName": "Nguyễn",
       "lock": false,
       "information": [
         {
-          "fullName": "Nguyễn Văn Khánh",
-          "address": "Ho Chi Minh",
-          "phone": "0123210"
+          "id": "d5ozsqoz",
+          "fullName": "Khánh Nguyễn",
+          "address": "Bình Thuận",
+          "phone": "0937927513"
         }
       ]
-    },
-    {
-      "id": "2",
-      "username": "root",
-      "password": "root",
-      "email": "khanh2@localhost.com",
-      "firstName": "Khánh root",
-      "lastName": "Nguyễn",
-      "lock": false,
-      "information": [
-        {
-          "fullName": "Nguyễn Văn Khánh",
-          "address": "Ho Chi Minh",
-          "phone": "0123210"
-        }
-      ]
-    },
-    {
-      "id": "a747",
-      "username": "khanh",
-      "password": "khanh",
-      "email": "khanh@localhost.com",
-      "firstName": "khánh",
-      "lastName": "nguyễn",
-      "lock": false,
-      "information": []
-    },
-    {
-      "id": "8de6",
-      "username": "test",
-      "password": "test",
-      "email": "testuser@gmail.com",
-      "firstName": "test",
-      "lastName": "test",
-      "lock": false,
-      "information": []
     }
   ],
   "cart": [
@@ -400,61 +365,31 @@
       "carts": [
         {
           "productId": "1",
-          "quantity": 1,
-          "color": "Hồng"
+          "quantity": 4,
+          "color": "Trắng"
         },
         {
-          "productId": "12",
-          "quantity": 2,
+          "productId": "2",
+          "quantity": 3,
           "color": "Xanh dương"
         },
         {
-          "productId": "1",
-          "quantity": 4,
-          "color": "Trắng"
-        }
-      ],
-      "id": "1"
-    },
-    {
-      "carts": [
-        {
-          "productId": "1",
-          "quantity": 2,
-          "color": "Trắng"
-        },
-        {
-          "productId": "16",
+          "productId": "8",
           "quantity": 2,
           "color": "Đen"
         },
         {
           "productId": "16",
-          "quantity": 1,
+          "quantity": 2,
           "color": "Vàng"
         },
         {
           "productId": "16",
-          "quantity": 1,
-          "color": "Hồng"
+          "quantity": 3,
+          "color": "Đen"
         }
       ],
-      "id": "2"
-    },
-    {
-      "carts": [
-        {
-          "productId": "1",
-          "quantity": 4,
-          "color": "Trắng"
-        },
-        {
-          "productId": "1",
-          "quantity": 1,
-          "color": "Hồng"
-        }
-      ],
-      "id": "8de6"
+      "id": "5727"
     }
   ]
 }

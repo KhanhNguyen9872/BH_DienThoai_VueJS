@@ -72,6 +72,9 @@ export default {
             }
         }
     },
+    mounted() {
+        document.title = "Đăng ký | KhanhStore";
+    },
     methods: {
         async register() {
             if (this.password.length < 1) {

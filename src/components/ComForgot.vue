@@ -7,6 +7,10 @@
                     <label for="username">Tên đăng nhập</label>
                     <input type="text" id="username" v-model="username" required>
                 </div>
+                <div class="input-group">
+                    <label for="email">Email của bạn</label>
+                    <input type="email" id="email" v-model="email" required>
+                </div>
                 <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
                 <p class="result-message" v-if="this.result.length > 0">{{ this.result }}</p>
                 <button type="submit">Quên mật khẩu</button>
@@ -26,6 +30,7 @@ export default {
     data() {
         return {
             username: '',
+            email: '',
             error: '',
             result: '',
         };
@@ -40,6 +45,9 @@ export default {
             }
         }
     },
+    mounted() {
+        document.title = "Quên mật khẩu | KhanhStore";
+    },
     methods: {
         async forgot() {
             if (this.username.length < 1) {
@@ -47,14 +55,24 @@ export default {
                 return;
             }
 
-            const isExistUser = await db.isExistUser(this.username);
-            if (!isExistUser) {
-                this.error = 'Tên người dùng này không tồn tại!';
+            if (this.email.length < 1) {
+                this.error = 'Email không được để trống!';
                 return;
             }
 
-            const result = await db.getPasswordUser(this.username);
+            const isExistUser = await db.isExistUser(this.username);
+            if (!isExistUser) {
+                this.error = 'Người dùng này không tồn tại!';
+                return;
+            }
 
+            const result = await db.getPasswordUser(this.username, this.email);
+            if (result == undefined) {
+                this.error = 'Thông tin không chính xác!';
+                return;
+            }
+
+            this.error = '';
             this.result = "Mật khẩu của bạn là: " + result.password;
         }
     }

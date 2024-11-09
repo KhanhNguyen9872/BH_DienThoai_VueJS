@@ -5,6 +5,10 @@
 
             <!-- Cart Items -->
             <div v-if="this.cartItems.length > 0">
+                <div class="cart-item">
+                    <input type="checkbox" style="margin-left: 25px;" v-model="isCheckedAll" @change="checkedAll()">
+                </div>
+
                 <div class="cart-item" v-for="(item) in this.cartItems" :key="item.id">
                     <input type="checkbox" style="margin-left: 25px; margin-right: 25px;" v-model="item.selected" @change="calcTotalPrice()">
                     <div class="item-details">
@@ -34,7 +38,7 @@
                 <div class="cart-summary">
                     <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
                     <div class="summary-title">Tóm tắt đơn hàng</div>
-                    <div class="total-price">Total: {{ formatMoney(totalPrice) }} VND</div>
+                    <div class="total-price">Tổng tiền: {{ formatMoney(totalPrice) }} VND</div>
                     <button class="checkout-btn" @click="proceedToCheckout()">Thanh toán</button>
                 </div>
             </div>
@@ -44,7 +48,6 @@
 </template>
   
 <script>
-import '@/styles/css/font-awesome.css';
 import tools from '@/api/tools';
 import db from '../api/db';
 
@@ -55,22 +58,20 @@ export default {
             selectedItem: 0,
             totalPrice: 0,
             error: '',
+            isCheckedAll: false,
         }
     },
     async created() {
         // check is logged in or not
         this.user = JSON.parse(localStorage.getItem("user"));
         if (this.user != null) {
-            const user = await db.getUser(this.user.password, this.user.password);
+            const user = await db.getUser(this.user.username, this.user.password);
 
-            if (user == null) {
-                this.user = null;
-            } else {
-                this.user = user;
-            }
+            this.user = user;
         }
 
         if (this.user == null) {
+            localStorage.clear();
             this.$router.push('/login');
             return;
         }
@@ -111,6 +112,12 @@ export default {
         });
     },
     methods: {
+        checkedAll() {
+            this.cartItems.forEach((item) => {
+                item.selected = this.isCheckedAll;
+            })
+            this.calcTotalPrice();
+        },
         calcTotalPrice() {
             let selected = 0;
             let total = 0;
@@ -201,52 +208,7 @@ export default {
   </script>
 
   <style scoped>
-  .error-message {
-    color: #d9534f; /* Bootstrap's danger color */
-    background-color: #f2dede; /* Light red background */
-    border: 1px solid #ebccd1; /* Border color matching the background */
-    padding: 10px; /* Some padding for better spacing */
-    border-radius: 5px; /* Rounded corners */
-    margin: 15px 0; /* Margin to separate from other content */
-    font-size: 14px; /* Font size */
-    display: flex; /* Optional: Flexbox for better alignment */
-    align-items: center; /* Center vertically */
-}
-.delete-btn {
-    margin-right: 20px;
-    background-color: #ff4d4f;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    font-size: 14px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 60px;
-    justify-content: center;
-}
-
-.delete-btn i {
-    font-size: 18px; /* Icon size */
-}
-
-.delete-btn:hover {
-    background-color: #ff0000;
-    transform: translateY(-2px);
-}
-
-.delete-btn:focus {
-    outline: none;
-}
-
-.delete-btn:active {
-    background-color: #e60000;
-    transform: translateY(2px);
-}
+@import '../styles/css/font-awesome.css';
 
 .no-items {
     font-size: 20px;
@@ -394,6 +356,55 @@ body {
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
+}
+
+
+.error-message {
+    color: #d9534f; /* Bootstrap's danger color */
+    background-color: #f2dede; /* Light red background */
+    border: 1px solid #ebccd1; /* Border color matching the background */
+    padding: 10px; /* Some padding for better spacing */
+    border-radius: 5px; /* Rounded corners */
+    margin: 15px 0; /* Margin to separate from other content */
+    font-size: 14px; /* Font size */
+    display: flex; /* Optional: Flexbox for better alignment */
+    align-items: center; /* Center vertically */
+}
+
+.delete-btn {
+    margin-right: 20px;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 60px;
+    justify-content: center;
+}
+
+.delete-btn i {
+    font-size: 18px; /* Icon size */
+}
+
+.delete-btn:hover {
+    background-color: #ff0000;
+    transform: translateY(-2px);
+}
+
+.delete-btn:focus {
+    outline: none;
+}
+
+.delete-btn:active {
+    background-color: #e60000;
+    transform: translateY(2px);
 }
 
 /* Price display */

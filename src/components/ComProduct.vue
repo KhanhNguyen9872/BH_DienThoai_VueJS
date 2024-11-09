@@ -4,7 +4,6 @@
         <div class="product-card">
             <img :src="img" alt="Điện thoại 1">
             <h2>{{ product.name }}</h2>
-            <!-- <p class="description">{{ product.description }}</p> -->
             <p class="price">Giá: {{ tools.formatMoney(this.money) }} VND</p>
             <button>Mua</button>
         </div>
@@ -67,6 +66,8 @@ body {
 
 .product-card img {
     max-width: 100%;
+    max-height: 150px; /* Adjust this value to control the maximum height */
+    object-fit: contain; /* This will keep the image aspect ratio */
     border-radius: 10px; /* Match image corners with card */
 }
 

@@ -10,6 +10,8 @@ import Forgot from '@/components/ComForgot.vue'
 import Logout from '@/components/ComLogout.vue'
 import NotFound from '@/components/ComNotFound.vue'; 
 import ComProfile from "@/components/ComProfile.vue";
+import ComAddAddress from "@/components/ComAddAddress.vue";
+import ComEditAddress from "../components/ComEditAddress.vue";
 
 // tạo mảng chứa những đường link
 const routes=[
@@ -17,57 +19,80 @@ const routes=[
     {
         path:"/",
         name:"Home",
-        component:Home
+        component:Home,
+        meta: { title: 'Trang chủ' },
     },
     {
         path:"/login",
         name:"Login",
-        component:Login
+        component:Login,
+        meta: { title: 'Đăng nhập' },
     },
     {
         path:"/register",
         name:"Register",
-        component:Register
+        component:Register,
+        meta: { title: 'Đăng ký' },
     },
     {
         path:"/forgot",
         name:"Forgot",
-        component:Forgot
+        component:Forgot,
+        meta: { title: 'Quên mật khẩu' },
     },
     {
         path:"/logout",
         name:"Logout",
-        component:Logout
+        component:Logout,
+        meta: { title: 'Đăng xuất' },
     },
     {
         path:"/about",
         name:"About",
-        component:GioiThieu
+        component:GioiThieu,
+        meta: { title: 'Giới thiệu' },
     },
     {
         path:"/contact",
         name:"Contact",
-        component:LienHe
+        component:LienHe,
+        meta: { title: 'Liên hệ' },
     },
     {
         path:"/product/:id",
         name:"ProductDetail",
-        component:ProductDetail
+        component:ProductDetail,
+        meta: { title: 'Thông tin sản phẩm' },
     },
     {
         path:"/cart",
         name:"Cart",
-        component:ComCart
+        component:ComCart,
+        meta: { title: 'Giỏ hàng' },
     },
     {
         path:"/profile",
         name:"Profile",
-        component:ComProfile
+        component:ComProfile,
+        meta: { title: 'Hồ sơ' },
+    },
+    {
+        path:"/profile/address/new",
+        name:"AddAddress",
+        component:ComAddAddress,
+        meta: { title: 'Thêm địa chỉ' },
+    },
+    {
+        path:"/profile/address/edit",
+        name:"EditAddress",
+        component:ComEditAddress,
+        meta: { title: 'Sửa địa chỉ' },
     },
     {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
-        component: NotFound
+        component: NotFound,
+        meta: { title: 'Không tìm thấy trang' },
     }
 ]
 // tạo đối tượng router
@@ -75,4 +100,9 @@ const router=createRouter({
     history:createWebHistory(),
     routes
 })
+router.beforeEach((to, from, next) => {
+    let title = to.meta.title || 'Default Title';  // Fallback to default title if no title in meta
+    document.title = title + " | KhanhStore";
+    next();
+});
 export default router
