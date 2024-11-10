@@ -42,6 +42,10 @@ export default {
 
             this.user = user;
         }
+
+        if (this.user == null) {
+            localStorage.clear();
+        }
     },
     methods: {
         toggleMenu() {
