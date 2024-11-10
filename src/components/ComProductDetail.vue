@@ -241,6 +241,10 @@ export default {
   font-family: Arial, sans-serif;
 }
 
+body.dark-mode .product-not-found {
+    background-color: #4d4d4d;
+}
+
 .product-not-found .icon {
   font-size: 4rem;
   color: #ff6b6b;
@@ -253,10 +257,18 @@ export default {
   margin: 0.5rem 0;
 }
 
+body.dark-mode .product-not-found h2 {
+    color: #ffffff;
+}
+
 .product-not-found p {
   color: #666;
   font-size: 1rem;
   max-width: 400px;
+}
+
+body.dark-mode .product-not-found p {
+    color: #d3d3d3;
 }
 
 .back-home {
@@ -297,6 +309,9 @@ export default {
     opacity: 0;
     transition: all 0.3s ease;
   }
+    body.dark-mode .popup {
+        background: #6e6e6e;
+    }
   .overlay .popup {
     transform: translateY(0);
     opacity: 1;
@@ -305,9 +320,15 @@ export default {
     margin-top: 0;
     color: #4CAF50;
   }
+  body.dark-mode .popup h2 {
+    color: #61e166;
+    }
   .popup p {
     color: #333;
   }
+  body.dark-mode .popup p {
+    color: #000000;
+    }
   .popup .btn-close {
     background: none;
     border: none;
@@ -387,6 +408,10 @@ export default {
     margin-right: 10px;          /* Add space between heading and swatches */
 }
 
+body.dark-mode .color-selector h3 {
+    color: #02002e;
+}
+
 .colors {
     display: flex;               /* Align color swatches in a row */
     gap: 10px;                  /* Adds space between swatches */
@@ -464,16 +489,32 @@ export default {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
+body.dark-mode .product-info {
+    background: #6e6e6e;
+}
+
 /* Responsive typography and margins */
 .product-info h2 {
     color: #333;
     font-size: 24px; /* Base font size */
 }
 
+body.dark-mode .product-info h2 {
+    color: #000000;
+}
+
+body.dark-mode .product-info h4 {
+    color: #000000;
+}
+
 .description {
     font-size: 16px;
     color: #555;
     margin: 15px 0;
+}
+
+body.dark-mode .description {
+    color: #e6e6e6;
 }
 
 /* Button styles */
@@ -499,6 +540,11 @@ export default {
     align-items: center;
 }
 
+body.dark-mode .quantity-selector h3 {
+    color: #02002e;
+}
+
+
 .quantity-selector button {
     background-color: #4CAF50;
     color: white;
@@ -507,6 +553,10 @@ export default {
     padding: 10px 15px;
     cursor: pointer;
     transition: background-color 0.3s;
+}
+
+body.dark-mode .quantity-selector button {
+    color: #000000;
 }
 
 .quantity-selector button:disabled {
@@ -522,6 +572,19 @@ export default {
     margin: 0 10px; /* Space between buttons and input */
     font-size: 16px; /* Input font size */
 }
+
+body.dark-mode .quantity-selector input {
+    background: #7b7b7b;
+}
+
+.total-money {
+    color: #000000;
+}
+
+body.dark-mode .total-money h3 {
+    color: #83ff81;
+}
+
 
 /* Responsive design for screens larger than 600px */
 @media (min-width: 600px) {

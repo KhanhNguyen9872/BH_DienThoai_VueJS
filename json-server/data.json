@@ -377,7 +377,14 @@
       "firstName": "a",
       "lastName": "a",
       "lock": false,
-      "information": []
+      "information": [
+        {
+          "id": "1b16yt022t",
+          "fullName": "Khánh Nguyễn Văn",
+          "address": "477/42 Nguyễn Văn Công",
+          "phone": "0328460695"
+        }
+      ]
     }
   ],
   "carts": [
@@ -399,14 +406,9 @@
     {
       "carts": [
         {
-          "productId": "2",
+          "productId": "1",
           "quantity": 2,
-          "color": "Xanh dương"
-        },
-        {
-          "productId": "3",
-          "quantity": 1,
-          "color": "Xám"
+          "color": "Trắng"
         }
       ],
       "id": "7062"

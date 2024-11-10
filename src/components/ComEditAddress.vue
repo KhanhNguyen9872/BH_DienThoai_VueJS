@@ -131,12 +131,20 @@
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   }
+
+  body.dark-mode .form-container {
+    background-color: #686868;
+  }
   
   form h2 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 24px;
     color: #333;
+  }
+
+  body.dark-mode form h2 {
+    color: #ffffff;
   }
   
   .input-group {
@@ -149,6 +157,10 @@
     font-weight: bold;
     margin-bottom: 5px;
     color: #555;
+  }
+
+  body.dark-mode .input-group label {
+    color: #dfdfdf;
   }
   
   .input-group input {

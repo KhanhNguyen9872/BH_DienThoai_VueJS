@@ -138,21 +138,15 @@ export default {
     height: 100%; /* Full height of the parent (body) */
 }
 
-body {
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
 .container {
     background-color: white;
     border-radius: 10px;
-    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); */
     padding: 40px;
     width: 500px;
+}
+
+body.dark-mode .container {
+    background-color: #686868;
 }
 
 .login-form {
@@ -163,6 +157,10 @@ body {
 h2 {
     margin-bottom: 20px;
     text-align: center;
+}
+
+body.dark-mode h2 {
+    color: #ffffff;
 }
 
 .input-group {
@@ -178,23 +176,16 @@ h2 {
     text-align: right; /* Align text to the right for better alignment with input */
 }
 
+body.dark-mode .input-group label {
+    color: #dcdcdc;
+}
+
 .input-group input {
     flex: 1; /* Allow the input to take the remaining space */
     padding: 10px; /* Padding inside the input */
     border: 1px solid #ccc; /* Border for the input */
     border-radius: 5px; /* Rounded corners */
     margin-right: 20px;
-}
-label {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
 }
 
 button {

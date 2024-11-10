@@ -84,6 +84,7 @@ export default {
 </script>
 
 <style scoped>
+/* General Styles */
 .contact {
   padding: 20px;
   max-width: 800px;
@@ -95,6 +96,7 @@ h1 {
   text-align: center;
   color: #333;
   margin-bottom: 20px;
+  font-size: 2.5rem;
 }
 
 section {
@@ -104,6 +106,7 @@ section {
 h2 {
   color: #4CAF50;
   margin-bottom: 10px;
+  font-size: 1.75rem;
 }
 
 ul {
@@ -161,5 +164,74 @@ button:hover {
 
 .error-message {
   color: red;
+}
+
+/* Dark Mode Styles */
+body.dark-mode .contact {
+  background-color: #121212;
+  color: #E0E0E0;
+}
+
+body.dark-mode h1,
+body.dark-mode h2 {
+  color: #81C784;
+}
+
+body.dark-mode a {
+  color: #BB86FC;
+}
+
+body.dark-mode a:hover {
+  color: #6200EE;
+}
+
+body.dark-mode .contact-info,
+body.dark-mode .contact-form {
+  background-color: #1E1E1E;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+body.dark-mode .form-group input,
+body.dark-mode .form-group textarea {
+  background-color: #333;
+  color: #E0E0E0;
+  border: 1px solid #444;
+}
+
+body.dark-mode button {
+  background-color: #6200EE;
+}
+
+body.dark-mode button:hover {
+  background-color: #3700B3;
+}
+
+body.dark-mode .success-message {
+  color: #81C784;
+}
+
+body.dark-mode .error-message {
+  color: #FF5252;
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+  .contact {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  ul li {
+    font-size: 0.9rem;
+  }
 }
 </style>

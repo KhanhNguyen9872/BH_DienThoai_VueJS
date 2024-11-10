@@ -13,14 +13,14 @@
     </div>
   </header>
   
-  <div v-if="this.filteredProducts.length > 0" class="product-container">
+  <div v-if="paginatedProducts.length > 0" class="product-container">
     <Product v-for="item in paginatedProducts" :key="item.id" :product="item" />
   </div>
   <div v-else class="no-products">
     <p>🛒 Không tìm thấy sản phẩm nào. Hãy thử tìm kiếm lại nhé!</p>
   </div>
 
-  <div v-if="this.filteredProducts.length > 0" class="pagination">
+  <div v-if="paginatedProducts.length > 0" class="pagination">
     <button @click="goToPage(1)" v-if="totalPages > 1" :disabled="currentPage === 1">&laquo;</button>
     <button @click="prevPage" v-if="totalPages > 1" :disabled="currentPage === 1">&lt;</button>
 
@@ -57,7 +57,6 @@ export default {
       searchQuery: '',
       minPrice: null,
       maxPrice: null, 
-      isDarkMode: false,
     }
   },
   computed: {
@@ -108,10 +107,6 @@ export default {
       }
     }
   },
-  created() {
-    // Listen to the storage event for theme changes in other tabs/windows
-    
-  },
   async mounted() {
     const allProductsResult = await db.getAllProducts();
     this.products = allProductsResult;
@@ -158,20 +153,14 @@ export default {
   border: 1px solid #ddd;
 }
 
-.price-filter button {
-  padding: 6px 12px;
-  font-size: 16px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
+body.dark-mode .no-products {
+    background: #686868;
+    color: #fff;
+  }
 
-.price-filter button:hover {
-  background-color: #45a049;
-}
+  body.dark-mode .no-products p {
+    color: #ffffff;
+  }
 
 .no-products {
   display: flex;
@@ -181,8 +170,6 @@ export default {
   font-size: 18px;
   color: #333;
   background-color: #f8f8f8;
-  border: 1px solid #ddd;
-  border-radius: 10px;
   text-align: center;
   padding: 20px;
   flex-direction: column;
@@ -194,10 +181,6 @@ export default {
   color: #555;
 }
 
-.no-products p span {
-  font-size: 24px; /* Larger emoji */
-  margin-bottom: 10px;
-}
 header {
   background-color: #4f4f4f;
   color: white;

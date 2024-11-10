@@ -286,6 +286,15 @@ export default {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+
+body.dark-mode .modal-content {
+    background-color: #686868;
+}
+
+body.dark-mode .modal-content label {
+    color: #e3e3e3;
+}
+
 /* Close button */
 .close-btn {
   position: absolute;
@@ -401,6 +410,10 @@ input[type="password"] {
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
   animation: slideUp 0.4s ease-in-out;
+}
+
+body.dark-mode .popup {
+    background-color: #686868;
 }
 
 @keyframes slideUp {
@@ -566,15 +579,24 @@ body {
     width: 100%;
     max-width: 800px;
     background-color: #fff;
-    padding: 20px;
+    padding: 30px;
     border-radius: 10px;
+    margin: 20px 0 20px 0;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .profile-container {
+    background-color: #686868;
 }
 
 h2 {
     margin-bottom: 20px;
     color: #333;
     text-align: center;
+}
+
+body.dark-mode h2 {
+    color: #ffffff;
 }
 
 .input-group {
@@ -600,6 +622,10 @@ h2 {
     margin-right: 30px;
 }
 
+body.dark-mode .input-group label {
+    color: #dcdcdc;
+}
+
 .password-group {
     display: flex;
     align-items: center;
@@ -610,6 +636,10 @@ h2 {
     width: 30%;
     font-weight: bold;
     color: #555;
+}
+
+body.dark-mode .password-group label {
+    color: #dcdcdc;
 }
 
 .password-group button {
@@ -652,6 +682,10 @@ th {
 
 td {
     color: #555;
+}
+
+body.dark-mode td {
+    color: #dcdcdc;
 }
 
 .action-btn {

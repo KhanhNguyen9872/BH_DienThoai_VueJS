@@ -48,6 +48,7 @@ export default {
     },
     mounted() {
         document.title = "Quên mật khẩu | KhanhStore";
+
         const editData = this.$route.query;
         if (editData) {
             this.productId = editData.productId;
@@ -147,6 +148,11 @@ body {
     width: 500px;
 }
 
+body.dark-mode .container {
+    background-color: #686868;
+}
+
+
 .login-form {
     display: flex;
     flex-direction: column;
@@ -156,6 +162,11 @@ h2 {
     margin-bottom: 20px;
     text-align: center;
 }
+
+body.dark-mode h2 {
+    color: #ffffff;
+}
+
 
 .input-group {
     display: flex; /* Use flexbox for layout */
@@ -177,16 +188,9 @@ h2 {
     border-radius: 5px; /* Rounded corners */
     margin-right: 20px;
 }
-label {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
 
-input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
+body.dark-mode .input-group label {
+    color: #dcdcdc;
 }
 
 button {
@@ -217,6 +221,10 @@ button:hover {
     border-radius: 5px; /* Rounded corners */
     border: 1px solid transparent; /* Default border */
     transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Smooth transition for hover effects */
+}
+
+body.dark-mode .links a {
+    color: #004997;
 }
 
 .links a.register {

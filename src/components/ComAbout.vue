@@ -59,6 +59,7 @@ export default {
 </script>
 
 <style scoped>
+/* General Styles */
 .about {
   font-family: Arial, sans-serif;
   padding: 20px;
@@ -70,6 +71,7 @@ h1 {
   text-align: center;
   color: #333;
   margin-bottom: 20px;
+  font-size: 2.5rem;
 }
 
 section {
@@ -79,6 +81,7 @@ section {
 h2 {
   color: #4CAF50;
   margin-bottom: 10px;
+  font-size: 1.75rem;
 }
 
 ul {
@@ -99,11 +102,67 @@ a:hover {
   text-decoration: underline;
 }
 
-.contact-section ul {
+.contact-section ul, .social-media ul {
   margin-top: 10px;
 }
 
-.social-media ul {
-  margin-top: 10px;
+/* Dark Mode Styles */
+body.dark-mode .about {
+  background-color: #121212;
+  color: #E0E0E0;
+}
+
+body.dark-mode h1,
+body.dark-mode h2 {
+  color: #81C784;
+}
+
+body.dark-mode a {
+  color: #BB86FC;
+}
+
+body.dark-mode a:hover {
+  color: #6200EE;
+}
+
+body.dark-mode .social-media ul li,
+body.dark-mode .contact-section ul li {
+  color: #E0E0E0;
+}
+
+body.dark-mode .social-media ul li a {
+  color: #BB86FC;
+}
+
+body.dark-mode .social-media ul li a:hover {
+  color: #6200EE;
+}
+
+body.dark-mode .about-section,
+body.dark-mode .mission-section,
+body.dark-mode .contact-section {
+  background-color: #1E1E1E;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* Responsive Styling */
+@media (max-width: 600px) {
+  .about {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  ul li {
+    font-size: 0.9rem;
+  }
 }
 </style>

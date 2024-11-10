@@ -1,13 +1,13 @@
 <template>
     <div class="order-history-page">
       <h1>Danh sách đơn hàng đã đặt</h1>
-      
+  
       <!-- Kiểm tra nếu có đơn hàng -->
       <div v-if="orders.length > 0">
         <div v-for="order in orders" :key="order.id" class="order-card">
           <h2>Đơn hàng #{{ order.id }}</h2>
           <p><strong>Ngày đặt:</strong> {{ formatDate(order.date) }}</p>
-          <p><strong>Trạng thái:</strong> <span :class="statusClass(order.status)">{{ order.status }}</span></p>
+          <p><strong>Trạng thái:</strong><span :class="statusClass(order.status)">{{ order.status }}</span></p> 
   
           <table class="order-details">
             <thead>
@@ -94,7 +94,7 @@
   
   <style scoped>
   .order-history-page {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 20px;
     font-family: Arial, sans-serif;
@@ -123,7 +123,8 @@
     margin-top: 10px;
   }
   
-  .order-details th, .order-details td {
+  .order-details th,
+  .order-details td {
     padding: 10px;
     border: 1px solid #ddd;
     text-align: left;
@@ -151,6 +152,71 @@
   
   .status-cancelled {
     color: #f44336; /* Màu trạng thái đã hủy */
+  }
+  
+  /* Dark Mode Styles */
+  body.dark-mode .order-history-page {
+    background-color: #121212;
+    color: #E0E0E0;
+  }
+  
+  body.dark-mode h1 {
+    color: #81C784;
+  }
+  
+  body.dark-mode .order-card {
+    background-color: #1E1E1E;
+    border-color: #333;
+  }
+  
+  body.dark-mode .order-details th,
+  body.dark-mode .order-details td {
+    background-color: #333;
+    color: #E0E0E0;
+  }
+  
+  body.dark-mode .order-total {
+    color: #E0E0E0;
+  }
+  
+  body.dark-mode .status-shipping {
+    color: #ffb74d;
+  }
+  
+  body.dark-mode .status-delivered {
+    color: #81C784;
+  }
+  
+  body.dark-mode .status-cancelled {
+    color: #f44336;
+  }
+  
+  body.dark-mode .no-orders {
+    color: #bbb;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 600px) {
+    .order-history-page {
+      padding: 15px;
+    }
+  
+    h1 {
+      font-size: 1.75rem;
+    }
+  
+    .order-card h2 {
+      font-size: 1.25rem;
+    }
+  
+    .order-details th,
+    .order-details td {
+      padding: 8px;
+    }
+  
+    .order-total {
+      font-size: 14px;
+    }
   }
   </style>
   

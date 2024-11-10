@@ -27,13 +27,15 @@
             <router-link to="/login" class="button">Đăng nhập</router-link>
           </div>
           <div v-else class="user-info">
-            <p class="user-button" @click="toggleMenu">Xin chào, {{ user.firstName }}</p>
-            <div v-show="showMenu" class="dropdown-menu">
-              <router-link to="/profile" @click="handleProfile">Hồ sơ</router-link>
-              <router-link to="/logout" @click="handleLogout">Đăng xuất</router-link>
-            </div>
             <router-link to="/cart" class="cart-link" exact-active-class="active">🛒 Giỏ hàng</router-link>
             <router-link to="/order" class="cart-link" exact-active-class="active">📦 Đơn hàng</router-link>
+            <div class="user-info">
+                <p class="user-button" @click="toggleMenu">Xin chào, {{ user.firstName }}</p>
+                <div v-show="showMenu" class="dropdown-menu">
+                <router-link to="/profile" @click="handleProfile">Hồ sơ</router-link>
+                <router-link to="/logout" @click="handleLogout">Đăng xuất</router-link>
+                </div>
+            </div>
           </div>
         </div>
   
@@ -67,48 +69,48 @@
         if (this.isDarkMode) {
             document.body.classList.add('dark-mode');
         }
-      this.user = JSON.parse(localStorage.getItem("user"));
-      if (this.user != null) {
-        const user = await db.getUser(this.user.username, this.user.password);
-        this.user = user;
-      }
+        this.user = JSON.parse(localStorage.getItem("user"));
+        if (this.user != null) {
+            const user = await db.getUser(this.user.username, this.user.password);
+            this.user = user;
+        }
   
-      if (this.user == null) {
-        localStorage.removeItem('user');
-      }
+        if (this.user == null) {
+            localStorage.removeItem('user');
+        }
     },
     methods: {
-      toggleMenu() {
-        this.showMenu = !this.showMenu;
-      },
-      handleProfile(event) {
-        event.preventDefault(); // Prevents immediate navigation
-        this.toggleMenu();
-        this.$router.push('/profile');
-      },
-      handleLogout(event) {
-        event.preventDefault(); // Prevents immediate navigation
-        this.toggleMenu();
-        this.$router.push('/logout');
-      },
-      searchProducts() {
-        if (this.searchQuery == '') {
-          return;
-        }
-        this.$router.push({ path: '/', query: { search: this.searchQuery } });
-        this.searchQuery = '';
-      },
-      toggleTheme() {
+        toggleMenu() {
+            this.showMenu = !this.showMenu;
+        },
+        handleProfile(event) {
+            event.preventDefault(); // Prevents immediate navigation
+            this.toggleMenu();
+            this.$router.push('/profile');
+        },
+        handleLogout(event) {
+            event.preventDefault(); // Prevents immediate navigation
+            this.toggleMenu();
+            this.$router.push('/logout');
+        },
+        searchProducts() {
+            if (this.searchQuery == '') {
+                return;
+            }
+            this.$router.push({ path: '/', query: { search: this.searchQuery } });
+            this.searchQuery = '';
+        },
+        toggleTheme() {
             this.isDarkMode = !this.isDarkMode;
             this.$emit('theme-changed', this.isDarkMode); // Optional: Emit event for parent component
             this.updateTheme();
-            },
+        },
         updateTheme() {
             document.body.classList.toggle('dark-mode', this.isDarkMode);
             localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
         },
     }
-  }
+}
   </script>
   
 
@@ -220,11 +222,13 @@
 .header-right .user-info {
     display: flex;
     align-items: center;
+    justify-content: center; /* Center horizontally */
     gap: 10px;
     position: relative; /* Ensures dropdown positions relative to .user-info */
 }
 
 .user-button {
+    margin-left: 5px;
     background-color: #4CAF50;
     color: white;
     padding: 8px 16px;
@@ -241,7 +245,7 @@
 
 .dropdown-menu {
     position: absolute;
-    top: 110%; /* Space slightly below the button */
+    top: 100%; /* Space slightly below the button */
     left: 0;
     background-color: white;
     color: #333;
@@ -276,6 +280,7 @@
 .button {
     background-color: #4CAF50;
     color: white;
+    margin-top: 20px;
     padding: 10px 20px;
     text-decoration: none;
     border: none;

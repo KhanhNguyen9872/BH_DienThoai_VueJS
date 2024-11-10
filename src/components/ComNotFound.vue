@@ -11,7 +11,7 @@
     name: 'NotFound',
     mounted() {
       document.title = "Không tìm thấy | KhanhStore";
-    }
+    },
   };
   </script>
   
@@ -26,14 +26,26 @@
     background-color: #f9f9f9; /* Light background color */
     color: #333; /* Text color */
   }
+
+  body.dark-mode .not-found {
+    background-color: #686868;
+  }
   
   h1 {
     font-size: 5rem; /* Large font size for the 404 */
     margin: 0;
   }
+
+  body.dark-mode h1 {
+    color: #ffffff;
+  }
   
   p {
     font-size: 1.5rem; /* Medium font size for the message */
+  }
+
+  body.dark-mode p {
+    color: #c4c4c4;
   }
   
   router-link {

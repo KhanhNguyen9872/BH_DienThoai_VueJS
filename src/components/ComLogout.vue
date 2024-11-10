@@ -24,6 +24,10 @@ export default {
     background-color: #f8f9fa;
 }
 
+body.dark-mode .logout-container {
+    background-color: #3b3b3b;
+}
+
 .logout-container p {
     font-size: 1.5rem;
     color: #555;
@@ -36,6 +40,11 @@ export default {
     text-align: center;
     opacity: 1;
     animation: fadeOut 1s ease forwards 1s; /* Delay the fade-out animation */
+}
+
+body.dark-mode .logout-container p {
+    background-color: #3b3b3b;
+    color: #d9d9d9;
 }
 
 .logout-container p::after {

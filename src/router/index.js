@@ -1,7 +1,7 @@
 import { createWebHistory,createRouter } from "vue-router";
 import Home from '@/components/ComHome.vue'
-import GioiThieu from '@/components/ComGioiTh.vue'
-import LienHe from '@/components/ComLienHe.vue'
+import About from '@/components/ComAbout.vue'
+import Contact from '@/components/ComContact.vue'
 import ProductDetail from '@/components/ComProductDetail.vue'
 import ComCart from '@/components/ComCart.vue'
 import Login from '@/components/ComLogin.vue'
@@ -50,13 +50,13 @@ const routes=[
     {
         path:"/about",
         name:"About",
-        component:GioiThieu,
+        component:About,
         meta: { title: 'Giới thiệu' },
     },
     {
         path:"/contact",
         name:"Contact",
-        component:LienHe,
+        component:Contact,
         meta: { title: 'Liên hệ' },
     },
     {

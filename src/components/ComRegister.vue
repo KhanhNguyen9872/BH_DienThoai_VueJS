@@ -75,6 +75,7 @@ export default {
     },
     mounted() {
         document.title = "Đăng ký | KhanhStore";
+
         const editData = this.$route.query;
         if (editData) {
             this.productId = editData.productId;
@@ -175,6 +176,11 @@ export default {
     width: 500px;
 }
 
+body.dark-mode .container {
+    background-color: #686868;
+}
+
+
 .login-form {
     display: flex;
     flex-direction: column;
@@ -183,6 +189,10 @@ export default {
 h2 {
     margin-bottom: 20px;
     text-align: center;
+}
+
+body.dark-mode h2 {
+    color: #ffffff;
 }
 
 .input-group {
@@ -215,16 +225,8 @@ h2 {
     font-size: 16px;
 }
 
-label {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
+body.dark-mode .input-group label {
+    color: #dcdcdc;
 }
 
 button {
@@ -246,6 +248,7 @@ button:hover {
     margin-top: 30px;
 }
 
+
 .links a {
     margin: 0 5px;
     text-decoration: none;
@@ -256,4 +259,10 @@ button:hover {
     border: 1px solid transparent;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
+
+body.dark-mode .links a {
+    color: #004997;
+}
+
+
 </style>

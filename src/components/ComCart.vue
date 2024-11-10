@@ -277,6 +277,10 @@ export default {
     margin-top: 50px;
 }
 
+body.dark-mode .no-items {
+    color: #000000;
+}
+
 .center {
     display: flex;
     justify-content: center; /* Center horizontally */
@@ -284,27 +288,21 @@ export default {
     height: 100%; /* Full height of the parent (body) */
 }
 
-/* Basic styling for the body */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color: #333;
-}
-
 /* Main container styling */
 .cart-container {
     width: 90%;
     max-width: 800px;
     background-color: #fff;
-    padding: 20px;
+    margin: 20px 0 20px 0;
+    padding: 30px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     animation: fadeIn 0.5s ease;
+}
+
+body.dark-mode .cart-container {
+    background: #606060;
+    color: #fff;
 }
 
 /* Title */
@@ -314,6 +312,10 @@ body {
     margin-bottom: 20px;
     color: #444;
     text-align: center;
+}
+
+body.dark-mode .cart-title {
+    color: #fff;
 }
 
 /* Cart items styling */
@@ -328,6 +330,10 @@ body {
 
 .cart-item:hover {
     background-color: #f9f9f9;
+}
+
+body.dark-mode .cart-item:hover {
+    background-color: #373737;
 }
 
 /* Custom checkbox style */
@@ -361,9 +367,17 @@ body {
     color: #333;
 }
 
+body.dark-mode .item-info h4 {
+    color: #eaeaea;
+}
+
 .item-info p {
     margin: 5px 0;
     color: #777;
+}
+
+body.dark-mode .item-info p {
+    color: #eaeaea;
 }
 
 /* Color selector */
@@ -372,6 +386,11 @@ body {
     align-items: center;
     margin-top: 10px;
 }
+
+body.dark-mode .color-select label {
+    color: #c8c8c8;
+}
+
 .color-preview {
     width: 20px;
     height: 20px;
@@ -416,6 +435,9 @@ body {
     font-size: 16px;
 }
 
+body.dark-mode .quantity-control input {
+    background: #7b7b7b;
+}
 
 .error-message {
     color: #d9534f; /* Bootstrap's danger color */
@@ -476,6 +498,10 @@ body {
     margin-left: 15px;
 }
 
+body.dark-mode .price {
+    color: #ffffff;
+}
+
 /* Summary section */
 .cart-summary {
     margin-top: 30px;
@@ -490,10 +516,17 @@ body {
     margin-bottom: 10px;
 }
 
+body.dark-mode .summary-title {
+    color: #000000;
+}
+
 .total-price {
     font-size: 24px;
     color: #28a745;
     font-weight: bold;
+}
+body.dark-mode .total-price {
+    color: #37e860;
 }
 
 /* Checkout button */
