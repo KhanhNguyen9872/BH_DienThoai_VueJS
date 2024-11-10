@@ -65,7 +65,9 @@
                 <input type="text" id="email" v-model="this.email" readonly>
             </div>
 
-            <div class="table-container">
+            <h2 style="margin-top: 30px;">Danh sách địa chỉ</h2>
+            <p class="extended-td error-message" v-if="this.information.length == 0">Chưa có địa chỉ nào! Vui lòng thêm ít nhất 1 địa chỉ để mua hàng!</p>
+            <div v-else class="table-container">
                 <table>
                     <thead>
                         <tr>
@@ -75,7 +77,7 @@
                             <th>Hành động</th>
                         </tr>
                     </thead>
-                    <tbody v-if="this.information.length > 0">
+                    <tbody>
                         <tr v-for="(info) in this.information" :key="info.id">
                             <td>{{ info.fullName }}</td>
                             <td>{{ info.address }}</td>
@@ -92,17 +94,11 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tbody v-else>
-                        <tr> 
-                            <td class="extended-td error-message">Chưa có địa chỉ nào! Vui lòng thêm ít nhất 1 địa chỉ để mua hàng!</td>
-                        </tr>
-                    </tbody>
                 </table>
-
-                <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
-                <router-link to="/profile/address/new" v-if="this.information.length < 3" class="new-row-btn">Thêm địa chỉ</router-link>
-                <p class="error-message" v-else>Không thể thêm mới địa chỉ! Tối đa 3 địa chỉ!</p>
             </div>
+            <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
+            <router-link to="/profile/address/new" v-if="this.information.length < 3" class="new-row-btn">Thêm địa chỉ</router-link>
+            <p class="error-message" v-else>Không thể thêm mới địa chỉ! Tối đa 3 địa chỉ!</p>
         </div>
     </div>
 </template>
@@ -156,6 +152,9 @@ export default {
             this.information.push(info);
         });
     },
+    mounted() {
+        document.title = "Hồ sơ | KhanhStore";
+    },
     computed: {
         formattedResultModal() {
             return this.resultModal.replace(/\n/g, '<br>');
@@ -193,7 +192,12 @@ export default {
                 return;
             }
 
-            const user = await db.getUser(this.username, this.oldPassword);
+            if (this.oldPassword === this.newPassword) {
+                this.errorModal = 'Mật khẩu mới không được trùng với mật khẩu cũ';
+                return;
+            }
+
+            const user = await db.loginUser(this.username, this.oldPassword);
 
             if (user == null) {
                 this.errorModal = 'Mật khẩu cũ không chính xác!';
@@ -206,7 +210,7 @@ export default {
             this.oldPassword = '';
             this.newPassword = '';
             this.reNewPassword = '';
-
+            this.errorModal = '';
             this.resultModal = 'Đã thay đổi mật khẩu!\nVui lòng đăng nhập lại để áp dụng các thay đổi!';
         },
         openPopupDelete() {
@@ -239,8 +243,7 @@ export default {
             this.openPopupDelete();
         },
         editAddress(id) {
-            const data = this.information.find((info) => info.id === id);
-            this.$router.push({ name: 'EditAddress', query: data });
+            this.$router.push({ name: 'EditAddress', query: {id: id} });
         },
     }
 }

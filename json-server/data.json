@@ -1,5 +1,5 @@
 {
-  "product": [
+  "products": [
     {
       "id": "1",
       "name": "Google Pixel 3",
@@ -8,13 +8,13 @@
         {
           "name": "Đen",
           "img": "/img/google-pixel-3-black.jpg",
-          "quantity": 0,
+          "quantity": 3,
           "money": 3000000
         },
         {
           "name": "Trắng",
           "img": "/img/google-pixel-3-white.jpg",
-          "quantity": 4,
+          "quantity": 2,
           "money": 3100000
         },
         {
@@ -343,73 +343,93 @@
   ],
   "users": [
     {
-      "id": "5727",
-      "username": "root",
-      "password": "1",
-      "email": "nguyenkhanhlitev20@gmail.com",
-      "firstName": "Khánh",
-      "lastName": "Nguyễn",
+      "id": "1376",
+      "username": "md5",
+      "password": "c0c75dc8a2cd8095b3d3ae1c852966e7",
+      "email": "md5@local.com",
+      "firstName": "md5",
+      "lastName": "md5",
       "lock": false,
       "information": [
         {
-          "id": "d5ozsqoz",
-          "fullName": "Khánh Nguyễn",
-          "address": "Bình Thuận",
-          "phone": "0937927513"
+          "id": "r9yya4u1ca",
+          "fullName": "Khánh Nguyễn Văn",
+          "address": "477/42 Nguyễn Văn Công",
+          "phone": "0328460695"
         }
       ]
     },
     {
-      "id": "1c08",
-      "username": "b",
-      "password": "b",
-      "email": "nguyenkhanhlitev20@gmail.com",
-      "firstName": "b",
-      "lastName": "b",
+      "id": "dfe5",
+      "username": "lockuser",
+      "password": "af13442b864c92431abac3ea2b6f364f",
+      "email": "lockuser@localhost.com",
+      "firstName": "lockuser",
+      "lastName": "lockuser",
+      "lock": true,
+      "information": []
+    },
+    {
+      "id": "7062",
+      "username": "a",
+      "password": "0cc175b9c0f1b6a831c399e269772661",
+      "email": "aspecthjl+roybal@gmail.com",
+      "firstName": "a",
+      "lastName": "a",
       "lock": false,
       "information": []
     }
   ],
-  "cart": [
+  "carts": [
     {
       "carts": [
         {
-          "productId": "1",
+          "productId": "3",
           "quantity": 4,
-          "color": "Trắng"
+          "color": "Tím"
         },
         {
-          "productId": "2",
-          "quantity": 3,
-          "color": "Xanh dương"
-        },
-        {
-          "productId": "8",
-          "quantity": 2,
-          "color": "Đen"
-        },
-        {
-          "productId": "16",
-          "quantity": 2,
-          "color": "Vàng"
-        },
-        {
-          "productId": "16",
-          "quantity": 3,
-          "color": "Đen"
+          "productId": "1",
+          "quantity": 1,
+          "color": "Hồng"
         }
       ],
-      "id": "5727"
+      "id": "1376"
     },
     {
       "carts": [
         {
-          "productId": "1",
-          "quantity": 4,
-          "color": "Trắng"
+          "productId": "2",
+          "quantity": 2,
+          "color": "Xanh dương"
+        },
+        {
+          "productId": "3",
+          "quantity": 1,
+          "color": "Xám"
         }
       ],
-      "id": "1c08"
+      "id": "7062"
+    }
+  ],
+  "orders": [
+    {
+      "id": "1376",
+      "orders": [
+        {
+          "id": "donhang0",
+          "orderAt": 1731239400,
+          "status": "Đang giao hàng",
+          "products": [
+            {
+              "name": "Google Pixel 3",
+              "quantity": 3,
+              "price": "",
+              "totalPrice": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -12,6 +12,7 @@ import NotFound from '@/components/ComNotFound.vue';
 import ComProfile from "@/components/ComProfile.vue";
 import ComAddAddress from "@/components/ComAddAddress.vue";
 import ComEditAddress from "../components/ComEditAddress.vue";
+import ComOrder from "@/components/ComOrder.vue";
 
 // tạo mảng chứa những đường link
 const routes=[
@@ -59,6 +60,12 @@ const routes=[
         meta: { title: 'Liên hệ' },
     },
     {
+        path:"/product",
+        name:"ProductDetailHome",
+        component:ProductDetail,
+        meta: { title: 'Thông tin sản phẩm', redirect: "/" },
+    },
+    {
         path:"/product/:id",
         name:"ProductDetail",
         component:ProductDetail,
@@ -69,6 +76,12 @@ const routes=[
         name:"Cart",
         component:ComCart,
         meta: { title: 'Giỏ hàng' },
+    },
+    {
+        path:"/order",
+        name:"Order",
+        component:ComOrder,
+        meta: { title: 'Đơn hàng' },
     },
     {
         path:"/profile",

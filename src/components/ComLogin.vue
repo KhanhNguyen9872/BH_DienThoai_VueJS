@@ -11,6 +11,7 @@
                     <label for="password">Mật khẩu</label>
                     <input type="password" v-model="password" name="password" required>
                 </div>
+                <p class="result-message" v-if="this.result != null && this.result.length > 0">{{ this.result }}</p>
                 <p class="error-message" v-if="this.error != null && this.error.length > 0">{{ this.error }}</p>
                 <button @click="login">Đăng nhập</button>
                 <div class="links">
@@ -33,13 +34,14 @@ export default {
             username: '', 
             password: '', 
             error: '',
+            result: '',
             productId: '',
         };
     },
     async beforeMount() {
         const user = JSON.parse(localStorage.getItem("user"));
         if (user != null) {
-            const u = await db.getUser(user.password, user.password);
+            const u = await db.getUser(user.username, user.password);
 
             if (u != null) {
                 this.$router.push('/');
@@ -70,7 +72,7 @@ export default {
             this.$router.push({ name: 'Forgot', query: data });
         },
         async login() {
-            const user = await db.getUser(this.username, this.password);
+            const user = await db.loginUser(this.username, this.password);
 
             if (user == null) {
                 this.error = 'Tên tài khoản hoặc mật khẩu không đúng!';
@@ -78,11 +80,18 @@ export default {
             }
 
             if (user.lock) {
-                this.error = 'Tài khoản này đã bị khóa!';
+                this.error = 'Tài khoản này đã bị khóa vì lý do bất thường!';
                 return;
             }
 
+            this.error = '';
+        
+            this.result = 'Đăng nhập thành công!';
+
             localStorage.setItem('user', JSON.stringify({id: user.id, username: user.username, password: user.password}));
+            
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
             if (this.productId) {
                 window.location.href = '/product/' + this.productId;
             } else {
@@ -94,7 +103,18 @@ export default {
 </script>
   
 <style scoped>
-@import '../styles/css/font-awesome.css';
+.result-message {
+    color: #4CAF50; /* Green color to indicate success */
+    background-color: #e7f5e9; /* Light green background for better visibility */
+    border: 1px solid #4CAF50; /* Green border to match the text color */
+    padding: 10px; /* Some padding for better spacing */
+    border-radius: 5px; /* Rounded corners */
+    margin: 15px 0; /* Margin to separate from other content */
+    font-size: 14px; /* Font size */
+    display: flex; /* Optional: Flexbox for better alignment */
+    align-items: center; /* Center vertically */
+}
+
 .error-message {
     color: #d9534f; /* Bootstrap's danger color */
     background-color: #f2dede; /* Light red background */

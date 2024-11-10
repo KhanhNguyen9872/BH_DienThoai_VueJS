@@ -1,9 +1,28 @@
 <template>
     <main>  
         <!-- Overlay and Popup -->
-        <CartPopup :visible="isPopupVisible" @close="isPopupVisible = false" />
+        <div v-if="isShowPopup" class="overlay" @click.self="closePopup">
+            <div class="popup">
+                <button class="btn-close" @click="closePopup">×</button>
+                <h2>Đã thêm thành công</h2>
+                <p>Sản phẩm của bạn đã được thêm vào giỏ hàng</p>
+                <div class="button-group">
+                <button class="btn" @click="closePopup">Tiếp tục mua sắp</button>
+                <button class="btn go-to-cart" @click="goToCart">Đi tới giỏ hàng</button>
+                </div>
+            </div>
+        </div>
+
         <div class="product-detail">
-            <div class="product-content">
+            <div v-if="this.isNotFoundProduct" class="product-not-found">
+                <div class="icon">
+                    <i class="fas fa-box-open"></i>
+                </div>
+                <h2>Sản phẩm không tồn tại</h2>
+                <p>Rất tiếc, sản phẩm bạn đang tìm kiếm không tồn tại hoặc không còn nữa.</p>
+                <router-link to="/" class="back-home">Quay về trang chủ</router-link>
+            </div>
+            <div v-else class="product-content">
                 <div class="image-gallery">
                     <img :src="currentImg" alt="{{ product.name }}" class="main-image" />
                     <div class="thumbnail-container">
@@ -41,7 +60,7 @@
                     </div>
                     
                     <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
-                    <button v-if="this.selectedColor === null || this.product.quantity > 0" :disabled="this.selectedColor == null" class="add-to-cart" @click="addToCart()">Thêm vào giỏ hàng</button>
+                    <button v-if="this.selectedColor === null || this.product.quantity > 0" class="add-to-cart" @click="addToCart()">Thêm vào giỏ hàng</button>
                     <button v-else class="out-of-stock" disabled>Đã hết hàng</button>
                     <hr style="margin-top: 30px;">
                     <h2>Mô tả sản phẩm</h2>
@@ -55,13 +74,11 @@
  </template>
  
  <script>
-import CartPopup from '@/components/CartPopup.vue';
 import db from '../api/db';
 import tools from '../api/tools';
 
 export default {
     components: {
-        CartPopup,
     },
     data() {
         return {
@@ -75,12 +92,19 @@ export default {
             isLoggedIn: false,
             error: '',
             isPopupVisible: false,
+            isNotFoundProduct: false,
+            isShowPopup: false,
         }
     },
     async mounted() {
         let id = this.$route.params.id;
         // db
         const data = await db.getProduct(id);
+        if (data == undefined) {
+            this.isNotFoundProduct = true;
+            return;
+        }
+
         this.product = data;
 
         // format money
@@ -109,8 +133,14 @@ export default {
         formatMoney(money) {
             return tools.formatMoney(money);
         },
+        closePopup() {
+            this.isShowPopup = false;
+        },
         showPopup() {
-            this.isPopupVisible = true;
+            this.isShowPopup = true;
+        },
+        goToCart() {
+            this.$router.push('/cart');
         },
         getURLImage(image) {
             return db.getAPI_URL() + image;
@@ -198,6 +228,124 @@ export default {
 </script>
  
 <style scoped>
+.product-not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 60vh;
+  background-color: #f7f9fc;
+  padding: 2rem;
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+.product-not-found .icon {
+  font-size: 4rem;
+  color: #ff6b6b;
+  margin-bottom: 1rem;
+}
+
+.product-not-found h2 {
+  font-size: 2rem;
+  color: #444;
+  margin: 0.5rem 0;
+}
+
+.product-not-found p {
+  color: #666;
+  font-size: 1rem;
+  max-width: 400px;
+}
+
+.back-home {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #4a90e2;
+  color: #fff;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.back-home:hover {
+  background-color: #357abf;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .popup {
+    background: white;
+    width: 300px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+  .overlay .popup {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .popup h2 {
+    margin-top: 0;
+    color: #4CAF50;
+  }
+  .popup p {
+    color: #333;
+  }
+  .popup .btn-close {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #999;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  .popup .btn-close:hover {
+    color: #666;
+  }
+  .button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+  }
+  .btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .btn:hover {
+    background-color: #45a049;
+  }
+  .go-to-cart {
+    background-color: #FF5722;
+  }
+  .go-to-cart:hover {
+    background-color: #E64A19;
+  }
+
 .out-of-stock {
   background-color: #D32F2F; /* Red color for out of stock */
   color: white;

@@ -78,14 +78,15 @@ export default {
                 return;
             }
 
-            const result = await db.getPasswordUser(this.username, this.email);
-            if (result == undefined) {
+            const result = await db.resetPasswordUser(this.username, this.email);
+
+            if (result == undefined || result == null) {
                 this.error = 'Thông tin không chính xác!';
                 return;
             }
 
             this.error = '';
-            this.result = "Mật khẩu của bạn là: " + result.password;
+            this.result = "Mật khẩu của bạn là: " + result;
         }
     }
 }

@@ -1,13 +1,18 @@
+import CryptoJS from "crypto-js";
+
 const API_URL = "http://127.0.0.1:5000";
 
 export default {
     getAPI_URL() {
         return API_URL;
     },
+    generateRandom(length) {
+      return Math.random().toString(36).substring(2, 2 + length);
+    },
   // Get all products
   async getAllProducts() {
     try {
-      const response = await fetch(`${API_URL}/product`);
+      const response = await fetch(`${API_URL}/products`);
       if (!response.ok) throw new Error("Failed to fetch products");
       
       const data = await response.json();
@@ -21,7 +26,7 @@ export default {
   // Get a single product by ID
   async getProduct(productId) {
     try {
-      const response = await fetch(`${API_URL}/product/?id=${productId}`);
+      const response = await fetch(`${API_URL}/products/?id=${productId}`);
       if (!response.ok) throw new Error(`Failed to fetch product with ID ${productId}`);
       const data = await response.json();
       return data[0];
@@ -33,7 +38,7 @@ export default {
   // Modify a product by ID
   async modifyProduct(productId, updatedProduct) {
     try {
-      const response = await fetch(`${API_URL}/product/${productId}`, {
+      const response = await fetch(`${API_URL}/products/${productId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -49,6 +54,11 @@ export default {
 
   // Add a new user
   async addUser(newUser) {
+    if (newUser.password == undefined) {
+      return null;
+    }
+
+    newUser.password = CryptoJS.MD5(newUser.password).toString();
     try {
       const response = await fetch(`${API_URL}/users`, {
         method: "POST",
@@ -71,7 +81,7 @@ export default {
         id: userId,
         carts: []
       };
-      const response = await fetch(`${API_URL}/cart`, {
+      const response = await fetch(`${API_URL}/carts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -100,7 +110,7 @@ export default {
     }
   },
 
-  async getPasswordUser(username, email) {
+  async resetPasswordUser(username, email) {
     try {
       const response = await fetch(`${API_URL}/users?username=${username}&email=${email}`);
       if (!response.ok) throw new Error(`Failed to fetch user`);
@@ -109,7 +119,13 @@ export default {
         return null;
       }
 
-      return data[0];
+      let password = this.generateRandom(8);
+      if (data[0].password != undefined) {
+        console.log(data[0]);
+        data[0].password = password;
+        this.updateUser(data[0]);
+      }
+      return password;
     } catch (error) {
       console.error(error);
       return null;
@@ -118,6 +134,25 @@ export default {
 
   // Get a user by username
   async getUser(username, password) {
+    if (password == undefined || password == null || password.length < 1) {
+      return null;
+    }
+    try {
+      const response = await fetch(`${API_URL}/users?username=${username}&password=${password}`);
+      if (!response.ok) throw new Error(`Failed to fetch user`);
+      const users = await response.json();
+
+      return users.length > 0 ? users[0] : null; // Return the first user found or null if none
+    } catch (error) {
+      console.error(error);
+    }
+  },
+
+  async loginUser(username, password) {
+    if (password == undefined || password == null || password.length < 1) {
+      return null;
+    }
+    password = CryptoJS.MD5(password).toString();
     try {
       const response = await fetch(`${API_URL}/users?username=${username}&password=${password}`);
       if (!response.ok) throw new Error(`Failed to fetch user`);
@@ -132,7 +167,7 @@ export default {
   // Add a product to the cart
   async addProductToCart(userId, productId, quantity) {
     try {
-      const response = await fetch(`${API_URL}/cart`, {
+      const response = await fetch(`${API_URL}/carts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -152,7 +187,7 @@ export default {
 
   async updateCarts(id, updatedCarts) {
     try {
-      const response = await fetch(`${API_URL}/cart/${id}`, {
+      const response = await fetch(`${API_URL}/carts/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -171,7 +206,7 @@ export default {
   // Delete a product from the cart by ID
   async deleteProductFromCart(cartId) {
     try {
-      const response = await fetch(`${API_URL}/cart/${cartId}`, {
+      const response = await fetch(`${API_URL}/carts/${cartId}`, {
         method: "DELETE",
       });
       if (!response.ok) throw new Error(`Failed to delete cart item with ID ${cartId}`);
@@ -184,7 +219,7 @@ export default {
   // Get a cart by UserID
   async getCartItemsByUserId(userId) {
     try {
-      const response = await fetch(`${API_URL}/cart?id=${userId}`);
+      const response = await fetch(`${API_URL}/carts?id=${userId}`);
       if (!response.ok) throw new Error(`Failed to fetch cart items for user ID ${userId}`);
       const data = await response.json();
       return data[0];
@@ -225,6 +260,7 @@ export default {
 
   async updateUser(updatedUser) {
     const userId = updatedUser.id;
+    updatedUser.password = CryptoJS.MD5(updatedUser.password).toString();
     try {
       const response = await fetch(`${API_URL}/users/${userId}`, {
         method: "PATCH", // Use PATCH method for updating

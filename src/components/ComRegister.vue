@@ -119,8 +119,7 @@ export default {
                 }
 
                 let newUser = { username: this.username, password: this.password, email: this.email, firstName: this.firstname, lastName: this.lastname, lock: false, information: [] };
-                const result = await db.addUser(newUser);
-                console.log(result);
+                await db.addUser(newUser);
 
                 this.result = 'Đăng ký thành công!';
             } else {

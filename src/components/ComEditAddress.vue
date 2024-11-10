@@ -37,7 +37,7 @@
         error: '',
       };
     },
-    async created() {
+    async mounted() {
         // check is logged in or not
         let user = JSON.parse(localStorage.getItem("user"));
         if (user != null) {
@@ -55,18 +55,22 @@
         this.userId = user.id;
         this.information = user.information;
         
-    },
-    mounted() {
         const editData = this.$route.query;
-
         this.addressId = editData.id;
-        this.fullName = editData.fullName;
-        this.address = editData.address;
-        this.phone = editData.phone;
 
-        if (this.addressId == undefined || this.fullName == undefined || this.address == undefined || this.phone == undefined) {
-            this.$router.push('/');
+        if (this.addressId == undefined) {
+          this.$router.push('/');
+          return;
         }
+
+        const data = this.information.find((info) => info.id === this.addressId);
+        if (data == undefined) {
+          this.$router.push('/');
+          return;
+        }
+        this.fullName = data.fullName;
+        this.address = data.address;
+        this.phone = data.phone;
 
         document.title = "Sửa địa chỉ (ID: " + this.addressId + ") | KhanhStore";
     },

@@ -9,29 +9,33 @@
                     <input type="checkbox" style="margin-left: 25px;" v-model="isCheckedAll" @change="checkedAll()">
                 </div>
 
-                <div class="cart-item" v-for="(item) in this.cartItems" :key="item.id">
-                    <input type="checkbox" style="margin-left: 25px; margin-right: 25px;" v-model="item.selected" @change="calcTotalPrice()">
-                    <div class="item-details">
-                        <img :src="item.img" :alt="item.name">
-                        <div class="item-info">
-                            <h4>{{ item.name }}</h4>
-                            <p style="text-align: left;">Giá: {{ formatMoney(item.price) }} VND</p>
+                <div v-for="(item) in this.cartItems" :key="item.id">
+                    <div class="cart-item">
+                        <input type="checkbox" style="margin-left: 25px; margin-right: 25px;" v-model="item.selected" :disabled="item.isDisabled" @change="calcTotalPrice()">
+                        <div class="item-details">
+                            <img :src="item.img" :alt="item.name">
+                            <div class="item-info">
+                                <h4>{{ item.name }}</h4>
+                                <p style="text-align: left;">Giá: {{ formatMoney(item.price) }} VND</p>
 
-                            <div class="color-select">
-                                <label for="color">Màu sắc: </label>
-                                <div class="color-preview" :style="{ backgroundColor: item.hex }"></div>
+                                <div class="color-select">
+                                    <label for="color">Màu sắc: </label>
+                                    <div class="color-preview" :style="{ backgroundColor: item.hex }"></div>
+                                    <p style="margin-left: 10px;">{{ "(" + item.colorName + ")" }}</p>
+                                </div>
                             </div>
                         </div>
+                        <div class="quantity-control">
+                            <button @click="decreaseQuantity(item.id, item.color)" :disabled="item.isDisabledDecrease">-</button>
+                            <input type="number" v-model="item.quantity" min="1" readonly>
+                            <button @click="increaseQuantity(item.id, item.color)" :disabled="item.isDisabledIncrease">+</button>
+                        </div>
+                        <div class="price">{{ formatMoney(item.price * item.quantity) }} VND</div>
+                        <button class="delete-btn" @click="removeItem(item.id, item.color)">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
                     </div>
-                    <div class="quantity-control">
-                        <button @click="decreaseQuantity(item.id, item.color)">-</button>
-                        <input type="number" v-model="item.quantity" min="1" readonly>
-                        <button @click="increaseQuantity(item.id, item.color)" :disabled="item.isDisabledIncrease">+</button>
-                    </div>
-                    <div class="price">{{ formatMoney(item.price * item.quantity) }} VND</div>
-                    <button class="delete-btn" @click="removeItem(item.id, item.color)">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
+                    <p class="error-message" v-if="item.errorMsg.length > 0">{{ item.errorMsg }}</p>
                 </div>
 
                 <!-- Cart Summary -->
@@ -87,34 +91,88 @@ export default {
         }
 
         this.cartItems = [];
-        infoCart.carts.forEach(async(item) => {
-            let cart = {};
-            let {productId} = item;
+        let needSaveCart = false;
+        let removedProduct = 0;
+        const API_URL = db.getAPI_URL();
 
-            // get a product
-            const data = await db.getProduct(productId);
-            const API_URL = db.getAPI_URL();
-            const color = data.color.find((c) => c.name === item.color);
-            let isDisabledIncrease = false;
+        for (const item of infoCart.carts) {
+            await (async () => { 
+                let cart = {};
+                let {productId} = item;
 
-            if (color.quantity > 0) {
-                if (item.quantity >= color.quantity) {
-                    item.quantity = color.quantity;
-                    isDisabledIncrease = true;
+                // get a product
+                const data = await db.getProduct(productId);
+                if (data == undefined) {
+                    removedProduct++;
+                    this.error = 'Có ' + removedProduct + " sản phẩm trong giỏ hàng đã bị xóa vì không còn tồn tại!";
+                    needSaveCart = true;
+                    return;
                 }
 
-                cart = { ...cart, id: data.id, name: data.name, img: API_URL + color.img, price: color.money, isDisabledIncrease: isDisabledIncrease, hex: tools.getColor(item.color) };
+                const color = data.color.find((c) => c.name === item.color);
+
+                if (color == undefined) {
+                    removedProduct++;
+                    this.error = 'Có ' + removedProduct + " sản phẩm trong giỏ hàng đã bị xóa vì không còn tồn tại!";
+                    needSaveCart = true;
+                    return;
+                }
+
+                let isDisabledDecrease = false;
+                let isDisabledIncrease = false;
+                let isDisabled = false;
+                let errorMsg = "";
+
+                if (color.quantity > 0) {
+                    if (item.quantity >= color.quantity) {
+                        if ((item.quantity) > color.quantity) {
+                            errorMsg = '[' + data.name + ' - ' + color.name + '] Số lượng đã thay đổi từ ' + item.quantity + ' về ' + color.quantity + ' vì vượt quá số lượng trong kho hàng!';
+                            needSaveCart = true;
+                        }
+
+                        item.quantity = color.quantity;
+                        isDisabledIncrease = true;
+                    }
+                } else {
+                    isDisabledDecrease = true;
+                    isDisabledIncrease = true;
+                    isDisabled = true;
+                    errorMsg = '[' + data.name + ' - ' + color.name + '] Sản phẩm này đã hết hàng!';
+                }
+
+                cart = { 
+                    ...cart, 
+                    id: data.id, 
+                    name: data.name, 
+                    img: API_URL + color.img, 
+                    price: color.money, 
+                    isDisabled: isDisabled, 
+                    errorMsg: errorMsg, 
+                    isDisabledDecrease: isDisabledDecrease, 
+                    isDisabledIncrease: isDisabledIncrease, 
+                    colorName: item.color,
+                    hex: tools.getColor(item.color) 
+                };
 
                 // add cart into carts
                 cart = {...item, ...cart, selected: false};
                 this.cartItems.push(cart);
-            }
-        });
+            })(); 
+        }
+
+        if (needSaveCart && this.cartItems) {
+            this.saveCarts();
+        }
+    },
+    mounted() {
+        document.title = "Giỏ hàng | KhanhStore";
     },
     methods: {
         checkedAll() {
             this.cartItems.forEach((item) => {
-                item.selected = this.isCheckedAll;
+                if (!item.isDisabled) {
+                    item.selected = this.isCheckedAll;
+                }
             })
             this.calcTotalPrice();
         },
@@ -156,7 +214,6 @@ export default {
 
                 this.saveCarts();
             } else {
-                console.log(itemId, color);
                 this.removeItem(itemId, color);
             }
 
@@ -199,8 +256,10 @@ export default {
         proceedToCheckout() {
             if (this.selectedItem > 0) {
                 this.error = '';
+
+                
             } else {
-                this.error = 'Vui lòng chọn ít nhất 1 món hàng để thanh toán';
+                this.error = 'THANH TOÁN: Vui lòng chọn ít nhất 1 món hàng để thanh toán';
             }
         }
       }
