@@ -41,7 +41,6 @@
                 <!-- Cart Summary -->
                 <div class="cart-summary">
                     <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
-                    <div class="summary-title">Tóm tắt đơn hàng</div>
                     <div class="total-price">Tổng tiền: {{ formatMoney(totalPrice) }} VND</div>
                     <button class="checkout-btn" @click="proceedToCheckout()">Thanh toán</button>
                 </div>
@@ -257,7 +256,15 @@ export default {
             if (this.selectedItem > 0) {
                 this.error = '';
 
-                
+                let selectedItem = [];
+                this.cartItems.forEach((item) => {
+                    if (item.selected) {
+                        selectedItem = [ ...selectedItem, item ];
+                    }
+                })
+
+                localStorage.setItem('payment', JSON.stringify(selectedItem));
+                this.$router.push({ name: 'Payment'});
             } else {
                 this.error = 'THANH TOÁN: Vui lòng chọn ít nhất 1 món hàng để thanh toán';
             }
@@ -295,13 +302,13 @@ body.dark-mode .no-items {
     background-color: #fff;
     margin: 20px 0 20px 0;
     padding: 30px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     animation: fadeIn 0.5s ease;
 }
 
 body.dark-mode .cart-container {
-    background: #606060;
+    background-color: #333;
     color: #fff;
 }
 
@@ -333,7 +340,7 @@ body.dark-mode .cart-title {
 }
 
 body.dark-mode .cart-item:hover {
-    background-color: #373737;
+    background-color: #636363;
 }
 
 /* Custom checkbox style */

@@ -31,10 +31,16 @@ export default {
 }
 
 footer {
-    background-color: #333;
-    color: #fff;
+    background-color: #003c47; /* Light mode background */
+    color: #fff; /* Light mode text color */
     padding: 20px 0;
     text-align: center;
+}
+
+/* Dark Mode Footer */
+body.dark-mode footer {
+    background-color: #222; /* Dark mode background */
+    color: #ddd; /* Dark mode text color */
 }
 
 .footer-container {
@@ -54,14 +60,24 @@ footer {
 }
 
 .footer-links a {
-    color: #fff;
+    color: #fff; /* Light mode link color */
     margin: 0 15px;
     text-decoration: none;
     font-size: 14px;
 }
 
+/* Dark Mode Footer Links */
+body.dark-mode .footer-links a {
+    color: #ddd; /* Dark mode link color */
+}
+
 .footer-links a:hover {
     color: #00aced;
+}
+
+/* Dark Mode Footer Links Hover */
+body.dark-mode .footer-links a:hover {
+    color: #1e90ff; /* Change hover color in dark mode */
 }
 
 .footer-social {
@@ -72,9 +88,14 @@ footer {
 }
 
 .footer-social a {
-    color: #fff;
+    color: #fff; /* Light mode social icon color */
     font-size: 20px;
     text-decoration: none;
+}
+
+/* Dark Mode Footer Social Links */
+body.dark-mode .footer-social a {
+    color: #ddd; /* Dark mode social icon color */
 }
 
 /* Responsive adjustments */
@@ -85,4 +106,5 @@ footer {
         align-items: center;
     }
 }
+
 </style>

@@ -141,6 +141,7 @@ export default {
 }
 
 .price-filter label {
+  align-content: center;
   font-size: 16px;
   font-weight: bold;
 }
@@ -182,10 +183,18 @@ body.dark-mode .no-products {
 }
 
 header {
-  background-color: #4f4f4f;
+  background-color: #005f70;
   color: white;
   padding: 20px;
   text-align: center;
+}
+
+header h1 {
+  color: #ffffff;
+}
+
+body.dark-mode header {
+  background-color: #4f4f4f;
 }
 
 body {

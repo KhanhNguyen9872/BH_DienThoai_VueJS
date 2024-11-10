@@ -1,7 +1,7 @@
 <template>
     <main>  
         <!-- Overlay and Popup -->
-        <div v-if="isShowPopup" class="overlay" @click.self="closePopup">
+        <div v-if="isShowPopup" class="overlay">
             <div class="popup">
                 <button class="btn-close" @click="closePopup">×</button>
                 <h2>Đã thêm thành công</h2>
@@ -242,7 +242,7 @@ export default {
 }
 
 body.dark-mode .product-not-found {
-    background-color: #4d4d4d;
+    background-color: #333;
 }
 
 .product-not-found .icon {
@@ -457,7 +457,7 @@ body.dark-mode .color-selector h3 {
     max-height: 450px; /* Adjust this value to control the maximum height */
     object-fit: contain; /* This will keep the image aspect ratio */
     border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
 }
 
 .thumbnail-container {
@@ -486,11 +486,11 @@ body.dark-mode .color-selector h3 {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
 }
 
 body.dark-mode .product-info {
-    background: #6e6e6e;
+    background: #6a6a6a;
 }
 
 /* Responsive typography and margins */

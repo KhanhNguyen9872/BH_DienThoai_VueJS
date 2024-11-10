@@ -1,9 +1,9 @@
 <template>
   <GoToTopButton />
- <Header/>
+  <Header/>
 
- 
- <Footer/>
+  
+  <Footer/>
 </template>
 
 <script>
@@ -76,6 +76,7 @@ export default {
 }
 /* Global styles for Light and Dark mode */
 body {
+  margin: 0;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 

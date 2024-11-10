@@ -379,7 +379,7 @@
       "lock": false,
       "information": [
         {
-          "id": "1b16yt022t",
+          "id": "rn2pokf27u",
           "fullName": "Khánh Nguyễn Văn",
           "address": "477/42 Nguyễn Văn Công",
           "phone": "0328460695"
@@ -409,6 +409,21 @@
           "productId": "1",
           "quantity": 2,
           "color": "Trắng"
+        },
+        {
+          "productId": "1",
+          "quantity": 1,
+          "color": "Đen"
+        },
+        {
+          "productId": "1",
+          "quantity": 1,
+          "color": "Hồng"
+        },
+        {
+          "productId": "4",
+          "quantity": 1,
+          "color": "Xanh dương"
         }
       ],
       "id": "7062"
@@ -432,6 +447,14 @@
           ]
         }
       ]
+    }
+  ],
+  "vouchers": [
+    {
+      "id": "1",
+      "code": "KHANHSTORE",
+      "discount": 0.1,
+      "count": 100
     }
   ]
 }

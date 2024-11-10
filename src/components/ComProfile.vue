@@ -582,11 +582,11 @@ body {
     padding: 30px;
     border-radius: 10px;
     margin: 20px 0 20px 0;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
 }
 
 body.dark-mode .profile-container {
-    background-color: #686868;
+    background-color: #333;
 }
 
 h2 {

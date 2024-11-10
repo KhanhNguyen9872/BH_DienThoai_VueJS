@@ -277,4 +277,15 @@ export default {
     }
   },
   
+  // check voucher
+  async checkVoucher(voucherCode) {
+    try {
+      const response = await fetch(`${API_URL}/vouchers/?code=${voucherCode}`);
+      if (!response.ok) throw new Error(`Failed to fetch voucher with code ${voucherCode}`);
+      const data = await response.json();
+      return data[0];
+    } catch (error) {
+      console.error(error);
+    }
+  },
 };

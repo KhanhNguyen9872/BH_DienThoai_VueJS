@@ -115,11 +115,11 @@
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
   }
 
   body.dark-mode .form-container {
-    background-color: #686868;
+    background-color: #333;
   }
   
   form h2 {
@@ -164,6 +164,7 @@
   }
   
   button {
+    margin-top: 10px;
     width: 100%;
     padding: 12px;
     font-size: 16px;

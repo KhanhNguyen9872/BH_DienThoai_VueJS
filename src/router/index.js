@@ -13,10 +13,9 @@ import ComProfile from "@/components/ComProfile.vue";
 import ComAddAddress from "@/components/ComAddAddress.vue";
 import ComEditAddress from "../components/ComEditAddress.vue";
 import ComOrder from "@/components/ComOrder.vue";
-
-// tạo mảng chứa những đường link
+import ComPayment from "@/components/ComPayment.vue";
+import ComSimulatePayment from "@/components/ComSimulatePayment.vue";
 const routes=[
-    // đối tượng trang chủ
     {
         path:"/",
         name:"Home",
@@ -78,6 +77,12 @@ const routes=[
         meta: { title: 'Giỏ hàng' },
     },
     {
+        path:"/payment",
+        name:"Payment",
+        component:ComPayment,
+        meta: { title: 'Thanh toán' },
+    },
+    {
         path:"/order",
         name:"Order",
         component:ComOrder,
@@ -108,19 +113,25 @@ const routes=[
         meta: { title: 'Sửa địa chỉ' },
     },
     {
+        path:"/bank/payment",
+        name:"SimulatePayment",
+        component:ComSimulatePayment,
+        meta: { title: 'Ngân hàng' },
+    },
+    {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
         component: NotFound,
         meta: { title: 'Không tìm thấy trang' },
     }
 ]
-// tạo đối tượng router
+
 const router=createRouter({
     history:createWebHistory(),
     routes
 })
 router.beforeEach((to, from, next) => {
-    let title = to.meta.title || 'Default Title';  // Fallback to default title if no title in meta
+    let title = to.meta.title || 'Trang'; 
     document.title = title + " | KhanhStore";
 
     // redirect if present

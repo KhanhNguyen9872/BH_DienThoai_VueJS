@@ -114,55 +114,62 @@
   </script>
   
 
-<style scoped>
-.theme-toggle-button {
-  background-color: transparent;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  font-size: 24px; /* Adjust size for emojis */
-  transition: background-color 0.3s ease;
-}
-
-.theme-toggle-button:hover {
-  background-color: #555;
-}
-
-.theme-toggle-button:focus {
-  outline: none;
-}
-
-.header {
+  <style scoped>
+  .theme-toggle-button {
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 24px; /* Adjust size for emojis */
+    transition: background-color 0.3s ease;
+  }
+  
+  .theme-toggle-button:hover {
+    background-color: #555;
+  }
+  
+  .theme-toggle-button:focus {
+    outline: none;
+  }
+  
+  /* Header Styling */
+  .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
-    background-color: #333;
+    background-color: #003c47;
     color: white;
-}
-
-.logo {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  body.dark-mode .header {
+    background-color: #222;
+  }
+  
+  .logo {
     font-size: 24px;
     font-weight: bold;
     color: white;
     text-decoration: none;
-}
-
-.header-left {
+  }
+  
+  .header-left {
     display: flex;
     gap: 15px;
     align-items: center;
-}
-
-/* Search box styling */
-.search-box {
+  }
+  
+  .search-box {
     padding: 6px 12px;
     border: none;
     border-radius: 5px;
     font-size: 14px;
-}
-
-.search-button {
+    background-color: #f9f9f9;
+    transition: background-color 0.3s;
+  }
+  
+  .search-button {
     background-color: #4CAF50;
     color: white;
     padding: 6px 12px;
@@ -170,64 +177,36 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-}
-
-.search-button:hover {
+  }
+  
+  .search-button:hover {
     background-color: #45a049;
-}
-
-.header-left a,
-.header-right .cart-link {
+  }
+  
+  .header-left a,
+  .header-right .cart-link {
     color: white;
     text-decoration: none;
     font-size: 16px;
     padding: 8px;
-}
-
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    background-color: #333;
-    color: white;
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
-}
-
-.header-left {
-    display: flex;
-    gap: 15px;
-}
-
-.header-left a,
-.header-right .cart-link {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    padding: 8px;
-}
-
-.header-left a:hover,
-.header-right .cart-link:hover {
+  }
+  
+  .header-left a:hover,
+  .header-right .cart-link:hover {
     background-color: #555;
     border-radius: 5px;
-}
-
-.header-right .user-info {
+  }
+  
+  /* User Info Dropdown */
+  .header-right .user-info {
+    justify-content: center;
     display: flex;
     align-items: center;
-    justify-content: center; /* Center horizontally */
     gap: 10px;
-    position: relative; /* Ensures dropdown positions relative to .user-info */
-}
-
-.user-button {
+    position: relative;
+  }
+  
+  .user-button {
     margin-left: 5px;
     background-color: #4CAF50;
     color: white;
@@ -236,16 +215,15 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    display: inline-block;
-}
-
-.user-button:hover {
+  }
+  
+  .user-button:hover {
     background-color: #45a049;
-}
-
-.dropdown-menu {
+  }
+  
+  .dropdown-menu {
     position: absolute;
-    top: 100%; /* Space slightly below the button */
+    top: 100%;
     left: 0;
     background-color: white;
     color: #333;
@@ -257,27 +235,29 @@
     padding: 10px 0;
     min-width: 150px;
     z-index: 1;
-}
-
-.dropdown-menu a {
+  }
+  
+  .dropdown-menu a {
     color: #333;
     text-decoration: none;
     padding: 10px 20px;
     display: block;
     transition: background-color 0.3s;
-}
-
-.dropdown-menu a:hover {
+  }
+  
+  .dropdown-menu a:hover {
     background-color: #f0f0f0;
-}
-
-.active {
+  }
+  
+  /* Active State for Links */
+  .active {
     font-weight: bold;
     color: #4CAF50;
     border-bottom: 2px solid #4CAF50;
-}
-
-.button {
+  }
+  
+  /* Button Styling */
+  .button {
     background-color: #4CAF50;
     color: white;
     margin-top: 20px;
@@ -287,19 +267,84 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-}
-
-.button:hover {
+  }
+  
+  .button:hover {
     background-color: #45a049;
-}
-
-@media (max-width: 840px) {
+  }
+  
+  /* Mobile Responsiveness */
+  @media (max-width: 840px) {
     .header {
-        flex-direction: column;
+      flex-direction: column;
     }
     .header-left, .header-right {
-        justify-content: center;
-        width: 100%;
+      justify-content: center;
+      width: 100%;
     }
-}
-</style>
+  }
+  
+  /* Dark Mode Styles */
+  body.dark-mode {
+    background-color: #121212;
+  }
+  
+  body.dark-mode .header {
+    background-color: #222;
+  }
+  
+  body.dark-mode .logo {
+    color: white;
+  }
+  
+  body.dark-mode .header-left a,
+  body.dark-mode .header-right .cart-link {
+    color: white;
+  }
+  
+  body.dark-mode .search-box {
+    background-color: #333;
+    color: #fff;
+  }
+  
+  body.dark-mode .search-box:hover {
+    background-color: #444;
+  }
+  
+  body.dark-mode .search-button {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  body.dark-mode .header-right .user-info {
+    color: white;
+  }
+  
+  body.dark-mode .user-button {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  body.dark-mode .dropdown-menu {
+    background-color: #333;
+    color: #ddd;
+  }
+  
+  body.dark-mode .dropdown-menu a {
+    color: #ddd;
+  }
+  
+  body.dark-mode .dropdown-menu a:hover {
+    background-color: #444;
+  }
+  
+  body.dark-mode .button {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  body.dark-mode .button:hover {
+    background-color: #45a049;
+  }
+  </style>
+  
