@@ -77,6 +77,12 @@ const routes=[
         meta: { title: 'Hồ sơ' },
     },
     {
+        path:"/profile/address",
+        name:"AddAddressHome",
+        component:ComAddAddress,
+        meta: { title: 'Thêm địa chỉ', redirect: '/profile' },
+    },
+    {
         path:"/profile/address/new",
         name:"AddAddress",
         component:ComAddAddress,
@@ -103,6 +109,12 @@ const router=createRouter({
 router.beforeEach((to, from, next) => {
     let title = to.meta.title || 'Default Title';  // Fallback to default title if no title in meta
     document.title = title + " | KhanhStore";
+
+    // redirect if present
+    let redirect = to.meta.redirect;
+    if (redirect != undefined && redirect.length > 0) {
+        router.push(redirect);
+    }
     next();
 });
 export default router

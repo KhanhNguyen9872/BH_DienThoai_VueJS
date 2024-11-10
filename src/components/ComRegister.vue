@@ -34,12 +34,12 @@
                     <input type="password" id="repassword" v-model="repassword" required>
                 </div>
 
-                <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
-                <p class="result-message" v-if="this.result.length > 0">{{ this.result }} <a style="margin-left: 10px;" href="/login">Đăng nhập ngay</a></p>
+                <p class="error-message" v-if="this.error != null && this.error.length > 0">{{ this.error }}</p>
+                <p class="result-message" v-if="this.result != null && this.result.length > 0">{{ this.result }} <a style="margin-left: 10px;" href="#" @click="handleClickLogin">Đăng nhập ngay</a></p>
                 <button type="submit">Đăng ký</button>
                 
                 <div class="links">
-                    <a><router-link to="/login" class="login">Đăng nhập</router-link></a>
+                    <a><router-link to="#" @click="handleClickLogin" class="login">Đăng nhập</router-link></a>
                 </div>
             </form>
         </div>
@@ -61,6 +61,7 @@ export default {
             repassword: '',
             error: '',
             result: '',
+            productId: '',
         };
     },
     async beforeMount() {
@@ -74,8 +75,19 @@ export default {
     },
     mounted() {
         document.title = "Đăng ký | KhanhStore";
+        const editData = this.$route.query;
+        if (editData) {
+            this.productId = editData.productId;
+        }
     },
     methods: {
+        handleClickLogin() {
+            let data = {};
+            if (this.productId) {
+                data.productId = this.productId;
+            }
+            this.$router.push({ name: 'Login', query: data });
+        },
         async register() {
             if (this.password.length < 1) {
                 this.error = 'Mật khẩu không được để trống!';

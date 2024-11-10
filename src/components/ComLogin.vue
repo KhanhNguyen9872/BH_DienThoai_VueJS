@@ -11,11 +11,11 @@
                     <label for="password">Mật khẩu</label>
                     <input type="password" v-model="password" name="password" required>
                 </div>
-                <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
+                <p class="error-message" v-if="this.error != null && this.error.length > 0">{{ this.error }}</p>
                 <button @click="login">Đăng nhập</button>
                 <div class="links">
-                    <a><router-link to="/register" class="register">Đăng ký</router-link></a>
-                    <a><router-link to="/forgot" class="forgot-password">Quên mật khẩu</router-link></a>
+                    <a><router-link to="#" @click="handleClickRegister" class="register">Đăng ký</router-link></a>
+                    <a><router-link to="#" @click="handleClickForgot" class="forgot-password">Quên mật khẩu</router-link></a>
                 </div>
             </form>
         </div>
@@ -55,6 +55,20 @@ export default {
         }
     },
     methods:{
+        handleClickRegister() {
+            let data = {};
+            if (this.productId) {
+                data.productId = this.productId;
+            }
+            this.$router.push({ name: 'Register', query: data });
+        },
+        handleClickForgot() {
+            let data = {};
+            if (this.productId) {
+                data.productId = this.productId;
+            }
+            this.$router.push({ name: 'Forgot', query: data });
+        },
         async login() {
             const user = await db.getUser(this.username, this.password);
 

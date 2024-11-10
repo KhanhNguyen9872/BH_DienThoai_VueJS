@@ -259,7 +259,7 @@
         },
         {
           "name": "Đen",
-          "img": "/img/poco-f3-white.jpg",
+          "img": "/img/poco-f3-black.jpg",
           "quantity": 2,
           "money": 7500000
         }
@@ -358,6 +358,16 @@
           "phone": "0937927513"
         }
       ]
+    },
+    {
+      "id": "1c08",
+      "username": "b",
+      "password": "b",
+      "email": "nguyenkhanhlitev20@gmail.com",
+      "firstName": "b",
+      "lastName": "b",
+      "lock": false,
+      "information": []
     }
   ],
   "cart": [
@@ -390,6 +400,16 @@
         }
       ],
       "id": "5727"
+    },
+    {
+      "carts": [
+        {
+          "productId": "1",
+          "quantity": 4,
+          "color": "Trắng"
+        }
+      ],
+      "id": "1c08"
     }
   ]
 }

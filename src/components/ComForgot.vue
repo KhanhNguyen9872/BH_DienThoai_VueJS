@@ -11,11 +11,11 @@
                     <label for="email">Email của bạn</label>
                     <input type="email" id="email" v-model="email" required>
                 </div>
-                <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
-                <p class="result-message" v-if="this.result.length > 0">{{ this.result }}</p>
+                <p class="error-message" v-if="this.error != null && this.error.length > 0">{{ this.error }}</p>
+                <p class="result-message" v-if="this.result != null && this.result.length > 0">{{ this.result }}</p>
                 <button type="submit">Quên mật khẩu</button>
                 <div class="links">
-                    <a><router-link to="/login" class="login">Đăng nhập</router-link></a>
+                    <a><router-link to="#" @click="handleClickLogin" class="login">Đăng nhập</router-link></a>
                 </div>
             </form>
         </div>
@@ -33,6 +33,7 @@ export default {
             email: '',
             error: '',
             result: '',
+            productId: '',
         };
     },
     async beforeMount() {
@@ -47,8 +48,19 @@ export default {
     },
     mounted() {
         document.title = "Quên mật khẩu | KhanhStore";
+        const editData = this.$route.query;
+        if (editData) {
+            this.productId = editData.productId;
+        }
     },
     methods: {
+        handleClickLogin() {
+            let data = {};
+            if (this.productId) {
+                data.productId = this.productId;
+            }
+            this.$router.push({ name: 'Login', query: data });
+        },
         async forgot() {
             if (this.username.length < 1) {
                 this.error = 'Tên đăng nhập không được để trống!';

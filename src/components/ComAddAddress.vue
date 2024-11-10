@@ -87,7 +87,7 @@
 
             this.error = '';
 
-            let newAddress = { id: this.generateRandomId(8), fullName: this.fullName, address: this.address, phone: this.phone };
+            let newAddress = { id: this.generateRandomId(10), fullName: this.fullName, address: this.address, phone: this.phone };
             this.information.push(newAddress);
             db.updateAddress(this.userId, this.information);
             window.location.href = '/profile';
