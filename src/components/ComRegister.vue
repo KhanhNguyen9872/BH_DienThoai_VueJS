@@ -115,12 +115,14 @@ export default {
 
                 const isExistUser = await db.isExistUser(this.username);
                 if (isExistUser) {
-                    this.error = 'Tên người dùng này đã tồn tại!';
+                    this.error = 'Tên đăng nhập này đã tồn tại!';
                     return;
                 }
 
                 let newUser = { username: this.username, password: this.password, email: this.email, firstName: this.firstname, lastName: this.lastname, lock: false, information: [] };
                 await db.addUser(newUser);
+
+                this.error = '';
 
                 this.result = 'Đăng ký thành công!';
             } else {
