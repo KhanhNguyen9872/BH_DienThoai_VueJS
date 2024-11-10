@@ -137,7 +137,7 @@ export default {
         }
 
         if (user == null) {
-            localStorage.clear();
+            localStorage.removeItem('user');
             this.$router.push('/login');
             return;
         }
@@ -168,7 +168,7 @@ export default {
             this.isModalOpen = false; 
         },
         logOut() {
-            localStorage.clear();
+            localStorage.removeItem('user');
             window.location.href = '/';
         },
         async submitNewPassword() {

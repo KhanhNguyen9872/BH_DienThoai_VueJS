@@ -74,8 +74,8 @@
  </template>
  
  <script>
-import db from '../api/db';
-import tools from '../api/tools';
+import db from '@/api/db';
+import tools from '@/api/tools';
 
 export default {
     components: {
@@ -173,7 +173,7 @@ export default {
         },
         async addToCart() {
             if (!this.isLoggedIn) {
-                localStorage.clear();
+                localStorage.removeItem('user');
                 const data = { productId: this.product.id, error: "Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng!" };
                 this.$router.push({ name: 'Login', query: data}); // Redirect to login page
             } else {
@@ -410,7 +410,6 @@ export default {
 /* General Styles */
 .product-detail {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
     padding: 20px;
 }
 

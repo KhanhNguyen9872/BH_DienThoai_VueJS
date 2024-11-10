@@ -46,7 +46,7 @@
         }
 
         if (user == null) {
-            localStorage.clear();
+            localStorage.removeItem('user');
             this.$router.push('/login');
             return;
         }

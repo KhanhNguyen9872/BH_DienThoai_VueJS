@@ -53,7 +53,7 @@
   
 <script>
 import tools from '@/api/tools';
-import db from '../api/db';
+import db from '@/api/db';
 
 export default {
     data(){
@@ -75,7 +75,7 @@ export default {
         }
 
         if (this.user == null) {
-            localStorage.clear();
+            localStorage.removeItem('user');
             this.$router.push('/login');
             return;
         }
@@ -267,7 +267,7 @@ export default {
   </script>
 
   <style scoped>
-@import '../styles/css/font-awesome.css';
+@import '../assets/css/font-awesome.css';
 
 .no-items {
     font-size: 20px;
@@ -287,7 +287,6 @@ export default {
 /* Basic styling for the body */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
     margin: 0;
     padding: 0;
     display: flex;

@@ -1,4 +1,5 @@
 <template>
+  <body>
   <header>
     <h1 v-if="this.searchQuery && this.searchQuery.length > 0">{{ "KẾT QUẢ TÌM KIẾM: " + this.searchQuery }}</h1>
     <h1 v-else>TẤT CẢ SẢN PHẨM</h1>
@@ -35,11 +36,12 @@
     <button @click="nextPage" v-if="totalPages > 1" :disabled="currentPage === totalPages">&gt;</button>
     <button @click="goToPage(totalPages)" v-if="totalPages > 1" :disabled="currentPage === totalPages">&raquo;</button>
   </div>
+</body>
 </template>
 
 <script>
 import Product from './ComProduct.vue'
-import db from '../api/db'
+import db from '@/api/db'
 
 export default {
   name: 'ComHome',
@@ -55,6 +57,7 @@ export default {
       searchQuery: '',
       minPrice: null,
       maxPrice: null, 
+      isDarkMode: false,
     }
   },
   computed: {
@@ -79,6 +82,13 @@ export default {
     }
   },
   methods: {
+    handleStorageChange(event) {
+      // If the theme is changed in localStorage, update the theme
+      if (event.key === 'theme') {
+        this.isDarkMode = event.newValue === 'dark';
+        this.updateTheme();
+      }
+    },
     prevPage() {
       if (this.currentPage > 1) this.currentPage--;
     },
@@ -97,6 +107,10 @@ export default {
         );
       }
     }
+  },
+  created() {
+    // Listen to the storage event for theme changes in other tabs/windows
+    
   },
   async mounted() {
     const allProductsResult = await db.getAllProducts();
@@ -193,7 +207,6 @@ header {
 
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;
   margin: 0;
   padding: 0;
 }

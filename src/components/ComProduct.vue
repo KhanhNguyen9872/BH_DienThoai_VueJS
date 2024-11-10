@@ -13,8 +13,8 @@
 
 
 <script>
-import db from '../api/db.js'
-import tools from '../api/tools'
+import db from '@/api/db.js'
+import tools from '@/api/tools'
 
 export default {
     props:['product'],

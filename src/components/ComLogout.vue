@@ -8,7 +8,7 @@
 export default {
     async created() {
         document.title = "Đăng xuất | KhanhStore";
-        localStorage.clear();
+        localStorage.removeItem('user');
         await new Promise(resolve => setTimeout(resolve, 1750));
         window.location.href = '/';
     }

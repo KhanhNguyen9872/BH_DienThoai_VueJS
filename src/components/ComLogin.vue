@@ -24,9 +24,7 @@
 </template>
   
 <script>
-// import eventBus from '../event/eventBus.js'
-// import users from '@/data/users'
-import db from '../api/db';
+import db from '@/api/db';
 export default {
     name:'ComLogin',
     data() {
@@ -88,9 +86,9 @@ export default {
         
             this.result = 'Đăng nhập thành công!';
 
-            localStorage.setItem('user', JSON.stringify({id: user.id, username: user.username, password: user.password}));
+            localStorage.setItem('user', JSON.stringify({ username: user.username, password: user.password }));
             
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, 1250));
 
             if (this.productId) {
                 window.location.href = '/product/' + this.productId;

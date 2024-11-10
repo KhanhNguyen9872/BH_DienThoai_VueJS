@@ -1,92 +1,135 @@
 <template>
     <header>
-        <div class="header">
-            <router-link to="/" class="logo">Khanh Store</router-link>
-            
-            <!-- Left side links and search bar -->
-            <div class="header-left">
-                <router-link to="/" exact-active-class="active">Trang chủ</router-link>
-                <router-link to="/about" exact-active-class="active">Giới thiệu</router-link>
-                <router-link to="/contact" exact-active-class="active">Liên hệ</router-link>
-                
-                <!-- Search Bar -->
-                <input
-                    type="text"
-                    v-model="searchQuery"
-                    placeholder="Tìm kiếm sản phẩm..."
-                    class="search-box"
-                />
-                <button @click="searchProducts" class="search-button">Tìm kiếm</button>
-            </div>
-            
-            <!-- Right side user information -->
-            <div class="header-right">
-                <div v-if="user == null">
-                    <router-link to="/login" class="button">Đăng nhập</router-link>
-                </div>
-                <div v-else class="user-info">
-                    <p class="user-button" @click="toggleMenu">Xin chào, {{ user.firstName }}</p>
-                    <div v-show="showMenu" class="dropdown-menu">
-                        <router-link to="/profile" @click="handleProfile">Hồ sơ</router-link>
-                        <router-link to="/logout" @click="handleLogout">Đăng xuất</router-link>
-                    </div>
-                    <router-link to="/cart" class="cart-link" exact-active-class="active">🛒 Giỏ hàng</router-link>
-                    <router-link to="/order" class="cart-link" exact-active-class="active">📦 Đơn hàng</router-link>
-                </div>
-            </div>
+      <div class="header">
+        <router-link to="/" class="logo">Khanh Store</router-link>
+  
+        <!-- Left side links and search bar -->
+        <div class="header-left">
+          <router-link to="/" exact-active-class="active">Trang chủ</router-link>
+          <router-link to="/about" exact-active-class="active">Giới thiệu</router-link>
+          <router-link to="/contact" exact-active-class="active">Liên hệ</router-link>
         </div>
+
+        <div class="header-left">
+            <!-- Search Bar -->
+          <input
+            type="text"
+            v-model="searchQuery"
+            placeholder="Tìm kiếm sản phẩm..."
+            class="search-box"
+          />
+          <button @click="searchProducts" class="search-button">Tìm kiếm</button>
+        </div>
+  
+        <!-- Right side user information -->
+        <div class="header-right">
+          <div v-if="user == null">
+            <router-link to="/login" class="button">Đăng nhập</router-link>
+          </div>
+          <div v-else class="user-info">
+            <p class="user-button" @click="toggleMenu">Xin chào, {{ user.firstName }}</p>
+            <div v-show="showMenu" class="dropdown-menu">
+              <router-link to="/profile" @click="handleProfile">Hồ sơ</router-link>
+              <router-link to="/logout" @click="handleLogout">Đăng xuất</router-link>
+            </div>
+            <router-link to="/cart" class="cart-link" exact-active-class="active">🛒 Giỏ hàng</router-link>
+            <router-link to="/order" class="cart-link" exact-active-class="active">📦 Đơn hàng</router-link>
+          </div>
+        </div>
+  
+        <!-- Theme Toggle Button -->
+        <div class="header-right">
+            <button @click="toggleTheme" class="theme-toggle-button">
+                <span v-if="isDarkMode">🌙</span> <!-- Moon emoji for Dark Mode -->
+                <span v-else>🌞</span> <!-- Sun emoji for Light Mode -->
+            </button>
+        </div>
+      </div>
     </header>
     <router-view/>
-</template>
+  </template>
+  
 
-<script>
-import db from '../api/db';
-
-export default {
+  <script>
+  import db from '@/api/db';
+  
+  export default {
     data() {
-        return {
-            user: null,
-            showMenu: false,
-            searchQuery: '' // Data for storing the search input
-        }
+      return {
+        user: null,
+        showMenu: false,
+        searchQuery: '', // Data for storing the search input
+        isDarkMode: false, // Default theme (light mode)
+      }
     }, 
     async mounted() {
-        this.user = JSON.parse(localStorage.getItem("user"));
-        if (this.user != null) {
-            const user = await db.getUser(this.user.username, this.user.password);
-            this.user = user;
+        this.isDarkMode = localStorage.getItem('theme') === 'dark';
+        if (this.isDarkMode) {
+            document.body.classList.add('dark-mode');
         }
-
-        if (this.user == null) {
-            localStorage.clear();
-        }
+      this.user = JSON.parse(localStorage.getItem("user"));
+      if (this.user != null) {
+        const user = await db.getUser(this.user.username, this.user.password);
+        this.user = user;
+      }
+  
+      if (this.user == null) {
+        localStorage.removeItem('user');
+      }
     },
     methods: {
-        toggleMenu() {
-            this.showMenu = !this.showMenu;
-        },
-        handleProfile(event) {
-            event.preventDefault(); // Prevents immediate navigation
-            this.toggleMenu();
-            this.$router.push('/profile');
-        },
-        handleLogout(event) {
-            event.preventDefault(); // Prevents immediate navigation
-            this.toggleMenu();
-            this.$router.push('/logout');
-        },
-        searchProducts() {
-            if (this.searchQuery == '') {
-                return;
-            }
-            this.$router.push({ path: '/', query: { search: this.searchQuery } });
-            this.searchQuery = '';
+      toggleMenu() {
+        this.showMenu = !this.showMenu;
+      },
+      handleProfile(event) {
+        event.preventDefault(); // Prevents immediate navigation
+        this.toggleMenu();
+        this.$router.push('/profile');
+      },
+      handleLogout(event) {
+        event.preventDefault(); // Prevents immediate navigation
+        this.toggleMenu();
+        this.$router.push('/logout');
+      },
+      searchProducts() {
+        if (this.searchQuery == '') {
+          return;
         }
+        this.$router.push({ path: '/', query: { search: this.searchQuery } });
+        this.searchQuery = '';
+      },
+      toggleTheme() {
+            this.isDarkMode = !this.isDarkMode;
+            this.$emit('theme-changed', this.isDarkMode); // Optional: Emit event for parent component
+            this.updateTheme();
+            },
+        updateTheme() {
+            document.body.classList.toggle('dark-mode', this.isDarkMode);
+            localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
+        },
     }
-}
-</script>
+  }
+  </script>
+  
 
 <style scoped>
+.theme-toggle-button {
+  background-color: transparent;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 24px; /* Adjust size for emojis */
+  transition: background-color 0.3s ease;
+}
+
+.theme-toggle-button:hover {
+  background-color: #555;
+}
+
+.theme-toggle-button:focus {
+  outline: none;
+}
+
 .header {
     display: flex;
     align-items: center;
@@ -245,7 +288,7 @@ export default {
     background-color: #45a049;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 840px) {
     .header {
         flex-direction: column;
     }
