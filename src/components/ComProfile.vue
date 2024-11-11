@@ -1,4 +1,5 @@
 <template>
+    <Loading v-if="!this.isLoaded"/>
     <div v-if="showPopup" class="popup-overlay">
       <div class="popup">
         <h2 class="popup-title">{{ popupMessage }}</h2>
@@ -104,10 +105,14 @@
 </template>
 
 <script>
+import Loading from './ComLoading.vue';
 import db from '@/api/db';
 
 export default {
     name: 'ProfileInfo',
+    components: {
+        Loading
+    },
     data() {
         return {
             userId: '',
@@ -125,9 +130,10 @@ export default {
             reNewPassword: '',
             errorModal: '',
             resultModal: '',
+            isLoaded: false,
         };
     },
-    async created() {
+    async mounted() {
         // check is logged in or not
         let user = JSON.parse(localStorage.getItem("user"));
         if (user != null) {
@@ -142,18 +148,21 @@ export default {
             return;
         }
 
+        document.title = "Hồ sơ | KhanhStore";
+
         this.userId = user.id;
         this.firstName = user.firstName;
         this.lastName = user.lastName;
         this.username = user.username;
         this.email = user.email
-        
+
+        this.information = [];
         user.information.forEach(info => {
-            this.information.push(info);
+            this.information = [ ...this.information, info ];
         });
-    },
-    mounted() {
-        document.title = "Hồ sơ | KhanhStore";
+
+        await new Promise(resolve => setTimeout(resolve, 250));
+        this.isLoaded = true;
     },
     computed: {
         formattedResultModal() {

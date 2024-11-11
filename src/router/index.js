@@ -15,6 +15,7 @@ import ComEditAddress from "../components/ComEditAddress.vue";
 import ComOrder from "@/components/ComOrder.vue";
 import ComPayment from "@/components/ComPayment.vue";
 import ComSimulatePayment from "@/components/ComSimulatePayment.vue";
+import ComLoading from "@/components/ComLoading.vue";
 const routes=[
     {
         path:"/",
@@ -116,7 +117,13 @@ const routes=[
         path:"/bank/payment",
         name:"SimulatePayment",
         component:ComSimulatePayment,
-        meta: { title: 'Ngân hàng' },
+        meta: { title: 'Ngân hàng SuperBank' },
+    },
+    {
+        path:"/loading",
+        name:"Loading",
+        component:ComLoading,
+        meta: { title: 'Loading' },
     },
     {
         path: '/:pathMatch(.*)*',

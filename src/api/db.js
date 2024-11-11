@@ -19,7 +19,7 @@ export default {
       return data;
     } catch (error) {
       console.error("Error fetching products:", error);
-      return { success: false, error: error.message }; // Return an object with error
+      return null; // Return an object with error
     }
   },
 
@@ -32,6 +32,7 @@ export default {
       return data[0];
     } catch (error) {
       console.error(error);
+      return null;
     }
   },
 
@@ -49,6 +50,7 @@ export default {
       return await response.json();
     } catch (error) {
       console.error(error);
+      return null;
     }
   },
 
@@ -71,6 +73,7 @@ export default {
       return await response.json();
     } catch (error) {
       console.error("Error adding user:", error);
+      return null;
     }
   },
 

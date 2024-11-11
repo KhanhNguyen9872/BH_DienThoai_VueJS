@@ -1,4 +1,5 @@
 <template>
+    <Loading v-if="!this.isLoaded"/>
     <div class="center">
         <div id="app" class="cart-container">
             <div class="cart-title">Giỏ hàng của bạn</div>
@@ -51,10 +52,14 @@
 </template>
   
 <script>
+import Loading from './ComLoading.vue';
 import tools from '@/api/tools';
 import db from '@/api/db';
 
 export default {
+    components: {
+        Loading
+    },
     data(){
         return{
             cartItems: [],
@@ -62,9 +67,10 @@ export default {
             totalPrice: 0,
             error: '',
             isCheckedAll: false,
+            isLoaded: false,
         }
     },
-    async created() {
+    async mounted() {
         // check is logged in or not
         this.user = JSON.parse(localStorage.getItem("user"));
         if (this.user != null) {
@@ -78,6 +84,8 @@ export default {
             this.$router.push('/login');
             return;
         }
+
+        document.title = "Giỏ hàng | KhanhStore";
 
         // get items from cart
         let infoCart = await db.getCartItemsByUserId(this.user.id);
@@ -162,9 +170,9 @@ export default {
         if (needSaveCart && this.cartItems) {
             this.saveCarts();
         }
-    },
-    mounted() {
-        document.title = "Giỏ hàng | KhanhStore";
+
+        await new Promise(resolve => setTimeout(resolve, 500));
+        this.isLoaded = true;
     },
     methods: {
         checkedAll() {
@@ -336,7 +344,7 @@ body.dark-mode .cart-title {
 }
 
 .cart-item:hover {
-    background-color: #f9f9f9;
+    background-color: #cbcbcb;
 }
 
 body.dark-mode .cart-item:hover {

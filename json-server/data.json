@@ -424,6 +424,11 @@
           "productId": "4",
           "quantity": 1,
           "color": "Xanh dương"
+        },
+        {
+          "productId": "8",
+          "quantity": 5,
+          "color": "Đen"
         }
       ],
       "id": "7062"

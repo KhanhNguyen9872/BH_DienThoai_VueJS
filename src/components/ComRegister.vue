@@ -120,7 +120,12 @@ export default {
                 }
 
                 let newUser = { username: this.username, password: this.password, email: this.email, firstName: this.firstname, lastName: this.lastname, lock: false, information: [] };
-                await db.addUser(newUser);
+                const data = await db.addUser(newUser);
+
+                if (data == null) {
+                    this.error = 'Không thể đăng ký tài khoản!';
+                    return;
+                }
 
                 this.error = '';
 

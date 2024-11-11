@@ -61,7 +61,7 @@
 
     <div class="summary-section">
       <p>Tổng tiền hàng: {{ formatMoney(totalAmount) }} VND</p>
-      <p style="color: #ff0000" v-if="this.discount > 0">Giảm giá: - {{ formatMoney(totalAmount * discount) }} VND</p>
+      <p style="color: #ff0000" v-if="this.discount > 0">Giảm giá: -{{ formatMoney(totalAmount * discount) }} VND</p>
       <p class="final-total">Tổng thanh toán: {{ formatMoney(finalAmount) }} VND</p>
     </div>
 

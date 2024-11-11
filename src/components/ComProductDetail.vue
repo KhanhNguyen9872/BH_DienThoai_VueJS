@@ -1,5 +1,6 @@
 <template>
-    <main>  
+    <Loading v-if="!this.isLoaded"/>
+    <main>
         <!-- Overlay and Popup -->
         <div v-if="isShowPopup" class="overlay">
             <div class="popup">
@@ -74,11 +75,13 @@
  </template>
  
  <script>
+ import Loading from './ComLoading';
 import db from '@/api/db';
 import tools from '@/api/tools';
 
 export default {
     components: {
+        Loading
     },
     data() {
         return {
@@ -94,6 +97,7 @@ export default {
             isPopupVisible: false,
             isNotFoundProduct: false,
             isShowPopup: false,
+            isLoaded: false,
         }
     },
     async mounted() {
@@ -123,6 +127,8 @@ export default {
         }
 
         document.title = this.product.name + " | KhanhStore";
+        await new Promise(resolve => setTimeout(resolve, 500));
+        this.isLoaded = true;
     },
     computed: {
         totalMoney() {

@@ -1,4 +1,5 @@
 <template>
+  <Loading v-if="!this.isLoaded"/>
   <body>
   <header>
     <h1 v-if="this.searchQuery && this.searchQuery.length > 0">{{ "KẾT QUẢ TÌM KIẾM: " + this.searchQuery }}</h1>
@@ -40,12 +41,14 @@
 </template>
 
 <script>
-import Product from './ComProduct.vue'
-import db from '@/api/db'
+import Loading from './ComLoading.vue';
+import Product from './ComProduct.vue';
+import db from '@/api/db';
 
 export default {
   name: 'ComHome',
   components: {
+    Loading,
     Product
   },
   data() {
@@ -57,10 +60,14 @@ export default {
       searchQuery: '',
       minPrice: null,
       maxPrice: null, 
+      isLoaded: false,
     }
   },
   computed: {
     filteredAndPricedProducts() {
+      if (this.filteredProducts == null) {
+        return [];
+      }
       return this.filteredProducts.filter(product => {
         const price = product.color[0].money; 
         const withinMinPrice = this.minPrice ? price >= this.minPrice : true;
@@ -118,15 +125,19 @@ export default {
     }
 
     document.title = "Trang chủ | KhanhStore";
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    this.isLoaded = true;
   },
 
   watch: {
     '$route.query.search'(newSearchQuery) {
+      this.isLoaded = false;
       this.searchQuery = newSearchQuery;
       if (this.searchQuery != '') {
         this.currentPage = 1;
       }
       this.filterProducts(newSearchQuery);
+      this.isLoaded = true;
     }
   }
 }
