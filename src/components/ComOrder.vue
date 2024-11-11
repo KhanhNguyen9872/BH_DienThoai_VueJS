@@ -280,7 +280,7 @@ body.dark-mode .popup {
 .popup-title {
   font-size: 22px;
   font-weight: 600;
-  color: white;
+  color: #333;
   margin-bottom: 20px;
 }
 
@@ -505,6 +505,10 @@ body.dark-mode .product-not-found p {
   body.dark-mode .status-cancelled {
     color: #f44336;
   }
+
+  body.dark-mode .popup-title {
+  color: white;
+ }
 
   td {
     font-size: 0.8rem;
