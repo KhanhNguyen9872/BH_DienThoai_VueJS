@@ -1,6 +1,16 @@
 <template>
+  <Loading v-if="!this.isLoaded"/>
     <div class="payment-page">
       <div v-if="!isPaymentInProgress && !isPaymentSuccess" class="payment-button-container">
+        <div>
+          <label>ID đơn hàng: #{{ orderId }}</label>
+        </div>
+        <div>
+          <label>Ngày tạo: {{ formatDateTime(createAt) }}</label>
+        </div>
+        <div>
+          <label>Tổng thanh toán: {{ formatMoney(totalPrice) }} VND</label>
+        </div>
         <button @click="startPayment" class="payment-button">Xác nhận thanh toán</button>
       </div>
       
@@ -17,14 +27,68 @@
   </template>
   
   <script>
+  import Loading from './ComLoading.vue';
+  import tools from '@/api/tools';
+  import db from '@/api/db';
   export default {
+    components: {
+      Loading
+    },
     data() {
       return {
+        orderId: '',
+        createAt: '',
+        totalPrice: 0,
         isPaymentInProgress: false,
-        isPaymentSuccess: false
+        isPaymentSuccess: false,
+        isLoaded: false,
       };
     },
+    async mounted() {
+      // check is logged in or not
+      let user = JSON.parse(localStorage.getItem("user"));
+      if (user != null) {
+          user = await db.getUser(user.username, user.password);
+      }
+
+      if (user == null) {
+          localStorage.removeItem('user');
+          this.$router.push('/login');
+          return;
+      }
+      
+      const data = this.$route.query;
+      if ((!data) || (!data.id) || (data.id.length < 1)) {
+        this.$router.push('/');
+        return;
+      }
+
+      this.orderId = data.id;
+
+      const order = await db.getAOrder(user.id, this.orderId);
+      if (!order) {
+        this.$router.push('/');
+        return;
+      }
+
+      if (order.status !== "Đang chờ thanh toán") {
+        this.$router.push('/');
+        return;
+      }
+
+      this.createAt = order.orderAt;
+      this.totalPrice = order.totalPrice;
+
+      await new Promise(resolve => setTimeout(resolve, 500));
+      this.isLoaded = true;
+    },
     methods: {
+      formatDateTime(datetime) {
+        return tools.formatDateTime(datetime);
+      },
+      formatMoney(money) {
+        return tools.formatMoney(money);
+      },
       startPayment() {
         this.isPaymentInProgress = true;
   
@@ -36,7 +100,7 @@
           // Show success message for 2 seconds
           setTimeout(() => {
             // Redirect to success page after 2 seconds
-            window.location.href = '/order';
+            window.location.href = '/payment/verify?id=' + this.orderId;
           }, 2250);
         }, 4000); // Simulate 5 seconds for payment processing
       }
@@ -49,12 +113,55 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 50vh;
     flex-direction: column;
     text-align: center;
     background-color: #f9f9f9;
     font-family: 'Arial', sans-serif;
   }
+
+  .payment-button-container div {
+  margin-bottom: 10px; /* Space between labels */
+}
+
+.payment-button-container label {
+  display: inline-block;
+  font-size: 18px;
+  color: #333;
+  font-weight: bold;
+  margin-right: 10px; /* Space between label text and value */
+  text-transform: uppercase; /* Make label text uppercase */
+}
+
+.payment-button-container div span {
+  font-size: 18px;
+  color: #555;
+  font-weight: normal;
+  background-color: #f0f0f0;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  transition: background-color 0.3s;
+}
+
+.payment-button-container div span:hover {
+  background-color: #e0e0e0;
+}
+
+.payment-button-container label,
+.payment-button-container div span {
+  transition: color 0.3s, background-color 0.3s; /* Smooth color transition */
+}
+
+body.dark-mode .payment-button-container label {
+  color: white; /* White color for dark mode */
+}
+
+body.dark-mode .payment-button-container div span {
+  color: white; /* White color for dark mode */
+  background-color: #444; /* Dark background in dark mode */
+}
   
   body.dark-mode .payment-page {
     background-color: #333;
@@ -65,6 +172,7 @@
   }
   
   .payment-button {
+    margin-top: 20px;
     padding: 18px 36px;
     font-size: 20px;
     font-weight: bold;

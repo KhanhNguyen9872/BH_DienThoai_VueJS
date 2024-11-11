@@ -1,4 +1,5 @@
 <template>
+  <Loading v-if="!this.isLoaded"/>
     <div class="form-container">
       <form @submit.prevent="submitForm">
         <h2>Sửa địa chỉ</h2>
@@ -25,8 +26,12 @@
   </template>
   
   <script>
+  import Loading from './ComLoading.vue';
   import db from '@/api/db';
   export default {
+    components: {
+      Loading
+    },
     data() {
       return {
         addressId: '',
@@ -35,6 +40,7 @@
         address: '',
         phone: '',
         error: '',
+        isLoaded: false,
       };
     },
     async mounted() {
@@ -73,6 +79,8 @@
         this.phone = data.phone;
 
         document.title = "Sửa địa chỉ (ID: " + this.addressId + ") | KhanhStore";
+        await new Promise(resolve => setTimeout(resolve, 300));
+        this.isLoaded = true;
     },
     methods: {
         submitForm() {

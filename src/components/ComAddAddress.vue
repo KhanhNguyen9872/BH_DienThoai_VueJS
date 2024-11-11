@@ -62,7 +62,7 @@
     },
     methods: {
         generateRandomId(length) {
-            return Math.random().toString(36).substring(2, 2 + length);
+            return db.randomStr(length);
         },
         submitForm() {
             if (this.information.length >= 3) {

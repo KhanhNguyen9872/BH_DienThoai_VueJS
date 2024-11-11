@@ -341,125 +341,27 @@
       ]
     }
   ],
-  "users": [
-    {
-      "id": "1376",
-      "username": "md5",
-      "password": "c0c75dc8a2cd8095b3d3ae1c852966e7",
-      "email": "md5@local.com",
-      "firstName": "md5",
-      "lastName": "md5",
-      "lock": false,
-      "information": [
-        {
-          "id": "r9yya4u1ca",
-          "fullName": "Khánh Nguyễn Văn",
-          "address": "477/42 Nguyễn Văn Công",
-          "phone": "0328460695"
-        }
-      ]
-    },
-    {
-      "id": "dfe5",
-      "username": "lockuser",
-      "password": "af13442b864c92431abac3ea2b6f364f",
-      "email": "lockuser@localhost.com",
-      "firstName": "lockuser",
-      "lastName": "lockuser",
-      "lock": true,
-      "information": []
-    },
-    {
-      "id": "7062",
-      "username": "a",
-      "password": "0cc175b9c0f1b6a831c399e269772661",
-      "email": "aspecthjl+roybal@gmail.com",
-      "firstName": "a",
-      "lastName": "a",
-      "lock": false,
-      "information": [
-        {
-          "id": "rn2pokf27u",
-          "fullName": "Khánh Nguyễn Văn",
-          "address": "477/42 Nguyễn Văn Công",
-          "phone": "0328460695"
-        }
-      ]
-    }
-  ],
-  "carts": [
-    {
-      "carts": [
-        {
-          "productId": "3",
-          "quantity": 4,
-          "color": "Tím"
-        },
-        {
-          "productId": "1",
-          "quantity": 1,
-          "color": "Hồng"
-        }
-      ],
-      "id": "1376"
-    },
-    {
-      "carts": [
-        {
-          "productId": "1",
-          "quantity": 2,
-          "color": "Trắng"
-        },
-        {
-          "productId": "1",
-          "quantity": 1,
-          "color": "Đen"
-        },
-        {
-          "productId": "1",
-          "quantity": 1,
-          "color": "Hồng"
-        },
-        {
-          "productId": "4",
-          "quantity": 1,
-          "color": "Xanh dương"
-        },
-        {
-          "productId": "8",
-          "quantity": 5,
-          "color": "Đen"
-        }
-      ],
-      "id": "7062"
-    }
-  ],
-  "orders": [
-    {
-      "id": "1376",
-      "orders": [
-        {
-          "id": "donhang0",
-          "orderAt": 1731239400,
-          "status": "Đang giao hàng",
-          "products": [
-            {
-              "name": "Google Pixel 3",
-              "quantity": 3,
-              "price": "",
-              "totalPrice": ""
-            }
-          ]
-        }
-      ]
-    }
-  ],
+  "users": [],
+  "carts": [],
+  "orders": [],
   "vouchers": [
     {
       "id": "1",
-      "code": "KHANHSTORE",
+      "code": "KHANHSTORE10",
       "discount": 0.1,
-      "count": 100
+      "count": 2000000
+    },
+    {
+      "id": "2",
+      "code": "KHANHSTORE50",
+      "discount": 0.5,
+      "count": 2000000
+    },
+    {
+      "id": "3",
+      "code": "KHANHSTORE100",
+      "discount": 1,
+      "count": 2000000
     }
   ]
 }

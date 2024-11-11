@@ -115,6 +115,7 @@ export default {
     }
   },
   async mounted() {
+    document.title = "Trang chủ | KhanhStore";
     const allProductsResult = await db.getAllProducts();
     this.products = allProductsResult;
     this.filteredProducts = allProductsResult;  
@@ -124,20 +125,17 @@ export default {
       this.filterProducts(this.searchQuery);
     }
 
-    document.title = "Trang chủ | KhanhStore";
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1500));
     this.isLoaded = true;
   },
 
   watch: {
     '$route.query.search'(newSearchQuery) {
-      this.isLoaded = false;
       this.searchQuery = newSearchQuery;
       if (this.searchQuery != '') {
         this.currentPage = 1;
       }
       this.filterProducts(newSearchQuery);
-      this.isLoaded = true;
     }
   }
 }

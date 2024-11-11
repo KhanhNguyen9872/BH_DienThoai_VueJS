@@ -1,4 +1,5 @@
 <template>
+  <Loading v-if="!this.isLoaded"/>
   <!-- Overlay and Popup -->
   <div v-if="isShowPopup" class="overlay">
       <div class="popup">
@@ -17,6 +18,7 @@
     <table class="order-table">
       <thead>
         <tr>
+          <th>STT</th>
           <th>Sản phẩm</th>
           <th>Giá</th>
           <th>Số lượng</th>
@@ -25,7 +27,8 @@
       </thead>
       <tbody>
         <tr v-for="item in cartItems" :key="item.id">
-          <td>{{ item.name }}</td>
+          <td>{{ item.stt }}</td>
+          <td><strong>{{ item.name }}</strong> {{ "(" + item.color + ")" }}</td>
           <td>{{ formatMoney(item.price) }} VND</td>
           <td>{{ item.quantity }}</td>
           <td>{{ formatMoney(item.price * item.quantity) }} VND</td>
@@ -33,31 +36,45 @@
       </tbody>
     </table>
 
+    <hr>
+
     <div class="payment-method">
       <label for="address">Địa chỉ</label>
       <select id="address" v-model="selectedAddress">
         <option v-for="address in addresses" :key="address.id" :value="address">
-          {{ address.name }} - {{ address.details }}
+          {{ address.name }} - {{ address.phone }} | {{ address.address }}
         </option>
       </select>
     </div>
+
+    <hr>
 
     <div class="voucher-section">
       <label for="address">Mã giảm giá</label>
       <input v-model="voucherCode" placeholder="Nhập mã vouncher" />
       <button @click="applyVoucher">Áp dụng</button>
     </div>
-    <p class="result-message" v-if="this.resultVoucher != null && this.resultVoucher.length > 0">{{ this.resultVoucher }}</p>
+
+    <!-- Result message section with flex layout -->
+    <div class="result-message" v-if="this.voucherCodeInfo && this.voucherCodeInfo.length > 0">
+      <span class="voucher-label">{{ this.voucherCodeInfo }}</span>
+      <button class="delete-btn" @click="clearVoucher">Xóa</button>
+    </div>
+    <!-- <p class="result-message" v-if="this.resultVoucher != null && this.resultVoucher.length > 0">{{ this.resultVoucher }}</p> -->
     <p class="error-message" v-if="this.errorVoucher != null && this.errorVoucher.length > 0">{{ this.errorVoucher }}</p>
+
+    <hr>
 
     <div class="payment-method">
       <label for="payment">Phương thức thanh toán</label>
       <select id="payment" v-model="selectedPaymentMethod">
-        <option value="creditCard">Tiền mặt</option>
-        <option value="paypal">Ví MoMo</option>
-        <option value="bankTransfer">Ngân hàng</option>
+        <option value="tienmat">Tiền mặt</option>
+        <option value="momo">Ví MoMo</option>
+        <option value="nganhang">Ngân hàng</option>
       </select>
     </div>
+
+    <hr>
 
     <div class="summary-section">
       <p>Tổng tiền hàng: {{ formatMoney(totalAmount) }} VND</p>
@@ -72,10 +89,14 @@
 </template>
 
 <script>
+import Loading from './ComLoading.vue';
 import db from '@/api/db';
 import tools from '@/api/tools';
 
 export default {
+  components: {
+    Loading
+  },
   beforeRouteLeave(to, from, next) {
     let answer = true;
     if (!this.isSkipPrevent) {
@@ -90,19 +111,21 @@ export default {
   },
   data() {
     return {
+      user: null,
       orderId: '',
       cartItems: [],
       addresses: [],
       selectedAddress: null,
       voucherCode: '',
+      voucherCodeInfo: '',
       discount: 0,
       selectedPaymentMethod: '',
-      resultVoucher: '',
       errorVoucher: '',
       error: '',
       result: '',
       isSkipPrevent: false,
       isShowPopup: false,
+      isLoaded: false,
     };
   },
   async mounted() {
@@ -115,38 +138,49 @@ export default {
     }
 
     if (this.user == null) {
+        this.isSkipPrevent = true;
         localStorage.removeItem('user');
         this.$router.push('/login');
         return;
     }
 
     const selectedItem = JSON.parse(localStorage.getItem('payment'));
+    localStorage.removeItem('payment');
     if (!selectedItem) {
-      this.$router.push('/login');
+      this.isSkipPrevent = true;
+      this.$router.push('/');
       return;
     }
 
     if (this.user.information.length == 0) {
+      await new Promise(resolve => setTimeout(resolve, 300));
+      this.isLoaded = true;
       this.isShowPopup = true;
       return;
     }
 
+    let stt = 0;
     this.cartItems = [];
     selectedItem.forEach((item) => {
+      stt++;
+      item.stt = stt;
       this.cartItems = [ ...this.cartItems, item ];
     });
 
     this.addresses = [];
     this.user.information.forEach(info => {
-      let newAddr = { id: info.id, name: info.fullName, details: info.phone + " | " + info.address };
+      let newAddr = { id: info.id, name: info.fullName, phone: info.phone, address: info.address };
       this.addresses = [ ...this.addresses, newAddr ];
     });
 
     window.addEventListener('beforeunload', this.handleBeforeUnload);
+    await new Promise(resolve => setTimeout(resolve, 300));
+    this.isLoaded = true;
   },
   beforeUnmount() {
-    localStorage.removeItem('payment');
-    window.removeEventListener('beforeunload', this.handleBeforeUnload);
+    if (!this.isSkipPrevent) {
+      window.removeEventListener('beforeunload', this.handleBeforeUnload);
+    }
   },
   computed: {
     totalAmount() {
@@ -160,10 +194,14 @@ export default {
     },
   },
   methods: {
+    clearVoucher() {
+      this.discount = 0;
+      this.voucherCode = '';
+      this.voucherCodeInfo = '';
+    },
     goToProfile() {
       window.removeEventListener('beforeunload', this.handleBeforeUnload);
       this.isSkipPrevent = true;
-      localStorage.removeItem('payment');
       this.$router.push('/profile');
     },
     handleBeforeUnload(event) {
@@ -179,19 +217,57 @@ export default {
       this.errorVoucher = '';
       this.resultVoucher = '';
 
+      if (!this.voucherCode) {
+        this.errorVoucher = 'Mã voucher không được để trống!';
+        return;
+      }
+
+      this.isLoaded = false;
+
+      this.voucherCode = this.voucherCode.toUpperCase();
+
       const v = await db.checkVoucher(this.voucherCode);
+
+      await new Promise(resolve => setTimeout(resolve, 750));
+
+      this.isLoaded = true;
       if (v == undefined || v == null) {
         this.errorVoucher = 'Mã voucher này không tồn tại hoặc đã hết lượt!';
         return;
       }
 
-      if (v.count > 1) {
+      if (v.count > 0) {
         this.discount = +v.discount;
-        this.resultVoucher = 'Đã áp dụng voucher (Giảm ' + (this.discount * 100) + '%)'
+        this.voucherCodeInfo = this.voucherCode + ' (Giảm ' + (this.discount * 100) + '%)'
+        return;
       }
       
     },
-    confirmPayment() {
+    isItemInPayment(item) {
+      if (!item) {
+        return false;
+      }
+
+      const result = this.cartItems.filter((i) => ((i.id === item.productId) && (i.color === item.color)));
+      return (result.length == 0);
+    },
+    async removeItem() {
+      const allCart = await db.getCartItemsByUserId(this.user.id);
+      if (!allCart) {
+        return false;
+      }
+
+      let newCart = allCart.carts.filter((item) => {
+        return this.isItemInPayment(item);
+      });
+      
+      const result = db.updateCarts(this.user.id, newCart);
+      if (!result) {
+        return false;
+      }
+      return true;
+    },
+    async confirmPayment() {
       if (!this.selectedAddress) {
         this.error = 'Vui lòng chọn địa chỉ nhận hàng';
         return;
@@ -202,16 +278,96 @@ export default {
         return;
       }
 
+      this.isLoaded = false;
+
       this.error = '';
-      window.removeEventListener('beforeunload', this.handleBeforeUnload);
+      let newOrderId = db.randomStr(12);
+
+      // create new order
+      let listProduct = [];
+      this.cartItems.forEach((item) => {
+        listProduct = [ ...listProduct, { id: item.id, name: item.name, color: item.color, quantity: item.quantity, price: item.price, totalPrice: (item.price * item.quantity) } ];
+      });
+      
+      let status = 'Đang chờ thanh toán';
+      if (this.selectedPaymentMethod === "Tiền mặt") {
+        status = "Đang chờ xác nhận"
+      }
+
+      let address = { name: this.selectedAddress.name, phone: this.selectedAddress.phone, address: this.selectedAddress.address };
+      let newOrder = { id: newOrderId, orderAt: tools.getCurrentDateTime(), payment: this.selectedPaymentMethod, status: status, address: address, totalPrice: this.finalAmount, products: listProduct };
+
+      if (this.voucherCodeInfo.length > 0) {
+        const resultUseVoucher = await db.useVoucher(this.voucherCode);
+        if (!resultUseVoucher) {
+          this.error = 'Không thể đặt hàng, mã voucher không tồn tại hoặc đã hết lượt!';
+          this.clearVoucher();
+          this.isLoaded = true;
+          return;
+        }
+      }
+
+      // delete product in cart after order
+      const resultRemoveItem = await this.removeItem();
+      if (!resultRemoveItem) {
+        this.error = 'Không thể đặt hàng, giỏ hàng của bạn có vấn đề bất thường!';
+        this.isLoaded = true;
+        return;
+      }
+
+      const data = db.addOrder(this.user.id, newOrder);
+    
+      if (!data) {
+        this.error = 'Không thể tạo đơn hàng này vì lý do lỗi!';
+        this.isLoaded = true;
+        return;
+      }
+
+      // added Order, then decrease quantity in products
+      
+
+      //
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      this.isLoaded = true;
       this.isSkipPrevent = true;
-      this.$router.push('/bank/payment');
+      window.removeEventListener('beforeunload', this.handleBeforeUnload);
+      if (this.selectedPaymentMethod === "tienmat") {
+        this.$router.push({ name: 'OrderCreated', query: { id: newOrderId }});
+      } else {
+        this.$router.push({ name: 'SimulatePayment', query: { id: newOrderId }});
+      }
     },
   },
 };
 </script>
 
 <style scoped>
+hr {
+  margin-top: 20px; 
+  margin-bottom: 15px;
+}
+
+.delete-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: darkred;
+}
+
+.voucher-label {
+  font-size: 14px;
+  color: #333;
+}
+
 .overlay {
     position: fixed;
     top: 0;
@@ -288,6 +444,8 @@ export default {
   }
   
 .result-message {
+    justify-content: space-between; /* Space between label and delete button */
+    align-items: center; /* Vertically center content */
     color: #4CAF50; /* Green color to indicate success */
     background-color: #e7f5e9; /* Light green background for better visibility */
     border: 1px solid #4CAF50; /* Green border to match the text color */
@@ -297,6 +455,10 @@ export default {
     font-size: 14px; /* Font size */
     display: flex; /* Optional: Flexbox for better alignment */
     align-items: center; /* Center vertically */
+}
+
+.result-message span {
+  color: #4CAF50; /* Green color to indicate success */
 }
 
 .error-message {
@@ -391,7 +553,7 @@ h2 {
   justify-content: center;
   font-size: 1.2rem;
   width: 220px;
-  color: #000000;
+  color: #333;
   font-weight: bold;
   display: block;
   margin-bottom: 5px;

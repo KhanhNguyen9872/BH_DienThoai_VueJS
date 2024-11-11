@@ -15,7 +15,9 @@ import ComEditAddress from "../components/ComEditAddress.vue";
 import ComOrder from "@/components/ComOrder.vue";
 import ComPayment from "@/components/ComPayment.vue";
 import ComSimulatePayment from "@/components/ComSimulatePayment.vue";
-import ComLoading from "@/components/ComLoading.vue";
+import ComOrderCreated from "@/components/ComOrderCreated.vue";
+import ComPaymentCheck from "@/components/ComPaymentCheck.vue";
+
 const routes=[
     {
         path:"/",
@@ -120,10 +122,16 @@ const routes=[
         meta: { title: 'Ngân hàng SuperBank' },
     },
     {
-        path:"/loading",
-        name:"Loading",
-        component:ComLoading,
-        meta: { title: 'Loading' },
+        path:"/order/create",
+        name:"OrderCreated",
+        component:ComOrderCreated,
+        meta: { title: 'Thanh toán thành công' },
+    },
+    {
+        path:"/payment/verify",
+        name:"PaymentCheck",
+        component:ComPaymentCheck,
+        meta: { title: 'Kiểm tra đơn hàng' },
     },
     {
         path: '/:pathMatch(.*)*',

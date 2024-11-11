@@ -274,13 +274,20 @@
   }
   
   /* Mobile Responsiveness */
-  @media (max-width: 840px) {
+  @media (max-width: 850px) {
     .header {
       flex-direction: column;
     }
     .header-left, .header-right {
       justify-content: center;
       width: 100%;
+    }
+    .theme-toggle-button {
+      padding: 5px;
+    }
+    .header-left {
+      margin-top: 10px;
+      margin-bottom: 5px;
     }
   }
   

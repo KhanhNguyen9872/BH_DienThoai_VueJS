@@ -4,8 +4,8 @@
       <div class="popup">
         <h2 class="popup-title">{{ popupMessage }}</h2>
         <div class="popup-buttons">
-          <button @click="handleYes" class="btn btn-yes">Xóa</button>
-          <button @click="handleNo" class="btn btn-no">Hủy</button>
+          <button @click="handleYes" class="btn btn-no">Xóa</button>
+          <button @click="handleNo" class="btn btn-yes">Không</button>
         </div>
       </div>
     </div>
@@ -161,7 +161,7 @@ export default {
             this.information = [ ...this.information, info ];
         });
 
-        await new Promise(resolve => setTimeout(resolve, 250));
+        await new Promise(resolve => setTimeout(resolve, 300));
         this.isLoaded = true;
     },
     computed: {
@@ -229,7 +229,6 @@ export default {
         
         // Handle Yes button click
         handleYes() {
-            this.popupResult = true;  // Set result to true
             this.showPopup = false;   // Hide the popup
 
             this.information = this.information.filter((info) => info.id !== this.selectedId);
@@ -244,7 +243,6 @@ export default {
     
         // Handle No button click
         handleNo() {
-            this.popupResult = false;  // Set result to false
             this.showPopup = false;    // Hide the popup
         },
         deleteAddress(id) {
@@ -422,7 +420,7 @@ input[type="password"] {
 }
 
 body.dark-mode .popup {
-    background-color: #686868;
+    background-color: #333;
 }
 
 @keyframes slideUp {

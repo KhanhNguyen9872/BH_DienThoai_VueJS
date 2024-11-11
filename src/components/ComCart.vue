@@ -7,12 +7,12 @@
             <!-- Cart Items -->
             <div v-if="this.cartItems.length > 0">
                 <div class="cart-item">
-                    <input type="checkbox" style="margin-left: 25px;" v-model="isCheckedAll" @change="checkedAll()">
+                    <input type="checkbox" style="" v-model="isCheckedAll" @change="checkedAll()">
                 </div>
 
                 <div v-for="(item) in this.cartItems" :key="item.id">
                     <div class="cart-item">
-                        <input type="checkbox" style="margin-left: 25px; margin-right: 25px;" v-model="item.selected" :disabled="item.isDisabled" @change="calcTotalPrice()">
+                        <input type="checkbox" style="" v-model="item.selected" :disabled="item.isDisabled" @change="handleClickCheckbox()">
                         <div class="item-details">
                             <img :src="item.img" :alt="item.name">
                             <div class="item-info">
@@ -46,7 +46,12 @@
                     <button class="checkout-btn" @click="proceedToCheckout()">Thanh toán</button>
                 </div>
             </div>
-            <div v-else class="no-items">Chưa có hàng</div>
+            <div v-else class="product-not-found">
+                <div class="icon">
+                    <i class="fas fa-box-open"></i>
+                </div>
+                <p>Chưa có hàng</p>
+            </div>
         </div>
     </div>
 </template>
@@ -62,6 +67,7 @@ export default {
     },
     data(){
         return{
+            user: null,
             cartItems: [],
             selectedItem: 0,
             totalPrice: 0,
@@ -171,7 +177,7 @@ export default {
             this.saveCarts();
         }
 
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, 750));
         this.isLoaded = true;
     },
     methods: {
@@ -181,6 +187,16 @@ export default {
                     item.selected = this.isCheckedAll;
                 }
             })
+            this.calcTotalPrice();
+        },
+        handleClickCheckbox() {
+            let result = true;
+            this.cartItems.forEach((item) => {
+                if (!item.selected) {
+                    result = false;
+                }
+            })
+            this.isCheckedAll = result;
             this.calcTotalPrice();
         },
         calcTotalPrice() {
@@ -267,7 +283,7 @@ export default {
                 let selectedItem = [];
                 this.cartItems.forEach((item) => {
                     if (item.selected) {
-                        selectedItem = [ ...selectedItem, item ];
+                        selectedItem = [ ...selectedItem, { id: item.id, name: item.name, quantity: item.quantity, price: item.price, img: item.img, color: item.color } ];
                     }
                 })
 
@@ -284,16 +300,47 @@ export default {
   <style scoped>
 @import '../assets/css/font-awesome.css';
 
-.no-items {
-    font-size: 20px;
-    font-weight: bold;
-    color: #777;
-    text-align: center;
-    margin-top: 50px;
+.product-not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 30vh;
+  background-color: #f7f9fc;
+  padding: 2rem;
+  color: #333;
+  font-family: Arial, sans-serif;
 }
 
-body.dark-mode .no-items {
-    color: #000000;
+body.dark-mode .product-not-found {
+    background-color: #333;
+}
+
+.product-not-found .icon {
+  font-size: 4rem;
+  color: #ff6b6b;
+  margin-bottom: 1rem;
+}
+
+.product-not-found h2 {
+  font-size: 2rem;
+  color: #444;
+  margin: 0.5rem 0;
+}
+
+body.dark-mode .product-not-found h2 {
+    color: #ffffff;
+}
+
+.product-not-found p {
+  color: #666;
+  font-size: 1rem;
+  max-width: 400px;
+}
+
+body.dark-mode .product-not-found p {
+    color: #d3d3d3;
 }
 
 .center {
@@ -357,6 +404,8 @@ body.dark-mode .cart-item:hover {
     transform: scale(1.5);
     cursor: pointer;
     margin-right: 10px;
+    margin-right: 25px;
+    margin-left: 25px;
 }
 
 /* Item details */
@@ -588,11 +637,12 @@ body.dark-mode .total-price {
 
     .cart-title {
         font-size: 22px; /* Smaller title font size */
+        justify-content: center;
     }
 
     .cart-item {
         flex-direction: column; /* Stack the items vertically */
-        align-items: flex-start; /* Align items to the left */
+        align-items: center; /* Align items to the left */
     }
 
     .cart-item img {
@@ -619,6 +669,16 @@ body.dark-mode .total-price {
     .total-price {
         font-size: 20px; /* Smaller total price */
     }
+
+    .cart-item input[type="checkbox"] {
+        margin-bottom: 20px;
+    }
+
+    .quantity-control {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
 }
 
   </style>

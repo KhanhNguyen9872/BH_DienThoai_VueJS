@@ -6,7 +6,7 @@ export default {
     getAPI_URL() {
         return API_URL;
     },
-    generateRandom(length) {
+    randomStr(length) {
       return Math.random().toString(36).substring(2, 2 + length);
     },
   // Get all products
@@ -25,6 +25,9 @@ export default {
 
   // Get a single product by ID
   async getProduct(productId) {
+    if (!productId) {
+      return null;
+    }
     try {
       const response = await fetch(`${API_URL}/products/?id=${productId}`);
       if (!response.ok) throw new Error(`Failed to fetch product with ID ${productId}`);
@@ -38,6 +41,9 @@ export default {
 
   // Modify a product by ID
   async modifyProduct(productId, updatedProduct) {
+    if ((!productId) || (!updatedProduct)) {
+      return null;
+    }
     try {
       const response = await fetch(`${API_URL}/products/${productId}`, {
         method: "PUT",
@@ -56,7 +62,7 @@ export default {
 
   // Add a new user
   async addUser(newUser) {
-    if (newUser.password == undefined) {
+    if ((!newUser) || (newUser.password == undefined)) {
       return null;
     }
 
@@ -77,8 +83,11 @@ export default {
     }
   },
 
-  // Add a new user
+  // Create new cart by userId
   async createCart(userId) {
+    if (!userId) {
+      return null;
+    }
     try {
       const cartData = {
         id: userId,
@@ -95,10 +104,14 @@ export default {
       await response.json();
     } catch (error) {
       console.error("Error creating cart:", error);
+      return null;
     }
   },
 
   async isExistUser(username) {
+    if (!username) {
+      return null;
+    }
     try {
       const response = await fetch(`${API_URL}/users?username=${username}`);
       if (!response.ok) throw new Error(`Failed to fetch user`);
@@ -114,6 +127,9 @@ export default {
   },
 
   async resetPasswordUser(username, email) {
+    if ((!username) || (!email)) {
+      return null;
+    }
     try {
       const response = await fetch(`${API_URL}/users?username=${username}&email=${email}`);
       if (!response.ok) throw new Error(`Failed to fetch user`);
@@ -124,7 +140,6 @@ export default {
 
       let password = this.generateRandom(8);
       if (data[0].password != undefined) {
-        console.log(data[0]);
         data[0].password = password;
         this.updateUser(data[0]);
       }
@@ -137,7 +152,7 @@ export default {
 
   // Get a user by username
   async getUser(username, password) {
-    if (password == undefined || password == null || password.length < 1) {
+    if ((!username) || (!password)) {
       return null;
     }
     try {
@@ -148,11 +163,12 @@ export default {
       return users.length > 0 ? users[0] : null; // Return the first user found or null if none
     } catch (error) {
       console.error(error);
+      return null;
     }
   },
 
   async loginUser(username, password) {
-    if (password == undefined || password == null || password.length < 1) {
+    if ((!username) || (!password)) {
       return null;
     }
     password = CryptoJS.MD5(password).toString();
@@ -164,11 +180,15 @@ export default {
       return users.length > 0 ? users[0] : null; // Return the first user found or null if none
     } catch (error) {
       console.error(error);
+      return null;
     }
   },
 
   // Add a product to the cart
   async addProductToCart(userId, productId, quantity) {
+    if ((!userId) || (!productId) || (!quantity)) {
+      return null;
+    }
     try {
       const response = await fetch(`${API_URL}/carts`, {
         method: "POST",
@@ -185,10 +205,14 @@ export default {
       return await response.json();
     } catch (error) {
       console.error("Error adding product to cart:", error);
+      return null;
     }
   },
 
   async updateCarts(id, updatedCarts) {
+    if ((!id) || (!updatedCarts)) {
+      return null;
+    }
     try {
       const response = await fetch(`${API_URL}/carts/${id}`, {
         method: "PUT",
@@ -203,11 +227,15 @@ export default {
       return await response.json();
     } catch (error) {
       console.error(error);
+      return null;
     }
   },
 
   // Delete a product from the cart by ID
   async deleteProductFromCart(cartId) {
+    if (!cartId) {
+      return null;
+    }
     try {
       const response = await fetch(`${API_URL}/carts/${cartId}`, {
         method: "DELETE",
@@ -216,11 +244,15 @@ export default {
       return await response.json(); // Usually, it will return an empty object
     } catch (error) {
       console.error(error);
+      return null;
     }
   },
 
   // Get a cart by UserID
   async getCartItemsByUserId(userId) {
+    if (!userId) {
+      return null;
+    }
     try {
       const response = await fetch(`${API_URL}/carts?id=${userId}`);
       if (!response.ok) throw new Error(`Failed to fetch cart items for user ID ${userId}`);
@@ -228,10 +260,14 @@ export default {
       return data[0];
     } catch (error) {
       console.error(error);
+      return null;
     }
   },
 
   async getAllAddress(userId) {
+    if (!userId) {
+      return null;
+    }
     try {
       const response = await fetch(`${API_URL}/users?id=${userId}`);
       if (!response.ok) throw new Error(`Failed to fetch information for user ID ${userId}`);
@@ -239,11 +275,15 @@ export default {
       return data[0].information;
     } catch (error) {
       console.error(error);
+      return null;
     }
   },
 
   // Add new Address by UserID
   async updateAddress(userId, address) {
+    if ((!userId) || (!address)) {
+      return null;
+    }
     try {
       const response = await fetch(`${API_URL}/users/${userId}`, {
         method: "PATCH",
@@ -258,6 +298,7 @@ export default {
       return await response.json();
     } catch (error) {
       console.error(error);
+      return null;
     }
   },
 
@@ -277,18 +318,261 @@ export default {
       return await response.json(); // Return the updated user object
     } catch (error) {
       console.error("Error updating user:", error);
+      return null;
     }
   },
   
   // check voucher
   async checkVoucher(voucherCode) {
+    if (!voucherCode) {
+      return null;
+    }
     try {
       const response = await fetch(`${API_URL}/vouchers/?code=${voucherCode}`);
       if (!response.ok) throw new Error(`Failed to fetch voucher with code ${voucherCode}`);
       const data = await response.json();
+      if (!data[0]) {
+        return null;
+      }
+      if (data[0].count < 1) {
+        return null;
+      }
       return data[0];
     } catch (error) {
       console.error(error);
+      return null;
+    }
+  },
+
+  async updateVoucher(updatedVoucher) {
+    const voucherId = updatedVoucher.id;
+    try {
+      const response = await fetch(`${API_URL}/vouchers/${voucherId}`, {
+        method: "PATCH", // Use PATCH method for updating
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedVoucher),
+      });
+  
+      if (!response.ok) throw new Error("Failed to update user");
+      return await response.json(); // Return the updated user object
+    } catch (error) {
+      console.error("Error updating user:", error);
+      return null;
+    }
+  },
+
+  // using voucher
+  async useVoucher(voucherCode) {
+    if (!voucherCode) {
+      return false;
+    }
+    try {
+      let voucher = await this.checkVoucher(voucherCode);
+      if (!voucher) {
+        return false;
+      }
+      if (voucher.count > 0) {
+        voucher.count--;
+        this.updateVoucher(voucher);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  },
+
+  // Create order by userId
+  async createOrder(userId) {
+    if (!userId) {
+      return null;
+    }
+    try {
+      const orderData = {
+        id: userId,
+        orders: []
+      };
+      const response = await fetch(`${API_URL}/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+      if (!response.ok) throw new Error("Failed to create cart");
+      await response.json();
+    } catch (error) {
+      console.error("Error creating cart:", error);
+      return null;
+    }
+  },
+
+  // get Order by userId
+  async getAllOrder(userId) {
+    if (!userId) {
+      return null;
+    }
+    try {
+      const response = await fetch(`${API_URL}/orders?id=${userId}`);
+      if (!response.ok) throw new Error(`Failed to fetch information for user ID ${userId}`);
+      const data = await response.json();
+      if (!data[0]) {
+        await this.createOrder(userId);
+        return [];
+      }
+      return data[0].orders;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  },
+
+  // get a order by orderId
+  async getAOrder(userId, orderId) {
+    if (!userId) {
+      return null;
+    }
+    try {
+      const data = await this.getAllOrder(userId);
+      if (!data) {
+        return null;
+      }
+      
+      const order = data.filter((order) => order.id === orderId);
+      if (!order) {
+        return null;
+      }
+
+      return order[0];
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  },
+
+  // Add update Order by UserID
+  async updateOrders(userId, orders) {
+    if ((!userId) || (!orders)) {
+      return null;
+    }
+    try {
+      const response = await fetch(`${API_URL}/orders/${userId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orders: orders
+        }),
+      });
+      if (!response.ok) throw new Error(`Failed to modify orders with ID ${userId}`);
+      return await response.json();
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  },
+
+  // cancel a order by orderId
+  async cancelOrder(userId, orderId) {
+    if (!userId) {
+      return false;
+    }
+    try {
+      const data = await this.getAllOrder(userId);
+      if (!data) {
+        return false;
+      }
+      
+      const order = data.filter((order) => order.id === orderId);
+      if (!order) {
+        return false;
+      }
+
+      data.forEach((order) => {
+        if (order.id === orderId) {
+          order.status = "Đã hủy";
+          return;
+        }
+      });
+
+      const result = await this.updateOrders(userId, data);
+      if (!result) {
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  },
+
+  async successPaymentOrder(userId, orderId) {
+    if (!userId) {
+      return false;
+    }
+    try {
+      const data = await this.getAllOrder(userId);
+      if (!data) {
+        return false;
+      }
+      
+      const order = data.filter((order) => order.id === orderId);
+      if (!order) {
+        return false;
+      }
+
+      data.forEach((order) => {
+        if (order.id === orderId) {
+          order.status = "Đang chờ xác nhận";
+          return;
+        }
+      });
+
+      const result = await this.updateOrders(userId, data);
+      if (!result) {
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  },
+
+  // Add new order by userId
+  async addOrder(userId, newOrder) {
+    if ((!userId) || (!newOrder)) {
+      return null;
+    }
+
+    const allOrder = await this.getAllOrder(userId);
+    if (!allOrder) {
+      return null;
+    }
+
+    allOrder.push(newOrder);
+
+    try {
+      const response = await fetch(`${API_URL}/orders/${userId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orders: allOrder
+        }),
+      });
+      if (!response.ok) throw new Error(`Failed to modify cart item with ID ${userId}`);
+      return await response.json();
+    } catch (error) {
+      console.error(error);
+      return null;
     }
   },
 };
