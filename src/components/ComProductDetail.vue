@@ -106,6 +106,7 @@ export default {
         const data = await db.getProduct(id);
         if (data == undefined) {
             this.isNotFoundProduct = true;
+            this.isLoaded = true;
             return;
         }
 

@@ -138,7 +138,7 @@ export default {
         return null;
       }
 
-      let password = this.generateRandom(8);
+      let password = this.randomStr(8);
       if (data[0].password != undefined) {
         data[0].password = password;
         this.updateUser(data[0]);

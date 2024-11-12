@@ -177,6 +177,7 @@ export default {
             this.isModalOpen = false; 
         },
         logOut() {
+            this.isModalOpen = false;
             localStorage.removeItem('user');
             window.location.href = '/';
         },
