@@ -23,7 +23,7 @@
   
         <!-- Right side user information -->
         <div class="header-right">
-          <div v-if="user == null">
+          <div v-if="user == null" class="user-info">
             <router-link to="/login" class="button">Đăng nhập</router-link>
           </div>
           <div v-else class="user-info">
@@ -260,7 +260,6 @@
   .button {
     background-color: #4CAF50;
     color: white;
-    margin-top: 20px;
     padding: 10px 20px;
     text-decoration: none;
     border: none;
@@ -286,6 +285,10 @@
       padding: 5px;
     }
     .header-left {
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+    .button {
       margin-top: 10px;
       margin-bottom: 5px;
     }

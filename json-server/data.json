@@ -9,13 +9,15 @@
           "name": "Đen",
           "img": "/img/google-pixel-3-black.jpg",
           "quantity": 3,
-          "money": 3000000
+          "money": 3000000,
+          "moneyDiscount": 2700000
         },
         {
           "name": "Trắng",
           "img": "/img/google-pixel-3-white.jpg",
           "quantity": 2,
-          "money": 3100000
+          "money": 3100000,
+          "moneyDiscount": 2900000
         },
         {
           "name": "Hồng",
@@ -34,7 +36,8 @@
           "name": "Đen",
           "img": "/img/iphone-12-black.webp",
           "quantity": 2,
-          "money": 25000000
+          "money": 25000000,
+          "moneyDiscount": 24000000
         },
         {
           "name": "Xanh dương",
@@ -65,7 +68,8 @@
           "name": "Tím",
           "img": "/img/samsung-s21-pink.jpg",
           "quantity": 4,
-          "money": 22000000
+          "money": 22000000,
+          "moneyDiscount": 21000000
         }
       ]
     },
@@ -78,7 +82,8 @@
           "name": "Xanh dương",
           "img": "/img/oneplus-9-blue.png",
           "quantity": 4,
-          "money": 20000000
+          "money": 20000000,
+          "moneyDiscount": 19000000
         },
         {
           "name": "Bạc",
@@ -103,7 +108,8 @@
           "name": "Xanh dương",
           "img": "/img/xiaomi-mi11-blue.jpg",
           "quantity": 6,
-          "money": 18000000
+          "money": 18000000,
+          "moneyDiscount": 17000000
         }
       ]
     },
@@ -122,7 +128,8 @@
           "name": "Xanh dương",
           "img": "/img/oppo-find-x3-blue.jpg",
           "quantity": 5,
-          "money": 21000000
+          "money": 21000000,
+          "moneyDiscount": 20000000
         }
       ]
     },
@@ -141,7 +148,8 @@
           "name": "Bạc",
           "img": "/img/vivo-x60-sliver.jpg",
           "quantity": 6,
-          "money": 17000000
+          "money": 17000000,
+          "moneyDiscount": 16000000
         }
       ]
     },
@@ -153,7 +161,7 @@
         {
           "name": "Đen",
           "img": "/img/google-pixel-6-black.jpg",
-          "quantity": 5,
+          "quantity": 7,
           "money": 27000000
         },
         {
@@ -173,7 +181,8 @@
           "name": "Vàng",
           "img": "/img/realme-gt-yellow.jpg",
           "quantity": 3,
-          "money": 15000000
+          "money": 15000000,
+          "moneyDiscount": 14500000
         },
         {
           "name": "Xanh dương",
@@ -217,7 +226,8 @@
           "name": "Xanh dương",
           "img": "/img/iphone-11-blue.jpg",
           "quantity": 2,
-          "money": 16000000
+          "money": 16000000,
+          "moneyDiscount": 15500000
         },
         {
           "name": "Trắng",
@@ -242,7 +252,8 @@
           "name": "Đen",
           "img": "/img/samsung-a52-black.jpg",
           "quantity": 8,
-          "money": 9000000
+          "money": 9000000,
+          "moneyDiscount": 8500000
         }
       ]
     },
@@ -261,7 +272,8 @@
           "name": "Đen",
           "img": "/img/poco-f3-black.jpg",
           "quantity": 2,
-          "money": 7500000
+          "money": 7500000,
+          "moneyDiscount": 7300000
         }
       ]
     },
@@ -291,52 +303,16 @@
       "color": [
         {
           "name": "Trắng",
-          "img": "/img/motorola-edge-20-white.png",
-          "quantity": 0,
-          "money": 14000000
+          "img": "/img/motorola-edge-20-white.jpg",
+          "quantity": 5,
+          "money": 20000000,
+          "moneyDiscount": 19000000
         },
         {
-          "name": "Xanh dương",
-          "img": "/img/motorola-edge-20-blue.jpg",
-          "quantity": 1,
-          "money": 14000000
-        }
-      ]
-    },
-    {
-      "id": "16",
-      "name": "Xiaomi Mi 11 Lite 5G",
-      "description": "mid-range phone",
-      "color": [
-        {
-          "name": "Đen",
-          "img": "/img/xiaomi-mi11-lite-black.jpg",
-          "quantity": 3,
-          "money": 14000000
-        },
-        {
-          "name": "Trắng",
-          "img": "/img/xiaomi-mi11-lite-white.webp",
-          "quantity": 4,
-          "money": 14500000
-        },
-        {
-          "name": "Hồng",
-          "img": "/img/xiaomi-mi11-lite-pink.jpg",
-          "quantity": 1,
-          "money": 14000000
-        },
-        {
-          "name": "Xanh dương",
-          "img": "/img/xiaomi-mi11-lite-blue.webp",
-          "quantity": 4,
-          "money": 15000000
-        },
-        {
-          "name": "Vàng",
-          "img": "/img/xiaomi-mi11-lite-yellow.png",
-          "quantity": 2,
-          "money": 16000000
+          "name": "Xám",
+          "img": "/img/motorola-edge-20-gray.webp",
+          "quantity": 7,
+          "money": 20000000
         }
       ]
     }
@@ -355,7 +331,7 @@
       "id": "2",
       "code": "KHANHSTORE50",
       "discount": 0.5,
-      "count": 2000000
+      "count": 1999999
     },
     {
       "id": "3",

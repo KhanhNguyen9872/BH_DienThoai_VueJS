@@ -46,7 +46,7 @@
 
         db.successPaymentOrder(user.id, this.orderId);
         setTimeout(() => {
-            window.location.href = '/order';
+          this.$router.push({ name: 'PaymentSuccess', query: { id: this.orderId }});
         }, 4000);
     },
   };

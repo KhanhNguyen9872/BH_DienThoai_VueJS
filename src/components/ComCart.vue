@@ -14,10 +14,13 @@
                     <div class="cart-item">
                         <input type="checkbox" style="" v-model="item.selected" :disabled="item.isDisabled" @change="handleClickCheckbox()">
                         <div class="item-details">
-                            <img :src="item.img" :alt="item.name">
+                            <img :src="item.img" :alt="item.name" @click="handleClickName(item.id)">
                             <div class="item-info">
-                                <h4>{{ item.name }}</h4>
-                                <p style="text-align: left;">Giá: {{ formatMoney(item.price) }} VND</p>
+                                <h4 @click="handleClickName(item.id)">{{ item.name }}</h4>
+                                <div v-if="item.totalP !== item.price">
+                                    <p style="text-align: left;">Giá: {{ formatMoney(item.price) }} VND <b style="color: red">(Đã giảm)</b></p>
+                                </div>
+                                <p v-else style="text-align: left;">Giá: {{ formatMoney(item.price) }} VND</p>
 
                                 <div class="color-select">
                                     <label for="color">Màu sắc: </label>
@@ -43,7 +46,11 @@
                 <div class="cart-summary">
                     <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
                     <div class="total-price">Tổng tiền: {{ formatMoney(totalPrice) }} VND</div>
-                    <button class="checkout-btn" @click="proceedToCheckout()">Thanh toán</button>
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                        <button style="margin-right: 20px;" class="removeitem-btn" @click="proceedRemoteItem()">Xóa mặt hàng</button>
+                        <button class="checkout-btn" @click="proceedToCheckout()">Thanh toán</button>
+                    </div>
+                    
                 </div>
             </div>
             <div v-else class="product-not-found">
@@ -152,13 +159,14 @@ export default {
                     isDisabled = true;
                     errorMsg = '[' + data.name + ' - ' + color.name + '] Sản phẩm này đã hết hàng!';
                 }
-
+                
                 cart = { 
                     ...cart, 
                     id: data.id, 
                     name: data.name, 
                     img: API_URL + color.img, 
-                    price: color.money, 
+                    totalP: color.money,
+                    price: color.moneyDiscount || color.money, 
                     isDisabled: isDisabled, 
                     errorMsg: errorMsg, 
                     isDisabledDecrease: isDisabledDecrease, 
@@ -181,6 +189,9 @@ export default {
         this.isLoaded = true;
     },
     methods: {
+        handleClickName(id) {
+            this.$router.push(`/product/${id}`);
+        },
         checkedAll() {
             this.cartItems.forEach((item) => {
                 if (!item.isDisabled) {
@@ -225,6 +236,13 @@ export default {
         removeItem(itemId, color) {
             this.cartItems = this.cartItems.filter((i) => {
                 return (i.productId == itemId && color == i.color) === false;
+            });
+            
+            this.saveCarts();
+        },
+        proceedRemoteItem() {
+            this.cartItems = this.cartItems.filter((i) => {
+                return i.selected === false;
             });
             
             this.saveCarts();
@@ -591,6 +609,23 @@ body.dark-mode .summary-title {
 }
 body.dark-mode .total-price {
     color: #37e860;
+}
+
+.removeitem-btn {
+    padding: 12px 25px;
+    background-color: #a72828;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.removeitem-btn:hover {
+    background-color: #882121;
 }
 
 /* Checkout button */

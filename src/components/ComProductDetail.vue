@@ -32,7 +32,14 @@
                 </div>
                 <div class="product-info">
                     <h2>{{ product.name }}</h2>
-                    <h4>Giá: {{ this.formatMoney(currentMoney) }} VND</h4>
+                    
+                    <div v-if="this.selectedColor !== null && this.totalM !== this.currentMoney">
+                        <h4 style="text-decoration: line-through;">Giá: {{ this.formatMoney(totalM) }} VND</h4>
+                        <h4 style="color: red">Giảm còn: {{ this.formatMoney(currentMoney) }} VND</h4>
+                    </div>
+                    <div v-else>
+                        <h4 v-if="this.selectedColor !== null">Giá: {{ this.formatMoney(currentMoney) }} VND</h4>
+                    </div>
                     <h4 v-if="this.selectedColor !== null">Hiện còn: {{ this.product.quantity || 0 }} sản phẩm</h4>
 
                     <div class="color-selector">
@@ -90,6 +97,7 @@ export default {
             currentQuantity: 0,
 
             currentImg: null,
+            totalM: 0,
             currentMoney: 0,
             userId: -1,
             isLoggedIn: false,
@@ -114,7 +122,7 @@ export default {
 
         // format money
         this.updateImage(this.product.color[0].img);
-        this.updateMoney(this.product.color[0].money);
+        this.updateMoney(this.product.color[0].money, null);
 
         // is logged in
         const user = JSON.parse(localStorage.getItem("user"));
@@ -159,13 +167,14 @@ export default {
                 this.currentQuantity = 0;
             }
             this.updateImage(color.img);
-            this.updateMoney(color.money);
+            this.updateMoney(color.money, color.moneyDiscount);
         },
         updateImage(image) {
             this.currentImg = this.getURLImage(image);
         },
-        updateMoney(money) {
-            this.currentMoney = money;
+        updateMoney(money, moneyDiscount) {
+            this.totalM = money;
+            this.currentMoney = moneyDiscount || money;
         },
         getColor(color) {
             return tools.getColor(color);

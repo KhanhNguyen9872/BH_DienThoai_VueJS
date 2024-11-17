@@ -290,7 +290,7 @@ export default {
       });
       
       let status = 'Đang chờ thanh toán';
-      if (this.selectedPaymentMethod === "Tiền mặt") {
+      if (this.selectedPaymentMethod === "tienmat") {
         status = "Đang chờ xác nhận"
       }
 
@@ -310,7 +310,7 @@ export default {
       // delete product in cart after order
       const resultRemoveItem = await this.removeItem();
       if (!resultRemoveItem) {
-        this.error = 'Không thể đặt hàng, giỏ hàng của bạn có vấn đề bất thường!';
+        this.error = 'Không thể đặt hàng, giỏ hàng của bạn có dấu hiệu bất thường!';
         this.isLoaded = true;
         return;
       }
@@ -324,7 +324,18 @@ export default {
       }
 
       // added Order, then decrease quantity in products
-      
+      const products = await db.getAllProducts();
+      console.log(products);
+
+      for (const i of this.cartItems) {
+        await (async () => { 
+          const p = products.filter((j) => i.id === j.id);
+          const pColor = p[0].color.filter((j) => j.name === i.color);
+          pColor[0].quantity = pColor[0].quantity - i.quantity;
+          
+          await db.modifyProduct(i.id, p[0]);
+        })();
+      }
 
       //
       await new Promise(resolve => setTimeout(resolve, 1000));

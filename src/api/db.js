@@ -492,12 +492,30 @@ export default {
         return false;
       }
 
-      data.forEach((order) => {
-        if (order.id === orderId) {
-          order.status = "Đã hủy";
-          return;
-        }
-      });
+      const products = await this.getAllProducts();
+      if (!products) {
+        return false;
+      }
+
+      for (const order of data) {
+        await (async () => { 
+          if (order.id === orderId) {
+            order.status = "Đã hủy";
+
+            for (const i of order.products) {
+              await (async () => { 
+                const p = products.filter((j) => i.id === j.id);
+                const pColor = p[0].color.filter((j) => j.name === i.color);
+                pColor[0].quantity = pColor[0].quantity + i.quantity;
+                
+                await this.modifyProduct(i.id, p[0]);
+              })();
+            }
+            
+            return;
+          }
+        })();
+      }
 
       const result = await this.updateOrders(userId, data);
       if (!result) {
