@@ -2,10 +2,10 @@
     <footer>
          <div class="footer-container">
              <div class="footer-links">
-                 <a href="#">Home</a>
-                 <a href="#">About</a>
-                 <a href="#">Services</a>
-                 <a href="#">Contact</a>
+                <router-link to="/" class="a">Trang chủ</router-link>
+                <router-link to="/product" class="a">Sản phẩm</router-link>
+                <router-link to="/about" class="a">Giới thiệu</router-link>
+                <router-link to="/contact" class="a">Liên hệ</router-link>
              </div>
              <div class="footer-social">
                  <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>

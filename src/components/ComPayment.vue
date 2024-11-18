@@ -325,7 +325,6 @@ export default {
 
       // added Order, then decrease quantity in products
       const products = await db.getAllProducts();
-      console.log(products);
 
       for (const i of this.cartItems) {
         await (async () => { 

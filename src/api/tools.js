@@ -14,6 +14,16 @@ export default {
 
         return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
     },
+    getUniqueRandomNumbers(min, max, count) {
+        const result = new Set();
+      
+        while (result.size < count) {
+          const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+          result.add(randomNumber); // Add the random number to the Set (duplicates won't be added)
+        }
+      
+        return [...result]; // Convert Set to an array
+    },
     getCurrentDateTime() {
         const now = new Date();
         const year = now.getFullYear();

@@ -4,6 +4,9 @@
       "id": "1",
       "name": "Google Pixel 3",
       "description": "a pixel 3 phone",
+      "favorite": [
+        "dbcf"
+      ],
       "color": [
         {
           "name": "Đen",
@@ -31,6 +34,7 @@
       "id": "2",
       "name": "iPhone 12",
       "description": "latest iPhone model",
+      "favorite": [],
       "color": [
         {
           "name": "Đen",
@@ -57,6 +61,10 @@
       "id": "3",
       "name": "Samsung Galaxy S21",
       "description": "high-end Samsung phone",
+      "favorite": [
+        "dbcf",
+        "2029"
+      ],
       "color": [
         {
           "name": "Xám",
@@ -77,6 +85,7 @@
       "id": "4",
       "name": "OnePlus 9",
       "description": "premium OnePlus device",
+      "favorite": [],
       "color": [
         {
           "name": "Xanh dương",
@@ -97,6 +106,7 @@
       "id": "5",
       "name": "Xiaomi Mi 11",
       "description": "flagship Xiaomi model",
+      "favorite": [],
       "color": [
         {
           "name": "Đen",
@@ -117,6 +127,7 @@
       "id": "6",
       "name": "Oppo Find X3",
       "description": "Oppo's top phone",
+      "favorite": [],
       "color": [
         {
           "name": "Trắng",
@@ -137,6 +148,7 @@
       "id": "7",
       "name": "Vivo X60",
       "description": "high-quality Vivo phone",
+      "favorite": [],
       "color": [
         {
           "name": "Đen",
@@ -157,6 +169,7 @@
       "id": "8",
       "name": "Google Pixel 6",
       "description": "new Google phone",
+      "favorite": [],
       "color": [
         {
           "name": "Đen",
@@ -176,6 +189,7 @@
       "id": "9",
       "name": "Realme GT",
       "description": "flagship Realme device",
+      "favorite": [],
       "color": [
         {
           "name": "Vàng",
@@ -196,6 +210,7 @@
       "id": "10",
       "name": "Nokia X20",
       "description": "affordable Nokia phone",
+      "favorite": [],
       "color": [
         {
           "name": "Xanh dương",
@@ -215,6 +230,7 @@
       "id": "11",
       "name": "iPhone 11",
       "description": "previous-gen iPhone",
+      "favorite": [],
       "color": [
         {
           "name": "Đen",
@@ -241,6 +257,7 @@
       "id": "12",
       "name": "Samsung Galaxy A52",
       "description": "mid-range Samsung",
+      "favorite": [],
       "color": [
         {
           "name": "Xanh dương",
@@ -261,6 +278,7 @@
       "id": "13",
       "name": "Poco F3",
       "description": "powerful and affordable",
+      "favorite": [],
       "color": [
         {
           "name": "Trắng",
@@ -281,6 +299,7 @@
       "id": "14",
       "name": "Sony Xperia 1 III",
       "description": "high-end Sony phone",
+      "favorite": [],
       "color": [
         {
           "name": "Tím",
@@ -300,9 +319,49 @@
       "id": "15",
       "name": "Motorola Edge 20",
       "description": "Motorola flagship",
+      "favorite": [],
       "color": [
         {
+          "name": "Xanh dương",
+          "img": "/img/motorola-edge-20-blue.jpg",
+          "quantity": 5,
+          "money": 20000000,
+          "moneyDiscount": 19000000
+        },
+        {
           "name": "Trắng",
+          "img": "/img/motorola-edge-20-white.png",
+          "quantity": 5,
+          "money": 20000000
+        }
+      ]
+    },
+    {
+      "id": "16",
+      "name": "Xiaomi Mi 11 Lite 5G",
+      "description": "mid-range phone",
+      "favorite": [],
+      "color": [
+        {
+          "name": "Đen",
+          "img": "/img/xiaomi-mi11-lite-black.jpg",
+          "quantity": 3,
+          "money": 14000000
+        },
+        {
+          "name": "Trắng",
+          "img": "/img/xiaomi-mi11-lite-white.webp",
+          "quantity": 4,
+          "money": 14500000
+        },
+        {
+          "name": "Hồng",
+          "img": "/img/xiaomi-mi11-lite-pink.jpg",
+          "quantity": 1,
+          "money": 14000000
+        },
+        {
+          "name": "Xanh dương",
           "img": "/img/motorola-edge-20-white.jpg",
           "quantity": 5,
           "money": 20000000,
@@ -331,7 +390,7 @@
       "id": "2",
       "code": "KHANHSTORE50",
       "discount": 0.5,
-      "count": 1999999
+      "count": 2000000
     },
     {
       "id": "3",

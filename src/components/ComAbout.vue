@@ -1,44 +1,37 @@
 <template>
   <div class="about">
-    <h1>About Khanh Store</h1>
+    <h1>Giới thiệu về Khanh Store</h1>
 
     <section class="about-section">
-      <h2>Welcome to Khanh Store</h2>
+      <h2>Chào mừng đến với Khanh Store</h2>
       <p>
-        At Khanh Store, we are passionate about bringing you the latest and
-        best in technology. Our mission is to offer high-quality smartphones at
-        competitive prices. Whether you are looking for the latest iPhone, a
-        feature-packed Android device, or something in between, Khanh Store has
-        something for everyone.
+        Tại Khanh Store, chúng tôi đam mê mang đến cho bạn những sản phẩm công nghệ mới nhất và tốt nhất. Sứ mệnh của chúng tôi là cung cấp những chiếc điện thoại thông minh chất lượng cao với giá cả cạnh tranh. Cho dù bạn đang tìm kiếm iPhone mới nhất, một thiết bị Android đầy tính năng, hay một sản phẩm ở giữa, Khanh Store luôn có những lựa chọn tuyệt vời cho bạn.
       </p>
     </section>
 
     <section class="mission-section">
-      <h2>Our Mission</h2>
+      <h2>Sứ mệnh của chúng tôi</h2>
       <p>
-        Our mission is simple: To provide an excellent shopping experience
-        through outstanding customer service, quality products, and affordable
-        prices. We strive to make every purchase smooth and enjoyable.
+        Sứ mệnh của chúng tôi rất đơn giản: Cung cấp một trải nghiệm mua sắm tuyệt vời thông qua dịch vụ khách hàng xuất sắc, sản phẩm chất lượng và giá cả phải chăng. Chúng tôi nỗ lực để mỗi lần mua hàng của bạn trở nên dễ dàng và thú vị.
       </p>
     </section>
 
     <section class="contact-section">
-      <h2>Contact Us</h2>
+      <h2>Liên hệ với chúng tôi</h2>
       <p>
-        Have questions or need assistance? Feel free to reach out to us:
+        Có câu hỏi hoặc cần sự trợ giúp? Hãy liên hệ với chúng tôi qua các kênh dưới đây:
       </p>
       <ul>
         <li>Email: <a href="mailto:contact@khanhstore.com">contact@khanhstore.com</a></li>
-        <li>Phone: +1 (800) 123-4567</li>
-        <li>Location: 1234 Khanh Street, Ho Chi Minh City, Vietnam</li>
+        <li>Điện thoại: +1 (800) 123-4567</li>
+        <li>Địa chỉ: 1234 Khanh Street, Thành phố Hồ Chí Minh, Việt Nam</li>
       </ul>
     </section>
 
     <section class="social-media">
-      <h2>Follow Us</h2>
+      <h2>Theo dõi chúng tôi</h2>
       <p>
-        Stay connected with us on social media for the latest updates and
-        promotions:
+        Hãy kết nối với chúng tôi trên các mạng xã hội để nhận được các cập nhật và chương trình khuyến mãi mới nhất:
       </p>
       <ul>
         <li><a href="https://facebook.com/khanhstore" target="_blank">Facebook</a></li>
@@ -62,9 +55,11 @@ export default {
 /* General Styles */
 .about {
   font-family: Arial, sans-serif;
-  padding: 20px;
-  max-width: 800px;
+  padding: 30px;
+  max-width: 900px;
   margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 8px;
 }
 
 h1 {
@@ -80,8 +75,9 @@ section {
 
 h2 {
   color: #4CAF50;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   font-size: 1.75rem;
+  font-weight: bold;
 }
 
 ul {
@@ -90,15 +86,17 @@ ul {
 }
 
 ul li {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 a {
   color: #007BFF;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 a:hover {
+  color: #0056b3;
   text-decoration: underline;
 }
 
@@ -143,7 +141,7 @@ body.dark-mode .mission-section,
 body.dark-mode .contact-section {
   background-color: #1E1E1E;
   border-radius: 8px;
-  padding: 20px;
+  padding: 25px;
   margin-bottom: 20px;
 }
 

@@ -61,6 +61,15 @@
                         <button @click="decreaseQuantity" :disabled="currentQuantity <= 0 || this.selectedColor == null">-</button>
                         <input type="number" v-model="currentQuantity" min="1" readonly />
                         <button @click="increaseQuantity" :disabled="currentQuantity >= product.quantity || this.selectedColor == null">+</button>
+
+                        <!-- Favorites Button -->
+                        <button
+                            class="favorites-button"
+                            :class="{ active: isFavorite }"
+                            @click="addToFavorites"
+                            >
+                            ❤️ {{ this.favoriteCount }}
+                        </button>
                     </div>
 
                     <div class="total-money">
@@ -106,6 +115,8 @@ export default {
             isNotFoundProduct: false,
             isShowPopup: false,
             isLoaded: false,
+            isFavorite: false,
+            favoriteCount: 0,
         }
     },
     async mounted() {
@@ -124,6 +135,8 @@ export default {
         this.updateImage(this.product.color[0].img);
         this.updateMoney(this.product.color[0].money, null);
 
+        this.favoriteCount = this.product.favorite.length;
+
         // is logged in
         const user = JSON.parse(localStorage.getItem("user"));
         if (user != null) {
@@ -132,6 +145,13 @@ export default {
             if (u != null) {
                 this.userId = u.id;
                 this.isLoggedIn = true;
+
+                this.product.favorite.forEach((i) => {
+                    if (i === this.userId) {
+                        this.isFavorite = true;
+                        return;
+                    }
+                });
             }
         }
 
@@ -145,6 +165,23 @@ export default {
         },
     },
     methods: {
+        async addToFavorites() {
+            if (!this.isLoggedIn) {
+                localStorage.removeItem('user');
+                const data = { productId: this.product.id, error: "Vui lòng đăng nhập trước khi yêu thích sản phẩm!" };
+                this.$router.push({ name: 'Login', query: data}); // Redirect to login page
+            } else {
+                if (!this.isFavorite) {
+                    this.product.favorite.push(this.userId);
+                    this.favoriteCount++;
+                } else {
+                    this.product.favorite = this.product.favorite.filter((i) => i !== this.userId);
+                    this.favoriteCount--;
+                }
+                await db.modifyProduct(this.product.id, this.product);
+                this.isFavorite = !this.isFavorite;
+            }
+        },
         formatMoney(money) {
             return tools.formatMoney(money);
         },
@@ -560,7 +597,25 @@ body.dark-mode .quantity-selector h3 {
     color: #02002e;
 }
 
+.quantity-selector .favorites-button {
+  margin-left: auto;
+  background-color: #fff; /* Default white color */
+  color: #ff4081; /* Default pink text color */
+  font-weight: bold;
+  border: 1px solid #ff4081;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 
+.quantity-selector .favorites-button.active {
+  background-color: #ff4081; /* Pink when active */
+  color: white; /* White text when active */
+}
+
+.quantity-selector .favorites-button:hover {
+  background-color: #e91e63;
+  color: white;
+  transform: scale(1.1);
+}
 .quantity-selector button {
     background-color: #4CAF50;
     color: white;

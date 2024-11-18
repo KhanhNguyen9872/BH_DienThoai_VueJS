@@ -1,33 +1,35 @@
 <template>
   <div class="contact">
-    <h1>Contact Khanh Store</h1>
+    <h1>Liên hệ Khanh Store</h1>
 
     <section class="contact-info">
-      <h2>Contact Information</h2>
-      <p>If you have any questions or inquiries, feel free to reach out to us:</p>
+      <h2>Thông tin liên hệ</h2>
+      <p>
+        Nếu bạn có bất kỳ câu hỏi hoặc yêu cầu nào, vui lòng liên hệ với chúng tôi qua các kênh sau:
+      </p>
       <ul>
         <li>Email: <a href="mailto:contact@khanhstore.com">contact@khanhstore.com</a></li>
-        <li>Phone: +1 (800) 123-4567</li>
-        <li>Address: 1234 Khanh Street, Ho Chi Minh City, Vietnam</li>
+        <li>Điện thoại: +1 (800) 123-4567</li>
+        <li>Địa chỉ: 1234 Khanh Street, Thành phố Hồ Chí Minh, Việt Nam</li>
       </ul>
     </section>
 
     <section class="contact-form">
-      <h2>Send Us a Message</h2>
+      <h2>Gửi tin nhắn cho chúng tôi</h2>
       <form @submit.prevent="sendMessage">
         <div class="form-group">
-          <label for="name">Your Name</label>
+          <label for="name">Tên của bạn</label>
           <input type="text" id="name" v-model="name" required />
         </div>
         <div class="form-group">
-          <label for="email">Your Email</label>
+          <label for="email">Email của bạn</label>
           <input type="email" id="email" v-model="email" required />
         </div>
         <div class="form-group">
-          <label for="message">Your Message</label>
+          <label for="message">Tin nhắn của bạn</label>
           <textarea id="message" v-model="message" required></textarea>
         </div>
-        <button type="submit">Send Message</button>
+        <button type="submit">Gửi tin nhắn</button>
       </form>
       <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
@@ -68,14 +70,14 @@ export default {
         });
 
         if (response.ok) {
-          this.successMessage = "Your message has been sent successfully!";
+          this.successMessage = "Tin nhắn của bạn đã được gửi thành công!";
           this.errorMessage = "";
         } else {
-          this.errorMessage = "Something went wrong. Please try again.";
+          this.errorMessage = "Có lỗi xảy ra. Vui lòng thử lại.";
           this.successMessage = "";
         }
       } catch (error) {
-        this.errorMessage = "Error sending message. Please try again later.";
+        this.errorMessage = "Lỗi khi gửi tin nhắn. Vui lòng thử lại sau.";
         this.successMessage = "";
       }
     },

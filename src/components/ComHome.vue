@@ -1,259 +1,257 @@
 <template>
-  <Loading v-if="!this.isLoaded"/>
-  <body>
-  <header>
-    <h1 v-if="this.searchQuery && this.searchQuery.length > 0">{{ "KẾT QUẢ TÌM KIẾM: " + this.searchQuery }}</h1>
-    <h1 v-else>TẤT CẢ SẢN PHẨM</h1>
-    
-    <div class="price-filter">
-      <label for="minPrice">Giá từ (VND):</label>
-      <input type="number" v-model="minPrice" id="minPrice" placeholder="Giá" />
-      
-      <label for="maxPrice">Giá đến (VND):</label>
-      <input type="number" v-model="maxPrice" id="maxPrice" placeholder="Giá" />
-    </div>
-  </header>
+    <Loading v-if="!this.isLoaded"/>
+    <div class="home-page">
+      <!-- Banner Section -->
+      <div class="banner">
+        <img :src="bannerImg" alt="Banner" />
+      </div>
   
-  <div v-if="paginatedProducts.length > 0" class="product-container">
-    <Product v-for="item in paginatedProducts" :key="item.id" :product="item" />
-  </div>
-  <div v-else class="no-products">
-    <p>🛒 Không tìm thấy sản phẩm nào. Hãy thử tìm kiếm lại nhé!</p>
-  </div>
+      <!-- New Phones Section -->
+      <div class="section new-phones">
+        <h2>Sản phẩm ngẫu nhiên</h2>
+        <div class="product-list">
+          <div
+            class="product-card"
+            v-for="product in randomProducts"
+            :key="product.id"
+          >
+            <img :src="product.image" :alt="product.name" />
+            <h3>{{ product.name }}</h3>
+            <div class="price-container">
+                <p class="price">{{ product.price }} VND</p>
+                <p class="favorites-label">
+                    ❤️ {{ product.favoriteCount }}
+                </p>
+            </div>
+            <button @click="handleClick(product.id)" class="buy-now">Mua ngay</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Most Favorite Products Section -->
+      <div class="section most-favorites">
+        <h2>Được yêu thích nhiều nhất</h2>
+        <div class="product-list">
+          <div
+            class="product-card favorite"
+            v-for="product in favoriteProducts"
+            :key="product.id"
+          >
+            <img :src="product.image" :alt="product.name" />
+            <h3>{{ product.name }}</h3>
+            <div class="price-container">
+                <p class="price">{{ product.price }} VND</p>
+                <p class="favorites-label">
+                    ❤️ {{ product.favoriteCount }}
+                </p>
+            </div>
+            
+            <button @click="handleClick(product.id)" class="buy-now">Mua ngay</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+  
+  <script>
+  import Loading from './ComLoading.vue';
+    import tools from '../api/tools';
+    import db from '../api/db';
+  export default {
+    components: {
+        Loading,
+    },
+    data() {
+      return {
+        bannerImg: require('@/assets/banner.png'),
+        randomProducts: [],
+        favoriteProducts: [],
+        isLoaded: false,
+      };
+    },
+    async mounted() {
+        const allProductsResult = await db.getAllProducts();
 
-  <div v-if="paginatedProducts.length > 0" class="pagination">
-    <button @click="goToPage(1)" v-if="totalPages > 1" :disabled="currentPage === 1">&laquo;</button>
-    <button @click="prevPage" v-if="totalPages > 1" :disabled="currentPage === 1">&lt;</button>
+        //
+        this.randomProducts = [];
+        const randomNumbers = tools.getUniqueRandomNumbers(0, allProductsResult.length - 1, 3);
 
-    <button 
-      v-for="page in totalPagesArray" 
-      :key="page" 
-      @click="goToPage(page)" 
-      :class="{ active: currentPage === page }"
-    >
-      {{ page }}
-    </button>
+        randomNumbers.forEach((i) => {
+            this.randomProducts.push( { id: allProductsResult[i].id, name: allProductsResult[i].name, price: this.formatMoney(allProductsResult[i].color[0].money), image: db.getAPI_URL() + allProductsResult[i].color[0].img, favoriteCount: allProductsResult[i].favorite.length } );
+        })
 
-    <button @click="nextPage" v-if="totalPages > 1" :disabled="currentPage === totalPages">&gt;</button>
-    <button @click="goToPage(totalPages)" v-if="totalPages > 1" :disabled="currentPage === totalPages">&raquo;</button>
-  </div>
-</body>
-</template>
+        //
+        const latestFavorites = allProductsResult
+            .sort((a, b) => b.favorite.length - a.favorite.length) // Sort by favorite count, descending
+            .slice(0, 3); // Get the top 3 objects
 
-<script>
-import Loading from './ComLoading.vue';
-import Product from './ComProduct.vue';
-import db from '@/api/db';
+        this.favoriteProducts = [];
+        latestFavorites.forEach((i) => {
+            this.favoriteProducts.push({ id: i.id, name: i.name, price: this.formatMoney(i.color[0].money), image: db.getAPI_URL() + i.color[0].img, favoriteCount: i.favorite.length });
+        });
 
-export default {
-  name: 'ComHome',
-  components: {
-    Loading,
-    Product
-  },
-  data() {
-    return {
-      products: [],
-      filteredProducts: [],  
-      currentPage: 1,        
-      itemsPerPage: 8,       
-      searchQuery: '',
-      minPrice: null,
-      maxPrice: null, 
-      isLoaded: false,
+        await new Promise(resolve => setTimeout(resolve, 750));
+        this.isLoaded = true;
+    },
+    methods: {
+        formatMoney(money) {
+            return tools.formatMoney(money);
+        },
+        handleClick(id) {
+            this.$router.push('/product/' + id);
+        }
     }
-  },
-  computed: {
-    filteredAndPricedProducts() {
-      if (this.filteredProducts == null) {
-        return [];
-      }
-      return this.filteredProducts.filter(product => {
-        const price = product.color[0].money; 
-        const withinMinPrice = this.minPrice ? price >= this.minPrice : true;
-        const withinMaxPrice = this.maxPrice ? price <= this.maxPrice : true;
-        return withinMinPrice && withinMaxPrice;
-      });
-    },
-    paginatedProducts() {
-      const start = (this.currentPage - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      return this.filteredAndPricedProducts.slice(start, end);
-    },
-    totalPages() {
-      return Math.ceil(this.filteredAndPricedProducts.length / this.itemsPerPage);
-    },
-    totalPagesArray() {
-      return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-    }
-  },
-  methods: {
-    handleStorageChange(event) {
-      // If the theme is changed in localStorage, update the theme
-      if (event.key === 'theme') {
-        this.isDarkMode = event.newValue === 'dark';
-        this.updateTheme();
-      }
-    },
-    prevPage() {
-      if (this.currentPage > 1) this.currentPage--;
-    },
-    nextPage() {
-      if (this.currentPage < this.totalPages) this.currentPage++;
-    },
-    goToPage(page) {
-      this.currentPage = page;
-    },
-    filterProducts(query) {
-      if (!query) {
-        this.filteredProducts = this.products;  
-      } else {
-        this.filteredProducts = this.products.filter(product => 
-          product.name.toLowerCase().includes(query.toLowerCase())
-        );
-      }
-    }
-  },
-  async mounted() {
-    document.title = "Trang chủ | KhanhStore";
-    const allProductsResult = await db.getAllProducts();
-    this.products = allProductsResult;
-    this.filteredProducts = allProductsResult;  
-
-    this.searchQuery = this.$route.query.search;
-    if (this.searchQuery) {
-      this.filterProducts(this.searchQuery);
-    }
-
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    this.isLoaded = true;
-  },
-
-  watch: {
-    '$route.query.search'(newSearchQuery) {
-      this.searchQuery = newSearchQuery;
-      if (this.searchQuery != '') {
-        this.currentPage = 1;
-      }
-      this.filterProducts(newSearchQuery);
-    }
-  }
-}
-</script>
-
-<style scoped>
-.price-filter {
+  };
+  </script>
+  
+  <style scoped>
+  .price-container {
   display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 20px;
+  justify-content: center; /* Aligns price and favorites label to the ends */
+  align-items: center;
 }
-
-.price-filter label {
-  align-content: center;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.price-filter input {
-  padding: 5px;
+  
+.favorites-label {
+    align-content: center;
+    text-align: center;
   font-size: 14px;
-  width: 100px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
+  color: #ff4081;
+  font-weight: normal;
+  background-color: #f5f5f5;
+  padding: 4px 14px;
+  border-radius: 12px;
+  margin-left: 14px; /* Add some space between the price and the label */
 }
-
-body.dark-mode .no-products {
-    background: #686868;
+  .home-page {
+    font-family: 'Poppins', Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Banner Section */
+  .banner {
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+    margin: 0 auto 40px;
+    width: 85%; /* Reduced banner size to 70% of the screen width */
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .banner img {
+    width: 100%;
+    height: auto;
+    filter: brightness(80%);
+    border-radius: 15px;
+  }
+  
+  .banner-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     color: #fff;
+    text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.7);
+  }
+  
+  .banner-text h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .banner-text p {
+    font-size: 1.2rem;
+  }
+  
+  /* Section Styling */
+  .section {
+    padding: 40px 20px;
+  }
+  
+  .section h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #007bff;
+    font-weight: bold;
+  }
+  
+  /* Product List Styling */
+  .product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    justify-content: center;
+  }
+  
+  .product-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .product-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .product-card img {
+    max-width: 55%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+  
+  .product-card h3 {
+    font-size: 1.5rem;
+    margin: 10px 0;
+    color: #333;
+  }
+  
+  .product-card .price {
+    font-size: 1.2rem;
+    color: #007bff;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .product-card .buy-now {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .product-card .buy-now:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Highlighted Card for Most Favorites */
+  .product-card.favorite {
+    border: 2px solid #ff9800;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+  }
+  
+  .product-card.favorite:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 20px rgba(255, 152, 0, 0.4);
   }
 
-  body.dark-mode .no-products p {
-    color: #ffffff;
+  body.dark-mode .product-card {
+    background-color: #333;
   }
-
-.no-products {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 200px; /* Adjust the height as needed */
-  font-size: 18px;
-  color: #333;
-  background-color: #f8f8f8;
-  text-align: center;
-  padding: 20px;
-  flex-direction: column;
-}
-
-.no-products p {
-  margin: 0;
-  font-weight: bold;
-  color: #555;
-}
-
-header {
-  background-color: #005f70;
-  color: white;
-  padding: 20px;
-  text-align: center;
-}
-
-header h1 {
-  color: #ffffff;
-}
-
-body.dark-mode header {
-  background-color: #4f4f4f;
-}
-
-body {
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-.product-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 20px;
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  margin-bottom: 30px;
-}
-
-.pagination button {
-  margin: 0 5px;
-  padding: 8px 12px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  background-color: #ddd;
-  color: #333;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-}
-
-.pagination button.active {
-  background-color: #4f4f4f;
-  color: white;
-}
-
-.pagination button:hover {
-  background-color: #bbb;
-}
-
-.pagination button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.pagination button.active:hover {
-  background-color: #4f4f4f;
-}
-</style>
+  body.dark-mode .product-card h3 {
+    color: white;
+  }
+  </style>
+  

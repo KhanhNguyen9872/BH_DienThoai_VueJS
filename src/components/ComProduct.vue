@@ -4,7 +4,13 @@
         <div class="product-card">
           <img :src="img" alt="Điện thoại 1">
           <h2>{{ product.name }}</h2>
-          <p class="price">Giá: {{ tools.formatMoney(this.money) }} VND</p>
+          <div class="price-container">
+            <p class="price">Giá: {{ tools.formatMoney(this.money) }} VND</p>
+            <p class="favorites-label">
+                ❤️ {{ favoriteCount }}
+            </p>
+          </div>
+          
           <button>Mua</button>
         </div>
       </router-link>
@@ -23,12 +29,30 @@
             tools: tools,
             money: this.product.color[0].money,
             img: db.getAPI_URL() + this.product.color[0].img,
+            favoriteCount: this.product.favorite.length,
         }
     }
   }
   </script>
   
   <style scoped>
+  .price-container {
+  display: flex;
+  justify-content: center; /* Aligns price and favorites label to the ends */
+  align-items: center;
+}
+  
+.favorites-label {
+    align-content: center;
+    text-align: center;
+  font-size: 14px;
+  color: #ff4081;
+  font-weight: normal;
+  background-color: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 12px;
+  margin-left: 10px; /* Add some space between the price and the label */
+}
     .router-link {
         text-decoration: none;
     }

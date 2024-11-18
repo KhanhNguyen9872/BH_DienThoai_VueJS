@@ -5,7 +5,7 @@
   
         <!-- Left side links and search bar -->
         <div class="header-left">
-          <router-link to="/" exact-active-class="active">Trang chủ</router-link>
+          <router-link to="/product" exact-active-class="active">Sản phẩm</router-link>
           <router-link to="/about" exact-active-class="active">Giới thiệu</router-link>
           <router-link to="/contact" exact-active-class="active">Liên hệ</router-link>
         </div>
@@ -97,7 +97,7 @@
             if (this.searchQuery == '') {
                 return;
             }
-            this.$router.push({ path: '/', query: { search: this.searchQuery } });
+            this.$router.push({ path: '/product', query: { search: this.searchQuery } });
             this.searchQuery = '';
         },
         toggleTheme() {
