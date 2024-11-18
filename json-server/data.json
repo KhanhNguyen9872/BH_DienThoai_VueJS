@@ -4,9 +4,7 @@
       "id": "1",
       "name": "Google Pixel 3",
       "description": "a pixel 3 phone",
-      "favorite": [
-        "dbcf"
-      ],
+      "favorite": [],
       "color": [
         {
           "name": "Đen",
@@ -61,10 +59,7 @@
       "id": "3",
       "name": "Samsung Galaxy S21",
       "description": "high-end Samsung phone",
-      "favorite": [
-        "dbcf",
-        "2029"
-      ],
+      "favorite": [],
       "color": [
         {
           "name": "Xám",
