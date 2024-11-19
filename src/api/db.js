@@ -323,8 +323,8 @@ export default {
   },
   
   // check voucher
-  async checkVoucher(voucherCode) {
-    if (!voucherCode) {
+  async checkVoucher(userId, voucherCode) {
+    if ((!userId) || (!voucherCode)) {
       return null;
     }
     try {
@@ -337,7 +337,30 @@ export default {
       if (data[0].count < 1) {
         return null;
       }
-      return data[0];
+
+      let isAllowed = false;
+      if (data[0].limit.length > 0) {
+        for(const id of data[0].limit) {
+          if (id === userId) {
+            isAllowed = true;
+            break;
+          }
+        }
+      } else {
+        isAllowed = true;
+      }
+
+      for(const id of data[0].usedId) {
+        if (id === userId) {
+          return null;
+        }
+      }
+
+      if (isAllowed) {
+        return data[0];
+      }
+      
+      return null;
     } catch (error) {
       console.error(error);
       return null;
@@ -364,17 +387,19 @@ export default {
   },
 
   // using voucher
-  async useVoucher(voucherCode) {
-    if (!voucherCode) {
+  async useVoucher(userId, voucherCode) {
+    if ((!userId) || (!voucherCode)) {
       return false;
     }
     try {
-      let voucher = await this.checkVoucher(voucherCode);
+      let voucher = await this.checkVoucher(userId, voucherCode);
       if (!voucher) {
         return false;
       }
       if (voucher.count > 0) {
         voucher.count--;
+        voucher.usedId.push(userId);
+        console.log(voucher.usedId);
         this.updateVoucher(voucher);
         return true;
       }

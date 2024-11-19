@@ -4,7 +4,10 @@
       "id": "1",
       "name": "Google Pixel 3",
       "description": "a pixel 3 phone",
-      "favorite": [],
+      "favorite": [
+        "a153",
+        "3968"
+      ],
       "color": [
         {
           "name": "Đen",
@@ -371,27 +374,165 @@
       ]
     }
   ],
-  "users": [],
-  "carts": [],
-  "orders": [],
+  "users": [
+    {
+      "id": "a153",
+      "username": "a",
+      "password": "0cc175b9c0f1b6a831c399e269772661",
+      "email": "aspecthjl+roybal@gmail.com",
+      "firstName": "Khánh",
+      "lastName": "Nguyễn Văn",
+      "lock": false,
+      "information": [
+        {
+          "id": "1hw2f99qb8",
+          "fullName": "Khánh Nguyễn Văn",
+          "address": "477/42 Nguyễn Văn Công",
+          "phone": "0328460695"
+        }
+      ]
+    },
+    {
+      "id": "3968",
+      "username": "b",
+      "password": "92eb5ffee6ae2fec3ad71c777531578f",
+      "email": "khanhnv22150129@student.giadinh.edu.vn",
+      "firstName": "Khánh",
+      "lastName": "Nguyễn Văn",
+      "lock": false,
+      "information": [
+        {
+          "id": "3gld4rh3bv",
+          "fullName": "Khánh Nguyễn Văn",
+          "address": "477/42 Nguyễn Văn Công",
+          "phone": "0328460695"
+        }
+      ]
+    }
+  ],
+  "carts": [
+    {
+      "carts": [
+        {
+          "productId": "1",
+          "quantity": 1,
+          "color": "Hồng"
+        }
+      ],
+      "id": "a153"
+    },
+    {
+      "carts": [
+        {
+          "productId": "1",
+          "quantity": 2,
+          "color": "Trắng"
+        }
+      ],
+      "id": "3968"
+    }
+  ],
+  "orders": [
+    {
+      "id": "a153",
+      "orders": [
+        {
+          "id": "a5xgdb79ipb",
+          "orderAt": "2024-11-18T21:39:37",
+          "payment": "nganhang",
+          "status": "Đã hủy",
+          "address": {
+            "name": "Khánh Nguyễn Văn",
+            "phone": "0328460695",
+            "address": "477/42 Nguyễn Văn Công"
+          },
+          "totalPrice": 3200000,
+          "products": [
+            {
+              "id": "1",
+              "name": "Google Pixel 3",
+              "color": "Hồng",
+              "quantity": 1,
+              "price": 3200000,
+              "totalPrice": 3200000
+            }
+          ]
+        },
+        {
+          "id": "jze9izrj1j",
+          "orderAt": "2024-11-19T10:28:16",
+          "payment": "nganhang",
+          "status": "Đã hủy",
+          "address": {
+            "name": "Khánh Nguyễn Văn",
+            "phone": "0328460695",
+            "address": "477/42 Nguyễn Văn Công"
+          },
+          "totalPrice": 5400000,
+          "products": [
+            {
+              "id": "1",
+              "name": "Google Pixel 3",
+              "color": "Đen",
+              "quantity": 2,
+              "price": 2700000,
+              "totalPrice": 5400000
+            }
+          ]
+        },
+        {
+          "id": "fmpqk6ycqov",
+          "orderAt": "2024-11-19T10:31:00",
+          "payment": "nganhang",
+          "status": "Đã hủy",
+          "address": {
+            "name": "Khánh Nguyễn Văn",
+            "phone": "0328460695",
+            "address": "477/42 Nguyễn Văn Công"
+          },
+          "totalPrice": 1350000,
+          "products": [
+            {
+              "id": "1",
+              "name": "Google Pixel 3",
+              "color": "Đen",
+              "quantity": 1,
+              "price": 2700000,
+              "totalPrice": 2700000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "3968",
+      "orders": []
+    }
+  ],
   "vouchers": [
     {
       "id": "1",
       "code": "KHANHSTORE10",
       "discount": 0.1,
-      "count": 2000000
+      "count": 2000000,
+      "limit": [],
+      "usedId": []
     },
     {
       "id": "2",
       "code": "KHANHSTORE50",
       "discount": 0.5,
-      "count": 2000000
+      "count": 2000000,
+      "limit": [],
+      "usedId": []
     },
     {
       "id": "3",
       "code": "KHANHSTORE100",
       "discount": 1,
-      "count": 2000000
+      "count": 2000000,
+      "limit": [],
+      "usedId": []
     }
   ]
 }

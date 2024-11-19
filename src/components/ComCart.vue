@@ -48,7 +48,7 @@
                     <div class="total-price">Tổng tiền: {{ formatMoney(totalPrice) }} VND</div>
                     <div style="display: flex; justify-content: center; align-items: center;">
                         <button style="margin-right: 20px;" class="removeitem-btn" @click="proceedRemoteItem()">Xóa mặt hàng</button>
-                        <button class="checkout-btn" @click="proceedToCheckout()">Thanh toán</button>
+                        <button class="checkout-btn" @click="proceedToCheckout()">Đặt hàng</button>
                     </div>
                     
                 </div>
@@ -241,11 +241,15 @@ export default {
             this.saveCarts();
         },
         proceedRemoteItem() {
-            this.cartItems = this.cartItems.filter((i) => {
-                return i.selected === false;
-            });
-            
-            this.saveCarts();
+            if (this.selectedItem > 0) {
+                this.cartItems = this.cartItems.filter((i) => {
+                    return i.selected === false;
+                });
+                
+                this.saveCarts();
+            } else {
+                this.error = 'XÓA MẶT HÀNG: Vui lòng chọn ít nhất 1 món hàng để xóa mặt hàng';
+            }
         },
         decreaseQuantity(itemId, color) {
             const item = this.getItem(itemId, color);
@@ -308,7 +312,7 @@ export default {
                 localStorage.setItem('payment', JSON.stringify(selectedItem));
                 this.$router.push({ name: 'Payment'});
             } else {
-                this.error = 'THANH TOÁN: Vui lòng chọn ít nhất 1 món hàng để thanh toán';
+                this.error = 'ĐẶT HÀNG: Vui lòng chọn ít nhất 1 món hàng để đặt hàng';
             }
         }
       }

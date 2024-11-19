@@ -68,7 +68,7 @@
     <div class="payment-method">
       <label for="payment">Phương thức thanh toán</label>
       <select id="payment" v-model="selectedPaymentMethod">
-        <option value="tienmat">Tiền mặt</option>
+        <option value="tienmat">Thanh toán khi nhận hàng</option>
         <option value="momo">Ví MoMo</option>
         <option value="nganhang">Ngân hàng</option>
       </select>
@@ -84,7 +84,7 @@
 
     <p class="result-message" v-if="this.result != null && this.result.length > 0">{{ this.result }}</p>
     <p class="error-message" v-if="this.error != null && this.error.length > 0">{{ this.error }}</p>
-    <button class="confirm-button" @click="confirmPayment">Đặt hàng</button>
+    <button class="confirm-button" @click="confirmPayment">Xác nhân đặt hàng</button>
   </div>
 </template>
 
@@ -226,13 +226,13 @@ export default {
 
       this.voucherCode = this.voucherCode.toUpperCase();
 
-      const v = await db.checkVoucher(this.voucherCode);
+      const v = await db.checkVoucher(this.user.id, this.voucherCode);
 
       await new Promise(resolve => setTimeout(resolve, 750));
 
       this.isLoaded = true;
       if (v == undefined || v == null) {
-        this.errorVoucher = 'Mã voucher này không tồn tại hoặc đã hết lượt!';
+        this.errorVoucher = 'Mã voucher này không tồn tại, đã dùng hoặc đã hết lượt!';
         return;
       }
 
@@ -298,7 +298,7 @@ export default {
       let newOrder = { id: newOrderId, orderAt: tools.getCurrentDateTime(), payment: this.selectedPaymentMethod, status: status, address: address, totalPrice: this.finalAmount, products: listProduct };
 
       if (this.voucherCodeInfo.length > 0) {
-        const resultUseVoucher = await db.useVoucher(this.voucherCode);
+        const resultUseVoucher = await db.useVoucher(this.user.id, this.voucherCode);
         if (!resultUseVoucher) {
           this.error = 'Không thể đặt hàng, mã voucher không tồn tại hoặc đã hết lượt!';
           this.clearVoucher();

@@ -90,7 +90,7 @@ const routes=[
         path:"/payment",
         name:"Payment",
         component:ComPayment,
-        meta: { title: 'Thanh toán' },
+        meta: { title: 'Đặt hàng' },
     },
     {
         path:"/order",
