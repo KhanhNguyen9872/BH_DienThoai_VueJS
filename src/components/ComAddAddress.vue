@@ -38,15 +38,15 @@
     },
     async created() {
         // check is logged in or not
-        let user = JSON.parse(localStorage.getItem("user"));
+        let user = localStorage.getItem("accessToken");
         if (user != null) {
-            const u = await db.getUser(user.username, user.password);
+            const u = await db.getUser(user);
 
             user = u;
         }
 
         if (user == null) {
-            localStorage.removeItem('user');
+            localStorage.removeItem('accessToken');
             this.$router.push('/login');
             return;
         }
@@ -87,9 +87,7 @@
 
             this.error = '';
 
-            let newAddress = { id: this.generateRandomId(10), fullName: this.fullName, address: this.address, phone: this.phone };
-            this.information.push(newAddress);
-            db.updateAddress(this.userId, this.information);
+            db.addAddress({ fullName: this.fullName, address: this.address, phone: this.phone });
             window.location.href = '/profile';
         }
     }

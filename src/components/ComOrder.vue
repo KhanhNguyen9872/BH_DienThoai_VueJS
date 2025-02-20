@@ -89,15 +89,15 @@ import Loading from './ComLoading.vue';
     },
     async mounted() {
       // check is logged in or not
-      this.user = JSON.parse(localStorage.getItem("user"));
+      this.user = localStorage.getItem("accessToken");
         if (this.user != null) {
-            const user = await db.getUser(this.user.username, this.user.password);
+            const user = await db.getUser(this.user);
 
             this.user = user;
         }
 
         if (this.user == null) {
-            localStorage.removeItem('user');
+            localStorage.removeItem('accessToken');
             this.$router.push('/login');
             return;
         }

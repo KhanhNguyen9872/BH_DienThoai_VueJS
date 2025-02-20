@@ -45,15 +45,15 @@
     },
     async mounted() {
         // check is logged in or not
-        let user = JSON.parse(localStorage.getItem("user"));
+        let user = localStorage.getItem("accessToken");
         if (user != null) {
-            const u = await db.getUser(user.username, user.password);
+            const u = await db.getUser(user);
 
             user = u;
         }
 
         if (user == null) {
-            localStorage.removeItem('user');
+            localStorage.removeItem('accessToken');
             this.$router.push('/login');
             return;
         }
@@ -69,7 +69,8 @@
           return;
         }
 
-        const data = this.information.find((info) => info.id === this.addressId);
+        const data = this.information.find((info) => info.id == this.addressId);
+
         if (data == undefined) {
           this.$router.push('/');
           return;
@@ -109,9 +110,7 @@
 
             this.error = '';
 
-            let newAddress = { id: this.addressId, fullName: this.fullName, address: this.address, phone: this.phone };
-            this.information.push(newAddress);
-            db.updateAddress(this.userId, this.information);
+            db.updateAddress(this.addressId, { fullName: this.fullName, address: this.address, phone: this.phone });
             window.location.href = '/profile';
         }
     }

@@ -135,7 +135,8 @@ export default {
         this.updateImage(this.product.color[0].img);
         this.updateMoney(this.product.color[0].money, null);
 
-        this.favoriteCount = this.product.favorite.length;
+        const favorite_ = [ ...this.product.favorites ];
+        this.favoriteCount = favorite_.length;
 
         // is logged in
         const user = JSON.parse(localStorage.getItem("user"));

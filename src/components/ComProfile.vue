@@ -135,15 +135,15 @@ export default {
     },
     async mounted() {
         // check is logged in or not
-        let user = JSON.parse(localStorage.getItem("user"));
+        let user = localStorage.getItem("accessToken");
         if (user != null) {
-            const u = await db.getUser(user.username, user.password);
+            const u = await db.getUser(user);
 
             user = u;
         }
 
         if (user == null) {
-            localStorage.removeItem('user');
+            localStorage.removeItem('accessToken');
             this.$router.push('/login');
             return;
         }
@@ -178,7 +178,7 @@ export default {
         },
         logOut() {
             this.isModalOpen = false;
-            localStorage.removeItem('user');
+            localStorage.removeItem('accessToken');
             window.location.href = '/';
         },
         async submitNewPassword() {
@@ -229,17 +229,13 @@ export default {
         },
         
         // Handle Yes button click
-        handleYes() {
+        async handleYes() {
+            const r = await db.deleteAddress(this.selectedId);
+            if (r) {
+                this.information = this.information.filter((info) => info.id !== this.selectedId);
+            }
+
             this.showPopup = false;   // Hide the popup
-
-            this.information = this.information.filter((info) => info.id !== this.selectedId);
-
-            const newInformation = [];
-            this.information.forEach((info) => {
-                newInformation.push({ fullName: info.fullName, address: info.address, phone: info.phone });
-            });
-
-            db.updateAddress(this.userId, newInformation);
         },
     
         // Handle No button click

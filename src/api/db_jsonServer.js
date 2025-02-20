@@ -16,7 +16,6 @@ export default {
       if (!response.ok) throw new Error("Failed to fetch products");
       
       const data = await response.json();
-
       return data;
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -30,11 +29,10 @@ export default {
       return null;
     }
     try {
-      const response = await fetch(`${API_URL}/products/${productId}`);
+      const response = await fetch(`${API_URL}/products/?id=${productId}`);
       if (!response.ok) throw new Error(`Failed to fetch product with ID ${productId}`);
       const data = await response.json();
-
-      return data;
+      return data[0];
     } catch (error) {
       console.error(error);
       return null;
@@ -153,80 +151,33 @@ export default {
   },
 
   // Get a user by username
-  async getUser(accessToken) {
-      if (!accessToken) {
-          return null;
-      }
+  async getUser(username, password) {
+    if ((!username) || (!password)) {
+      return null;
+    }
+    try {
+      const response = await fetch(`${API_URL}/users?username=${username}&password=${password}`);
+      if (!response.ok) throw new Error(`Failed to fetch user`);
+      const users = await response.json();
 
-      try {
-          const response = await fetch(`${API_URL}/user`, { // Correct endpoint and method
-              method: 'GET',  // Use GET
-              headers: {
-                  'Authorization': `Bearer ${accessToken}` // Include the token
-              }
-          });
-
-          if (!response.ok) {
-              if (response.status === 401 || response.status === 403) {
-                  // Token is invalid or expired
-                  console.warn("Token invalid:", response.status);
-                  return null; // Or redirect to login
-              }
-              throw new Error(`Failed to fetch user: ${response.status}`); // General error
-          }
-
-          const data = await response.json(); // Assuming your server returns JSON
-
-          if (data) {
-              return data; // Return the user object
-          } else {
-              console.warn("No user data in response:", data);
-              return null; // Handle case where user data is missing
-          }
-
-      } catch (error) {
-          console.error("Error fetching user:", error);
-          return null;
-      }
+      return users.length > 0 ? users[0] : null; // Return the first user found or null if none
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   },
+
   async loginUser(username, password) {
     if ((!username) || (!password)) {
       return null;
     }
-
+    password = CryptoJS.MD5(password).toString();
     try {
-      const response = await fetch(`${API_URL}/accounts/auth`, { // Changed to /auth endpoint
-        method: 'POST', // Changed to POST
-        headers: {
-          'Content-Type': 'application/json' // Important!
-        },
-        body: JSON.stringify({ // Send username and hashed password in the body
-          username: username,
-          password: password // send normal password
-        })
-      });
+      const response = await fetch(`${API_URL}/users?username=${username}&password=${password}`);
+      if (!response.ok) throw new Error(`Failed to fetch user`);
+      const users = await response.json();
 
-      if (!response.ok) {
-        // Handle different error status codes appropriately
-        if (response.status === 401) {
-          throw new Error('Invalid credentials');
-        } else if (response.status === 403) {
-          return { lock: true };
-        }
-        else {
-          throw new Error(`Login failed with status: ${response.status}`);
-        }
-      }
-
-      const data = await response.json();
-      if (data && data.accessToken) {
-        // Login successful: return the access token
-        return { accessToken: data.accessToken, lock: false };
-      } else {
-        // Login failed (but the server didn't return an error status)
-        console.warn("Login was successful but didn't return accessToken", data);
-        return null; // Or handle this case as appropriate
-      }
+      return users.length > 0 ? users[0] : null; // Return the first user found or null if none
     } catch (error) {
       console.error(error);
       return null;
@@ -329,65 +280,21 @@ export default {
   },
 
   // Add new Address by UserID
-  async addAddress(address) {
-    if (!address) {
+  async updateAddress(userId, address) {
+    if ((!userId) || (!address)) {
       return null;
     }
     try {
-      const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/address`, {
-        method: "POST",
+      const response = await fetch(`${API_URL}/users/${userId}`, {
+        method: "PATCH",
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(address),
+        body: JSON.stringify({
+          information: address
+        }),
       });
-      if (!response.ok) throw new Error(`Failed to add address`);
-      return await response.json();
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  },
-
-  async deleteAddress(id) {
-    if (!id) {
-      return null;
-    }
-    try {
-      const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/address/${id}`, {
-        method: "DELETE",
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) throw new Error(`Failed to delete address`);
-      return await response.json();
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  },
-
-  // Add new Address by UserID
-  async updateAddress(id, address) {
-    if (!id || !address) {
-      return null;
-    }
-    try {
-      const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/address/${id}`, {
-        method: "PUT",
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(address),
-      });
-      if (!response.ok) throw new Error(`Failed to update address`);
+      if (!response.ok) throw new Error(`Failed to modify cart item with ID ${userId}`);
       return await response.json();
     } catch (error) {
       console.error(error);

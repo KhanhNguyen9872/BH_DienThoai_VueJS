@@ -1,3 +1,3 @@
 @echo off
-json-server --watch data.json --port 5000
+json-server --watch data.json --port 5001
 pause

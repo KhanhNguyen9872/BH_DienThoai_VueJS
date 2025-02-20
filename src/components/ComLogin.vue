@@ -86,7 +86,8 @@ export default {
         
             this.result = 'Đăng nhập thành công!';
 
-            localStorage.setItem('user', JSON.stringify({ username: user.username, password: user.password }));
+            // localStorage.setItem('user', JSON.stringify({ username: user.username, password: user.password }));
+            localStorage.setItem('accessToken', user.accessToken);
             
             await new Promise(resolve => setTimeout(resolve, 1250));
 

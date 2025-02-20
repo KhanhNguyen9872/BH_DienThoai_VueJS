@@ -69,9 +69,10 @@
         if (this.isDarkMode) {
             document.body.classList.add('dark-mode');
         }
-        this.user = JSON.parse(localStorage.getItem("user"));
+        // this.user = JSON.parse(localStorage.getItem("user"));
+        this.user = localStorage.getItem('accessToken');
         if (this.user != null) {
-            const user = await db.getUser(this.user.username, this.user.password);
+            const user = await db.getUser(this.user);
             this.user = user;
         }
   
