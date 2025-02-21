@@ -135,13 +135,12 @@ export default {
         this.updateImage(this.product.color[0].img);
         this.updateMoney(this.product.color[0].money, null);
 
-        const favorite_ = [ ...this.product.favorites ];
-        this.favoriteCount = favorite_.length;
+        this.favoriteCount = this.product.favorite.length;
 
         // is logged in
-        const user = JSON.parse(localStorage.getItem("user"));
+        const user = localStorage.getItem("accessToken");
         if (user != null) {
-            const u = await db.getUser(user.username, user.password);
+            const u = await db.getUser(user);
 
             if (u != null) {
                 this.userId = u.id;
@@ -168,18 +167,20 @@ export default {
     methods: {
         async addToFavorites() {
             if (!this.isLoggedIn) {
-                localStorage.removeItem('user');
+                localStorage.removeItem('accessToken');
                 const data = { productId: this.product.id, error: "Vui lòng đăng nhập trước khi yêu thích sản phẩm!" };
                 this.$router.push({ name: 'Login', query: data}); // Redirect to login page
             } else {
                 if (!this.isFavorite) {
                     this.product.favorite.push(this.userId);
                     this.favoriteCount++;
+                    await db.addFavorite(this.product.id, this.userId);
                 } else {
                     this.product.favorite = this.product.favorite.filter((i) => i !== this.userId);
                     this.favoriteCount--;
+                    await db.removeFavorite(this.product.id, this.userId);
                 }
-                await db.modifyProduct(this.product.id, this.product);
+                
                 this.isFavorite = !this.isFavorite;
             }
         },
@@ -227,7 +228,7 @@ export default {
         },
         async addToCart() {
             if (!this.isLoggedIn) {
-                localStorage.removeItem('user');
+                localStorage.removeItem('accessToken');
                 const data = { productId: this.product.id, error: "Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng!" };
                 this.$router.push({ name: 'Login', query: data}); // Redirect to login page
             } else {

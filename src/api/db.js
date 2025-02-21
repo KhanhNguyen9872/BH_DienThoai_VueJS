@@ -85,6 +85,50 @@ export default {
     }
   },
 
+  async addFavorite(productId, userId) {
+    if ((!productId) || (!userId)) {
+      return null;
+    }
+
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await fetch(`${API_URL}/products/${productId}/favorite`, {
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        }
+      });
+      if (!response.ok) throw new Error("Failed to favorite product");
+      return await response.json();
+    } catch (error) {
+      console.error("Error favorite product:", error);
+      return null;
+    }
+  },
+
+  async removeFavorite(productId, userId) {
+    if ((!productId) || (!userId)) {
+      return null;
+    }
+
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await fetch(`${API_URL}/products/${productId}/favorite`, {
+        method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        }
+      });
+      if (!response.ok) throw new Error("Failed to delete favorite product");
+      return await response.json();
+    } catch (error) {
+      console.error("Error delete favorite product:", error);
+      return null;
+    }
+  },
+
   // Create new cart by userId
   async createCart(userId) {
     if (!userId) {

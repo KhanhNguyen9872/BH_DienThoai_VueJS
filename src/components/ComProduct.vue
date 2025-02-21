@@ -29,14 +29,8 @@
             tools: tools,
             money: this.product.color[0].money,
             img: db.getAPI_URL() + this.product.color[0].img,
-            favoriteCount: 0,
+            favoriteCount: this.product.favorite.length
         }
-    },
-    mounted() {
-      const newFavorite = [ ...this.product.favorites ];
-
-      this.favoriteCount = newFavorite.length;
-
     }
   }
   </script>
