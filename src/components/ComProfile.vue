@@ -207,15 +207,8 @@ export default {
                 return;
             }
 
-            const user = await db.loginUser(this.username, this.oldPassword);
-
-            if (user == null) {
-                this.errorModal = 'Mật khẩu cũ không chính xác!';
-                return;
-            }
-
-            const newUser = { ...user, password: this.newPassword };
-            db.updateUser(newUser);
+            // const newUser = { ...user, password: this.newPassword };
+            db.changePassword(this.oldPassword, this.newPassword);
 
             this.oldPassword = '';
             this.newPassword = '';

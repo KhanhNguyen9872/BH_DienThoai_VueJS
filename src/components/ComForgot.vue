@@ -37,9 +37,9 @@ export default {
         };
     },
     async beforeMount() {
-        const user = JSON.parse(localStorage.getItem("user"));
+        const user = localStorage.getItem("accessToken");
         if (user != null) {
-            const u = await db.getUser(user.password, user.password);
+            const u = await db.getUser(user);
 
             if (u != null) {
                 this.$router.push('/');
@@ -73,15 +73,15 @@ export default {
                 return;
             }
 
-            const isExistUser = await db.isExistUser(this.username);
-            if (!isExistUser) {
-                this.error = 'Người dùng này không tồn tại!';
-                return;
-            }
+            // const isExistUser = await db.isExistUser(this.username);
+            // if (!isExistUser) {
+            //     this.error = 'Người dùng này không tồn tại!';
+            //     return;
+            // }
 
             const result = await db.resetPasswordUser(this.username, this.email);
 
-            if (result == undefined || result == null) {
+            if (result == undefined || result == null || result == null) {
                 this.error = 'Thông tin không chính xác!';
                 return;
             }

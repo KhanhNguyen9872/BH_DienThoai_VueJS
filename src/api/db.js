@@ -63,14 +63,14 @@ export default {
   },
 
   // Add a new user
-  async addUser(newUser) {
+  async addAccount(newUser) {
     if ((!newUser) || (newUser.password == undefined)) {
       return null;
     }
 
     newUser.password = CryptoJS.MD5(newUser.password).toString();
     try {
-      const response = await fetch(`${API_URL}/users`, {
+      const response = await fetch(`${API_URL}/accounts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -133,19 +133,20 @@ export default {
       return null;
     }
     try {
-      const response = await fetch(`${API_URL}/users?username=${username}&email=${email}`);
+      const response = await fetch(`${API_URL}/accounts/forgot`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          email: email
+        }),
+      });
       if (!response.ok) throw new Error(`Failed to fetch user`);
       const data = await response.json();
-      if (data.length == 0) {
-        return null;
-      }
 
-      let password = this.randomStr(8);
-      if (data[0].password != undefined) {
-        data[0].password = password;
-        this.updateUser(data[0]);
-      }
-      return password;
+      return data.newPassword;
     } catch (error) {
       console.error(error);
       return null;
@@ -408,6 +409,32 @@ export default {
       });
   
       if (!response.ok) throw new Error("Failed to update user");
+      return await response.json(); // Return the updated user object
+    } catch (error) {
+      console.error("Error updating user:", error);
+      return null;
+    }
+  },
+
+  async changePassword(oldPassword, newPassword) {
+    if (!oldPassword || !newPassword) {
+      return null;
+    }
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await fetch(`${API_URL}/accounts/password`, {
+        method: "PUT", // Use PATCH method for updating
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          oldPassword: oldPassword,
+          newPassword: newPassword
+        }),
+      });
+  
+      if (!response.ok) throw new Error("Failed to update password");
       return await response.json(); // Return the updated user object
     } catch (error) {
       console.error("Error updating user:", error);
