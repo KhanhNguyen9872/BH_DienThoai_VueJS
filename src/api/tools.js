@@ -17,9 +17,9 @@ export default {
     getUniqueRandomNumbers(min, max, count) {
         const result = new Set();
       
-        while (result.size < count) {
-          const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-          result.add(randomNumber); // Add the random number to the Set (duplicates won't be added)
+        for (let i = 0; i < count; i++) {
+            const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+            result.add(randomNumber); // Add the random number to the Set (duplicates won't be added)
         }
       
         return [...result]; // Convert Set to an array

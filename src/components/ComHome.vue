@@ -71,11 +71,10 @@
     },
     async mounted() {
         const allProductsResult = await db.getAllProducts();
-
-        //
+        
+        // //
         this.randomProducts = [];
         const randomNumbers = tools.getUniqueRandomNumbers(0, allProductsResult.length - 1, 3);
-
         randomNumbers.forEach((i) => {
             this.randomProducts.push( { id: allProductsResult[i].id, name: allProductsResult[i].name, price: this.formatMoney(allProductsResult[i].color[0].money), image: db.getAPI_URL() + allProductsResult[i].color[0].img, favoriteCount: allProductsResult[i].favorite.length } );
         })

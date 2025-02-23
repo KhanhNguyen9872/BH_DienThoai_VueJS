@@ -1,5 +1,5 @@
 import { createWebHistory,createRouter } from "vue-router";
-// import Home from '@/components/ComHome.vue'
+import Home from '@/components/ComHome.vue'
 import Products from '@/components/ComProducts.vue'
 import About from '@/components/ComAbout.vue'
 import Contact from '@/components/ComContact.vue'
@@ -22,8 +22,8 @@ import ComPaymentSuccess from "@/components/ComPaymentSuccess.vue";
 const routes=[
     {
         path:"/",
-        name:"Products",
-        component:Products,
+        name:"Home",
+        component:Home,
         meta: { title: 'Trang chủ' },
     },
     {
