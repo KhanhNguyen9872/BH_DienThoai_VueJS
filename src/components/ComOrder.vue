@@ -102,7 +102,7 @@ import Loading from './ComLoading.vue';
             return;
         }
 
-        const allOrder = await db.getAllOrder(this.user.id);
+        const allOrder = await db.getAllOrder();
         this.orders = [];
         allOrder.forEach((order) => {
           let total = 0;
@@ -156,7 +156,7 @@ import Loading from './ComLoading.vue';
         this.$router.push({ name: 'ProductDetail', params: { id } });
       },
       async handleYes() {
-        const result = await db.cancelOrder(this.user.id, this.selectedOrderId);
+        const result = await db.cancelOrder(this.selectedOrderId);
         this.showPopup = false;    // Hide the popup
         if (!result) {
           console.log("Không thể hủy đơn hàng này vì lý do lỗi!");

@@ -20,13 +20,13 @@
     },
     async mounted() {
         // check is logged in or not
-        let user = JSON.parse(localStorage.getItem("user"));
+        let user = localStorage.getItem("accessToken");
         if (user != null) {
-            user = await db.getUser(user.username, user.password);
+            user = await db.getUser(user);
         }
 
         if (user == null) {
-            localStorage.removeItem('user');
+            localStorage.removeItem('accessToken');
             this.$router.push('/login');
             return;
         }

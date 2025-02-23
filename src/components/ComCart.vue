@@ -101,14 +101,15 @@ export default {
         document.title = "Giỏ hàng | KhanhStore";
 
         // get items from cart
-        let infoCart = await db.getCartItemsByUserId(this.user.id);
+        let infoCart = await db.getCartItemsByUserId();
         if (infoCart == undefined) {
-            // create a new cart
-            db.createCart(this.user.id);
+            // // create a new cart
+            // db.createCart(this.user.id);
             infoCart = {};
             infoCart.id = this.user.id;
             infoCart.carts = [];
         }
+        
 
         this.cartItems = [];
         let needSaveCart = false;
@@ -129,7 +130,7 @@ export default {
                     return;
                 }
 
-                const color = data.color.find((c) => c.name === item.color);
+                const color = data.color.find((c) => c.name == item.color);
 
                 if (color == undefined) {
                     removedProduct++;
@@ -238,7 +239,7 @@ export default {
                 return (i.productId == itemId && color == i.color) === false;
             });
             
-            this.saveCarts();
+            db.deleteProductFromCart(itemId, color);
         },
         proceedRemoteItem() {
             if (this.selectedItem > 0) {
@@ -285,18 +286,12 @@ export default {
                 console.log('color item null');
             }
         },
-        saveCarts() {
-            const newCarts = [];
-            this.cartItems.forEach((item) => {
-                let newItem = {};
-                newItem.productId = item.id;
-                newItem.quantity = item.quantity;
-                newItem.color = item.color;
-
-                newCarts.push(newItem);
-            });
-
-            db.updateCarts(this.user.id, newCarts);
+        async saveCarts() {
+            for (const item of this.cartItems) {
+                await (async () => { 
+                    await db.updateCart(item.id, { quantity: item.quantity, color: item.color });
+                })();
+            }
         },
         proceedToCheckout() {
             if (this.selectedItem > 0) {

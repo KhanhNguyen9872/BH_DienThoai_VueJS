@@ -246,8 +246,6 @@ export default {
                 
                 let infoCart = await db.getCartItemsByUserId(this.userId);
                 if (infoCart == undefined) {
-                    // create a new cart
-                    db.createCart(this.userId);
                     infoCart = {};
                     infoCart.id = this.userId;
                     infoCart.carts = [];
@@ -260,7 +258,7 @@ export default {
 
                 if (cart == undefined) {
                     let newCart = {productId: this.product.id, quantity: this.currentQuantity, color: this.selectedColor};
-                    cartItems.push(newCart);
+                    db.addCart(newCart);
                 } else {
                     //
                     if ((cart.quantity + this.currentQuantity) > this.product.quantity) {
@@ -271,7 +269,6 @@ export default {
                     cart.quantity = cart.quantity + this.currentQuantity;
                 }
 
-                db.updateCarts(this.userId, cartItems);
                 this.currentQuantity = 0;
                 this.selectedColor = null;
 

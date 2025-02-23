@@ -65,9 +65,9 @@ export default {
         };
     },
     async beforeMount() {
-        const user = JSON.parse(localStorage.getItem("user"));
+        const user = localStorage.getItem("accessToken");
         if (user != null) {
-            const u = await db.getUser(user.password, user.password);
+            const u = await db.getUser(user);
             if (u != null) {
                 this.$router.push('/');
             }

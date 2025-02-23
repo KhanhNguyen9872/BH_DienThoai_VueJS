@@ -130,16 +130,16 @@ export default {
   },
   async mounted() {
     // check is logged in or not
-    this.user = JSON.parse(localStorage.getItem("user"));
+    this.user = localStorage.getItem("accessToken");
     if (this.user != null) {
-        const user = await db.getUser(this.user.username, this.user.password);
+        const user = await db.getUser(this.user);
 
         this.user = user;
     }
 
     if (this.user == null) {
         this.isSkipPrevent = true;
-        localStorage.removeItem('user');
+        localStorage.removeItem('accessToken');
         this.$router.push('/login');
         return;
     }
@@ -258,10 +258,10 @@ export default {
       }
 
       let newCart = allCart.carts.filter((item) => {
-        return this.isItemInPayment(item);
+        return !this.isItemInPayment(item);
       });
       
-      const result = db.updateCarts(this.user.id, newCart);
+      const result = db.deleteProductFromCart(newCart[0].id, newCart[0].color);
       if (!result) {
         return false;
       }
@@ -298,7 +298,7 @@ export default {
       let newOrder = { id: newOrderId, orderAt: tools.getCurrentDateTime(), payment: this.selectedPaymentMethod, status: status, address: address, totalPrice: this.finalAmount, products: listProduct };
 
       if (this.voucherCodeInfo.length > 0) {
-        const resultUseVoucher = await db.useVoucher(this.user.id, this.voucherCode);
+        const resultUseVoucher = await db.useVoucher(this.voucherCode);
         if (!resultUseVoucher) {
           this.error = 'Không thể đặt hàng, mã voucher không tồn tại hoặc đã hết lượt!';
           this.clearVoucher();
@@ -315,7 +315,7 @@ export default {
         return;
       }
 
-      const data = db.addOrder(this.user.id, newOrder);
+      const data = await db.addOrder(newOrder);
     
       if (!data) {
         this.error = 'Không thể tạo đơn hàng này vì lý do lỗi!';
@@ -324,28 +324,30 @@ export default {
       }
 
       // added Order, then decrease quantity in products
-      const products = await db.getAllProducts();
+      // const products = await db.getAllProducts();
 
-      for (const i of this.cartItems) {
-        await (async () => { 
-          const p = products.filter((j) => i.id === j.id);
-          const pColor = p[0].color.filter((j) => j.name === i.color);
-          pColor[0].quantity = pColor[0].quantity - i.quantity;
+      // for (const i of this.cartItems) {
+      //   await (async () => { 
+      //     const p = products.filter((j) => i.id === j.id);
+      //     const pColor = p[0].color.filter((j) => j.name === i.color);
+      //     pColor[0].quantity = pColor[0].quantity - i.quantity;
           
-          await db.modifyProduct(i.id, p[0]);
-        })();
-      }
+      //     await db.modifyProduct(i.id, p[0]);
+      //   })();
+      // }
 
       //
       await new Promise(resolve => setTimeout(resolve, 1000));
+
+      console.log(data.orderId);
 
       this.isLoaded = true;
       this.isSkipPrevent = true;
       window.removeEventListener('beforeunload', this.handleBeforeUnload);
       if (this.selectedPaymentMethod === "tienmat") {
-        this.$router.push({ name: 'OrderCreated', query: { id: newOrderId }});
+        this.$router.push({ name: 'OrderCreated', query: { id: data.orderId }});
       } else {
-        this.$router.push({ name: 'SimulatePayment', query: { id: newOrderId }});
+        this.$router.push({ name: 'SimulatePayment', query: { id: data.orderId }});
       }
     },
   },

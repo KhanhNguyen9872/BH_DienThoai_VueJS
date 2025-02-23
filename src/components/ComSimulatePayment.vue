@@ -46,13 +46,13 @@
     },
     async mounted() {
       // check is logged in or not
-      let user = JSON.parse(localStorage.getItem("user"));
+      let user = localStorage.getItem("accessToken");
       if (user != null) {
-          user = await db.getUser(user.username, user.password);
+          user = await db.getUser(user);
       }
 
       if (user == null) {
-          localStorage.removeItem('user');
+          localStorage.removeItem('accessToken');
           this.$router.push('/login');
           return;
       }
@@ -65,13 +65,13 @@
 
       this.orderId = data.id;
 
-      const order = await db.getAOrder(user.id, this.orderId);
+      const order = await db.getAOrder(this.orderId);
       if (!order) {
         this.$router.push('/');
         return;
       }
 
-      if (order.status !== "Đang chờ thanh toán") {
+      if (order.status != "Đang chờ thanh toán") {
         this.$router.push('/');
         return;
       }

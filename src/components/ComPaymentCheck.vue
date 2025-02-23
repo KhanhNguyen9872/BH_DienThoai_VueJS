@@ -23,13 +23,13 @@
     },
     async mounted() {
         // check is logged in or not
-        let user = JSON.parse(localStorage.getItem("user"));
+        let user = localStorage.getItem("accessToken");
         if (user != null) {
-            user = await db.getUser(user.username, user.password);
+            user = await db.getUser(user);
         }
 
         if (user == null) {
-            localStorage.removeItem('user');
+            localStorage.removeItem('accessToken');
             this.$router.push('/login');
             return;
         }
@@ -44,7 +44,7 @@
 
         this.isLoaded = true;
 
-        db.successPaymentOrder(user.id, this.orderId);
+        db.successPaymentOrder(this.orderId);
         setTimeout(() => {
           this.$router.push({ name: 'PaymentSuccess', query: { id: this.orderId }});
         }, 4000);
