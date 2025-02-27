@@ -99,6 +99,12 @@ const routes=[
         meta: { title: 'Đơn hàng' },
     },
     {
+        path:"/order/:id",
+        name:"OrderID",
+        component:ComOrder,
+        meta: { title: 'Đơn hàng' },
+    },
+    {
         path:"/profile",
         name:"Profile",
         component:ComProfile,

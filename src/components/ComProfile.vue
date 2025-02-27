@@ -161,6 +161,11 @@ export default {
             this.information = [ ...this.information, info ];
         });
 
+        this.changePasswordQuery = this.$route.query.changepassword;
+        if (this.changePasswordQuery) {  
+            this.isModalOpen = true;
+        }
+
         await new Promise(resolve => setTimeout(resolve, 300));
         this.isLoaded = true;
     },

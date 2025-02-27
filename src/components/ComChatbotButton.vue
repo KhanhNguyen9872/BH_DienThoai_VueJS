@@ -269,7 +269,7 @@
         }
       },
       redirect(path) {
-        this.$router.push('/about');
+        this.$router.push('/a');
         setTimeout(() => {
             this.$router.push(path);
         }, 10);

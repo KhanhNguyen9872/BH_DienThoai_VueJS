@@ -137,6 +137,14 @@ export default {
 
         this.favoriteCount = this.product.favorite.length;
 
+        this.colorQuery = this.$route.query.color;
+        if (this.colorQuery) {  
+            const color = this.product.color.find((i) => i.name === this.colorQuery);
+            if (color) {
+                this.selectColor(color);
+            }
+        }
+
         // is logged in
         const user = localStorage.getItem("accessToken");
         if (user != null) {
@@ -157,7 +165,7 @@ export default {
 
         document.title = this.product.name + " | KhanhStore";
         await new Promise(resolve => setTimeout(resolve, 750));
-        this.isLoaded = true;
+        this.isLoaded = true;        
     },
     computed: {
         totalMoney() {
@@ -185,7 +193,10 @@ export default {
             }
         },
         formatMoney(money) {
-            return tools.formatMoney(money);
+            if (money) {
+                return tools.formatMoney(money);
+            }
+            return '0';
         },
         closePopup() {
             this.isShowPopup = false;
