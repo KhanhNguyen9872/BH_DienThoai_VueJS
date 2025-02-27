@@ -9,6 +9,82 @@ export default {
     randomStr(length) {
       return Math.random().toString(36).substring(2, 2 + length);
     },
+
+    async getHistoryChatBot() {
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        const response = await fetch(`${API_URL}/chatbot`, {
+          method: "GET",
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          }
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch products");
+        const data = await response.json();
+  
+        return data;
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        return null; // Return an object with error
+      }
+    },
+
+    async sendMessageToChatBot(message, prompt) {
+      if (!message) {
+        return null;
+      }
+      if (!prompt) {
+        prompt = "";
+      }
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        const response = await fetch(`${API_URL}/chatbot`, {
+          method: "POST",
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: message,
+            prompt: prompt
+          }),
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch products");
+        const data = await response.json();
+        if (data.content) {
+          return data.content;
+        }
+        return null;
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        return null; // Return an object with error
+      }
+    },
+
+    async clearHistoryChatBot() {
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        const response = await fetch(`${API_URL}/chatbot`, {
+          method: "DELETE",
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          }
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch products");
+        const data = await response.json();
+  
+        return data;
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        return null; // Return an object with error
+      }
+    },
+
   // Get all products
   async getAllProducts() {
     try {

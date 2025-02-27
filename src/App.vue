@@ -1,27 +1,40 @@
 <template>
-  <GoToTopButton />
-  <Header/>
+  <div>
+    <!-- Show maintenance page if under maintenance -->
+    <ComMaintenance v-if="maintenance" />
 
-  
-  <Footer/>
+    <!-- Normal content if not under maintenance -->
+    <div v-else>
+      <ComChatbotButton v-if="chatbot_enabled" />
+      <GoToTopButton />
+      <Header />
+      <Footer />
+    </div>
+  </div>
 </template>
-
 <script>
-// b1: import vào
+// Import components
+import ComMaintenance from './components/ComMaintenance.vue';
 import Header from './components/ComHeader.vue'
-import GoToTopButton from './components/ComGoToUp.vue';
+import GoToTopButton from './components/ComGoToUp.vue'
 import Footer from './components/ComFooter.vue'
+import ComChatbotButton from './components/ComChatbotButton.vue';
+import db from './api/db';
+
 export default {
   name: 'App',
   components: {
+    ComMaintenance,
+    ComChatbotButton, 
     GoToTopButton,
     Header,
     Footer,
- 
   },
   data() {
     return {
       isDarkMode: false, // Default is light mode
+      maintenance: false, // Flag for maintenance mode
+      chatbot_enabled: false,
     };
   },
   mounted() {
@@ -29,6 +42,9 @@ export default {
 
     // Listen to the storage event for theme changes in other tabs/windows
     window.addEventListener('storage', this.handleStorageChange);
+
+    // Call the API to check for maintenance
+    this.checkMaintenanceStatus();
   },
   beforeUnmount() {
     // Remove the event listener when the component is destroyed
@@ -62,6 +78,32 @@ export default {
         this.updateTheme();
       }
     },
+    async checkMaintenanceStatus() {
+      try {
+        const response = await fetch(`${db.getAPI_URL()}/status`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch maintenance status');
+        }
+        const data = await response.json();
+
+        // Assuming the API response has a 'status' field that can be 'MAINTENANCE'
+        if (data.status == 'MAINTENANCE') {
+          this.maintenance = true;
+        } else if (data.status == 'ALIVE') {
+          this.maintenance = false;
+        }
+
+        if (data.chatbot == "1") {
+          this.chatbot_enabled = true;
+        } else {
+          this.chatbot_enabled = false;
+        }
+      } catch (error) {
+        console.error("Error fetching maintenance status:", error);
+        this.maintenance = true; // Show maintenance page on error
+        this.chatbot_enabled = false;
+      }
+    }
   },
 }
 </script>
