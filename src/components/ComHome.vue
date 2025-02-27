@@ -14,6 +14,7 @@
             class="product-card"
             v-for="product in randomProducts"
             :key="product.id"
+             @click="handleClick(product.id)"
           >
             <img :src="product.image" :alt="product.name" />
             <h3>{{ product.name }}</h3>

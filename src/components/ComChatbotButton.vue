@@ -11,7 +11,7 @@
         <div class="resize-handle" @mousedown="startResize"></div>
         <!-- Chat Header -->
         <div class="chat-header">
-        <h3>Chat with Us</h3>
+        <h3>CHATBOT KHANHHAOSTORE</h3>
         <div class="header-buttons">
             <!-- New Clear Button (placed first) -->
             <button @click="clearChat" class="clear-button">Clear</button>
@@ -53,7 +53,7 @@
         <!-- Input to send new message -->
         <div class="chat-input">
           <input v-model="newMessage" @keyup.enter="sendMessage" placeholder="Type a message..." />
-          <button @click="sendMessage">Send</button>
+          <button :disabled="this.isDisableSendMessage" @click="sendMessage">Send</button>
         </div>
       </div>
     </transition>
@@ -66,6 +66,7 @@
     name: "ChatbotButton",
     data() {
       return {
+        isDisableSendMessage: false,
         isLoggedIn: false, // To check if user is logged in
         isChatOpen: false, // To control if the chat overlay is open
         newMessage: "", // To hold the current message input by the user
@@ -74,6 +75,7 @@
         ],
         savedHistory: [],
         typingTime: 0.0, // Time taken for bot to type a message
+        lastTypingTime: 0.0, // Time when bot last started typing
         isBotTyping: false, // To control if the bot is typing
         userAvatar: require('@/assets/userAvatar.png'), // Default avatar for user (red background)
         botAvatar: require('@/assets/botAvatar.png'), // Default avatar for bot (blue background)
@@ -116,7 +118,7 @@
                     }
                     this.savedHistory.push({
                         sender: isBot,
-                        text: m.message.trim().replace(/```html\n/g, '').replace('\n```', '').replace(/\n/g, '<br>'),
+                        text: m.message.trim().replace(/```html\n/g, '').replace('\n```', '').replace(/\n\n/g, '<br>'),
                         time: this.formatDateTime(m.time) 
                     });
                 });
@@ -186,7 +188,7 @@
   },
   clearChat() {
   // Show confirmation dialog
-  const userConfirmed = window.confirm("Are you sure you want to clear the chat history?");
+  const userConfirmed = window.confirm("Bạn có muốn xóa lịch sử đoạn chat?");
   
   if (userConfirmed) {
     // Clear the chat history if confirmed
@@ -204,7 +206,11 @@
 },
 
       sendMessage() {
+        if (this.isDisableSendMessage) {
+            return;
+        }
         if (this.newMessage.trim() != "") {
+            this.isDisableSendMessage = true;
           // Add the user's message to the chat history with timestamp
           const userMessage = {
             sender: "user",
@@ -223,10 +229,11 @@
             if (!this.isLoggedIn) {
             const botMessage = {
                 sender: "bot",
-                text: "<p>Vui lòng đăng nhập để tiếp tục chat.<p/> <button value=\"/login\" name=\"redirect\">Đăng nhập ngay</button>",
+                text: "<p>Vui lòng đăng nhập để tiếp tục chat.<p/> <button class=\"material-button\" value=\"/login\" name=\"redirect\">Đăng nhập ngay</button>",
                 time: this.getCurrentDateTime()
                 };
                 this.savedHistory.push(botMessage);
+            this.isDisableSendMessage = false;
             return;
         }
             // Simulate a bot response with typing animation
@@ -243,23 +250,22 @@
                     message = "Sorry, I'm not sure how to respond to that.";
                 }
 
-                // const cleanedMessage = message.replace(/<think>.*?<\/think>/gs, '').trim();
-                
-
+                this.isBotTyping = false; // Stop typing animation
+                this.isDisableSendMessage = false;
                 const botMessage = {
                     sender: "bot",
-                    text: message.trim().trim().replace(/```html\n/g, '').replace('\n```', '').replace(/\n/g, '<br>'),
-                    time: this.getCurrentDateTime()
+                    text: message.trim().trim().replace(/```html\n/g, '').replace('\n```', '').replace(/\n\n/g, '<br>'),
+                    time: this.getCurrentDateTime() + ` (Last typing: ${this.typingTime}s)`
                 };
                 this.savedHistory.push(botMessage);
-                this.isBotTyping = false; // Stop typing animation
                 this.$nextTick(() => {
                     this.scrollToBottom();
                 });
-            }, 250); // Bot takes 2 seconds to "type"
-          }, 1000); // Simulate bot response after 1 second
+            }, 200); 
+          }, 1000);
         } else {
             this.newMessage = "";
+            this.isDisableSendMessage = false;
         }
       },
       redirect(path) {
@@ -293,8 +299,8 @@
         const minutes = String(now.getMinutes()).padStart(2, '0');
         return `${hours}:${minutes} ${day}/${month} `;
     },
-     formatDateTime() {
-    const now = new Date();
+     formatDateTime(datetime) {
+    const now = new Date(datetime);
     const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
     const day = String(now.getDate()).padStart(2, '0');
     const hours = String(now.getHours()).padStart(2, '0');
@@ -309,6 +315,7 @@
           if (this.isBotTyping) {
             this.typingTime = Math.round((this.typingTime + 0.1) * 10) / 10; // Round to 1 decimal place
           } else {
+            this.lastTypingTime = this.typingTime; // Save the last typing time
             clearInterval(typingInterval);
           }
         }, 100); // Increment time every 100ms
@@ -737,11 +744,16 @@
 
 /* Move the resize handle to the top */
 .resize-handle {
-  height: 10px;
+  height: 20px;
   background-color: #4dabf7;
   cursor: ns-resize;
   border-radius: 48px 48px 0 0; /* Round top corners */
   margin-bottom: auto; /* Push to the top */
+}
+
+body.dark-mode .resize-handle {
+    height: 20px;
+    background-color: #333;
 }
 
 .chat-header {
@@ -761,6 +773,80 @@
   scroll-behavior: smooth;
   flex-grow: 1;
   background-color: #f9f9f9;
+}
+
+body.dark-mode .chatbot-button {
+    background-color: #2a2a2a;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+body.dark-mode .chatbot-button:hover {
+    background-color: #1f1f1f;
+}
+
+body.dark-mode .chat-overlay {
+    background-color: #1e1e1e;
+    border: 1px solid #444;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .chat-header {
+    background-color: #333;
+    color: #f1f1f1;
+}
+body.dark-mode .chat-header button {
+    color: #f1f1f1;
+}
+
+body.dark-mode .chat-content {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .user-message .message-content {
+    background-color: #3a3a3a !important;
+    color: #fff;
+}
+body.dark-mode .bot-message .message-content {
+    background-color: #444 !important;
+    color: #e0e0e0;
+}
+
+body.dark-mode .chat-input {
+    background-color: #1e1e1e;
+    border-top: 1px solid #444;
+}
+body.dark-mode .chat-input input {
+    background-color: #333;
+    border: 1px solid #444;
+    color: #e0e0e0;
+}
+body.dark-mode .chat-input button {
+    background-color: #333;
+    color: #fff;
+}
+body.dark-mode .chat-input button:hover {
+    background-color: #555;
+}
+
+body.dark-mode .login-modal {
+    background: rgba(0, 0, 0, 0.7);
+}
+body.dark-mode .login-content {
+    background: #2a2a2a;
+    color: #e0e0e0;
+}
+body.dark-mode .login-form input {
+    background: #333;
+    border: 1px solid #444;
+    color: #e0e0e0;
+}
+body.dark-mode .login-form button {
+    background-color: #333;
+    color: #fff;
+}
+
+body.dark-mode .clear-button {
+    color: #f1f1f1;
 }
 
   </style>
