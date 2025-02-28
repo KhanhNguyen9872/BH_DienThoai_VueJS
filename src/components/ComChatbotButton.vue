@@ -118,7 +118,7 @@
                     }
                     this.savedHistory.push({
                         sender: isBot,
-                        text: m.message.trim().replace(/```html\n/g, '').replace('\n```', '').replace(/\n\n/g, '<br>'),
+                        text: m.message.trim().replace(/```html\n/g, '').replace('\n```', '').replace(/\n\n/g, '<br>').replace(/\n/g, '<br>'),
                         time: this.formatDateTime(m.time) 
                     });
                 });
@@ -254,7 +254,7 @@
                 this.isDisableSendMessage = false;
                 const botMessage = {
                     sender: "bot",
-                    text: message.trim().trim().replace(/```html\n/g, '').replace('\n```', '').replace(/\n\n/g, '<br>'),
+                    text: message.trim().trim().replace(/```html\n/g, '').replace('\n```', '').replace(/\n\n/g, '<br>').replace(/\n/g, '<br>'),
                     time: this.getCurrentDateTime() + ` (Last typing: ${this.typingTime}s)`
                 };
                 this.savedHistory.push(botMessage);

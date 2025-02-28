@@ -6,8 +6,7 @@
            /* Material Design Button */
            .material-button {
             background-color: #00b3e5;
-            margin-top: 5px;
-            margin-bottom: 5px;
+            margin: 5px;
             color: white;
             border: none;
             border-radius: 4px;
