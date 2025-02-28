@@ -120,7 +120,7 @@ import Loading from './ComLoading.vue';
             isShowPayment = true;
           }
 
-          if (order.status == "Đang chờ xác nhận") {
+          if (order.status == "Đang chờ xác nhận" || order.status == 'Đang chờ giao hàng') {
             isShowCancel = true;
           }
 
@@ -187,7 +187,9 @@ import Loading from './ComLoading.vue';
           case "Đang chờ thanh toán":
             return "status-shipping";
           case "Đang chờ xác nhận":
-            return "status-shipping"; 
+            return "status-shipping";
+          case "Đang chờ giao hàng":
+            return "status-shipping";
           case "Đang giao hàng":
             return "status-shipping";
           case "Đã giao hàng":

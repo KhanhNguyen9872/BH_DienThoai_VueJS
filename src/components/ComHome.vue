@@ -16,7 +16,7 @@
             :key="product.id"
              @click="handleClick(product.id)"
           >
-            <img :src="product.image" :alt="product.name" />
+            <img :src="product.image" :alt="product.name" @click="handleClick(product.id)" />
             <h3>{{ product.name }}</h3>
             <div class="price-container">
                 <p class="price">{{ product.price }} VND</p>
@@ -37,8 +37,9 @@
             class="product-card favorite"
             v-for="product in favoriteProducts"
             :key="product.id"
+            @click="handleClick(product.id)"
           >
-            <img :src="product.image" :alt="product.name" />
+            <img :src="product.image" :alt="product.name" @click="handleClick(product.id)" />
             <h3>{{ product.name }}</h3>
             <div class="price-container">
                 <p class="price">{{ product.price }} VND</p>

@@ -44,9 +44,13 @@
 
         this.isLoaded = true;
 
-        db.successPaymentOrder(this.orderId);
+        const result = db.successPaymentOrder(this.orderId);
         setTimeout(() => {
-          this.$router.push({ name: 'PaymentSuccess', query: { id: this.orderId }});
+          if (result) {
+            this.$router.push({ name: 'PaymentSuccess', query: { id: this.orderId }});
+          } else {
+            this.$router.push({ name: 'PaymentError', query: { id: this.orderId }});
+          }
         }, 4000);
     },
   };

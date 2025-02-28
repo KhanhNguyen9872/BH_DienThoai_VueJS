@@ -19,6 +19,7 @@ import ComSimulatePayment from "@/components/ComSimulatePayment.vue";
 import ComOrderCreated from "@/components/ComOrderCreated.vue";
 import ComPaymentCheck from "@/components/ComPaymentCheck.vue";
 import ComPaymentSuccess from "@/components/ComPaymentSuccess.vue";
+import ComPaymentError from "@/components/ComPaymentError.vue";
 const routes=[
     {
         path:"/",
@@ -145,6 +146,12 @@ const routes=[
         name:"PaymentSuccess",
         component:ComPaymentSuccess,
         meta: { title: 'Thanh toán thành công' },
+    },
+    {
+        path:"/payment/error",
+        name:"PaymentError",
+        component:ComPaymentError,
+        meta: { title: 'Thanh toán thất bại' },
     },
     {
         path:"/payment/verify",
