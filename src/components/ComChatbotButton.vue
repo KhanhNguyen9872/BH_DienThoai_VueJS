@@ -261,7 +261,7 @@
                 this.$nextTick(() => {
                     this.scrollToBottom();
                 });
-            }, 200); 
+            }, 100); 
           }, 1000);
         } else {
             this.newMessage = "";

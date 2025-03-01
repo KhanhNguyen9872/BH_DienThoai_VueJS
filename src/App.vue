@@ -93,10 +93,10 @@ export default {
           this.maintenance = false;
         }
 
-        if (data.chatbot == "1") {
-          this.chatbot_enabled = true;
-        } else {
+        if (data.chatbot == "0") {
           this.chatbot_enabled = false;
+        } else {
+          this.chatbot_enabled = true;
         }
       } catch (error) {
         console.error("Error fetching maintenance status:", error);
