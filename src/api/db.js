@@ -10,6 +10,25 @@ export default {
       return Math.random().toString(36).substring(2, 2 + length);
     },
 
+    async getImg() {
+      try {
+        const response = await fetch(`${API_URL}/img`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch img");
+        const data = await response.json();
+  
+        return data;
+      } catch (error) {
+        console.error("Error fetching img:", error);
+        return null; // Return an object with error
+      }
+    },
+
     async getHistoryChatBot() {
       try {
         const accessToken = localStorage.getItem('accessToken');

@@ -14,7 +14,7 @@
         <h3>CHATBOT KHANHHAOSTORE</h3>
         <div class="header-buttons">
             <!-- New Clear Button (placed first) -->
-            <button @click="clearChat" class="clear-button">Clear</button>
+            <button @click="clearChat" v-if="this.savedHistory.length > 1" class="clear-button">Clear</button>
             <!-- Close Button (placed second) -->
             <button @click="closeChat">X</button>
         </div>
@@ -118,7 +118,7 @@
                     }
                     this.savedHistory.push({
                         sender: isBot,
-                        text: m.message.trim().replace(/```html\n/g, '').replace('\n```', '').replace(/\n\n/g, '<br>').replace(/\n/g, '<br>'),
+                        text: m.message.trim().replace(/```html\n/g, '').replace('\n```', '').replace(/\n\n/g, '<br>').replace(/\n/g, ''),
                         time: this.formatDateTime(m.time) 
                     });
                 });
@@ -127,6 +127,12 @@
 
       // Scroll to the bottom of the chat content when the component is mounted
       this.scrollToBottom();
+
+      const imgData = await db.getImg();
+      if (imgData) {
+        this.userAvatar = db.getAPI_URL() + imgData.userAvatar;
+        this.botAvatar = db.getAPI_URL() + imgData.botAvatar; 
+      } 
     },
     computed: {
       // Sort messages by time in ascending order
@@ -186,19 +192,24 @@
     document.removeEventListener('mousemove', this.resizeChat);
     document.removeEventListener('mouseup', this.stopResize);
   },
-  clearChat() {
+  async clearChat() {
   // Show confirmation dialog
   const userConfirmed = window.confirm("Bạn có muốn xóa lịch sử đoạn chat?");
   
   if (userConfirmed) {
     // Clear the chat history if confirmed
-    db.clearHistoryChatBot();  // Assuming this clears history from the database
-    this.savedHistory = [];  // Clear the chat history in the component
+    const result = await db.clearHistoryChatBot();  // Assuming this clears history from the database
+    if (result) {
+      this.savedHistory = [];  // Clear the chat history in the component
     
     // Restore original history if necessary
     this.originalHistory.forEach(m => {
       this.savedHistory.push(m);
     });
+    } else {
+      alert("Đã xảy ra lỗi khi xóa lịch sử đoạn chat");
+    }
+    
   } else {
     // If the user clicked "No", do nothing
     console.log("Chat history not cleared.");
@@ -254,7 +265,7 @@
                 this.isDisableSendMessage = false;
                 const botMessage = {
                     sender: "bot",
-                    text: message.trim().trim().replace(/```html\n/g, '').replace('\n```', '').replace(/\n\n/g, '<br>').replace(/\n/g, '<br>'),
+                    text: message.trim().trim().replace(/```html\n/g, '').replace('\n```', '').replace(/\n\n/g, '<br>').replace(/\n/g, ''),
                     time: this.getCurrentDateTime() + ` (Last typing: ${this.typingTime}s)`
                 };
                 this.savedHistory.push(botMessage);
