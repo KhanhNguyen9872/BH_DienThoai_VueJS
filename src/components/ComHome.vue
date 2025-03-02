@@ -91,7 +91,6 @@
             this.favoriteProducts.push({ id: i.id, name: i.name, price: this.formatMoney(i.color[0].money), image: db.getAPI_URL() + i.color[0].img, favoriteCount: i.favorite.length });
         });
 
-        await new Promise(resolve => setTimeout(resolve, 750));
         this.isLoaded = true;
     },
     methods: {

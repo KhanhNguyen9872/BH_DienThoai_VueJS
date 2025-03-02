@@ -125,7 +125,6 @@ export default {
       this.filterProducts(this.searchQuery);
     }
 
-    await new Promise(resolve => setTimeout(resolve, 1000));
     this.isLoaded = true;
   },
 

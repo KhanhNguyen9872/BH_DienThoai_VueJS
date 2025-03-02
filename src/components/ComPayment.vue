@@ -337,9 +337,6 @@ export default {
       // }
 
       //
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      console.log(data.orderId);
 
       this.isLoaded = true;
       this.isSkipPrevent = true;

@@ -261,7 +261,7 @@
                 // send message to chatbot api
                 let message = await db.sendMessageToChatBot(userMess, "Prompt: Hiện tại khách hàng đang ở URL: " + this.$route.path);
                 if (message == null) {
-                    message = "Sorry, I'm not sure how to respond to that.";
+                    message = "Xin lỗi quý khách, chatbot đã đi ngủ rồi, vui lòng thử lại sau!";
                 }
 
                 this.isBotTyping = false; // Stop typing animation

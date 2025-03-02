@@ -148,7 +148,6 @@ import Loading from './ComLoading.vue';
         });
         this.orders.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-        await new Promise(resolve => setTimeout(resolve, 750));
         this.isLoaded = true;
     },
     methods: {

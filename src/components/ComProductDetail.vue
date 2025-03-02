@@ -164,7 +164,6 @@ export default {
         }
 
         document.title = this.product.name + " | KhanhStore";
-        await new Promise(resolve => setTimeout(resolve, 750));
         this.isLoaded = true;        
     },
     computed: {

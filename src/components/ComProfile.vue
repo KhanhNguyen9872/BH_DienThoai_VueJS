@@ -166,7 +166,6 @@ export default {
             this.isModalOpen = true;
         }
 
-        await new Promise(resolve => setTimeout(resolve, 300));
         this.isLoaded = true;
     },
     computed: {

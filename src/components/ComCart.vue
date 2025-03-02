@@ -186,7 +186,6 @@ export default {
             this.saveCarts();
         }
 
-        await new Promise(resolve => setTimeout(resolve, 750));
         this.isLoaded = true;
     },
     methods: {
