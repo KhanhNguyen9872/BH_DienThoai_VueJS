@@ -132,7 +132,9 @@
       if (imgData) {
         this.userAvatar = db.getAPI_URL() + imgData.userAvatar;
         this.botAvatar = db.getAPI_URL() + imgData.botAvatar; 
-      } 
+      }
+
+      this.isChatOpen = sessionStorage.getItem('chatbot_open') == 'true' ? true : false;
     },
     computed: {
       // Sort messages by time in ascending order
@@ -153,6 +155,7 @@
                 this.scrollToBottom();
             });
         }
+        sessionStorage.setItem('chatbot_open', this.isChatOpen);
       },
       closeChat() {
         this.isChatOpen = false; // Close the chat overlay
