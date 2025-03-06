@@ -41,7 +41,7 @@
     <div class="payment-method">
       <label for="address">Địa chỉ</label>
       <select id="address" v-model="selectedAddress">
-        <option v-for="address in addresses" :key="address.id" :value="address">
+        <option v-for="address in addresses" :key="address.id" :value="address.id">
           {{ address.name }} - {{ address.phone }} | {{ address.address }}
         </option>
       </select>
@@ -51,7 +51,7 @@
 
     <div class="voucher-section">
       <label for="address">Mã giảm giá</label>
-      <input v-model="voucherCode" placeholder="Nhập mã vouncher" />
+      <input v-model="voucherCode" placeholder="Nhập mã voucher" />
       <button @click="applyVoucher">Áp dụng</button>
     </div>
 
@@ -281,7 +281,6 @@ export default {
       this.isLoaded = false;
 
       this.error = '';
-      let newOrderId = db.randomStr(12);
 
       // create new order
       let listProduct = [];
@@ -289,23 +288,18 @@ export default {
         listProduct = [ ...listProduct, { id: item.id, name: item.name, color: item.color, quantity: item.quantity, price: item.price, totalPrice: (item.price * item.quantity) } ];
       });
       
-      let status = 'Đang chờ thanh toán';
-      if (this.selectedPaymentMethod === "tienmat") {
-        status = "Đang chờ xác nhận"
-      }
+      // let address = { name: this.selectedAddress.name, phone: this.selectedAddress.phone, address: this.selectedAddress.address };
+      let newOrder = { payment: this.selectedPaymentMethod, address: this.selectedAddress, products: listProduct, voucherCode: this.voucherCode };
 
-      let address = { name: this.selectedAddress.name, phone: this.selectedAddress.phone, address: this.selectedAddress.address };
-      let newOrder = { id: newOrderId, orderAt: tools.getCurrentDateTime(), payment: this.selectedPaymentMethod, status: status, address: address, totalPrice: this.finalAmount, products: listProduct };
-
-      if (this.voucherCodeInfo.length > 0) {
-        const resultUseVoucher = await db.useVoucher(this.voucherCode);
-        if (!resultUseVoucher) {
-          this.error = 'Không thể đặt hàng, mã voucher không tồn tại hoặc đã hết lượt!';
-          this.clearVoucher();
-          this.isLoaded = true;
-          return;
-        }
-      }
+      // if (this.voucherCodeInfo.length > 0) {
+      //   const resultUseVoucher = await db.useVoucher(this.voucherCode);
+      //   if (!resultUseVoucher) {
+      //     this.error = 'Không thể đặt hàng, mã voucher không tồn tại hoặc đã hết lượt!';
+      //     this.clearVoucher();
+      //     this.isLoaded = true;
+      //     return;
+      //   }
+      // }
 
       // delete product in cart after order
       const resultRemoveItem = await this.removeItem();

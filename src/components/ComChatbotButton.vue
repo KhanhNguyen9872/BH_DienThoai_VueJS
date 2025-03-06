@@ -159,6 +159,7 @@
       },
       closeChat() {
         this.isChatOpen = false; // Close the chat overlay
+        sessionStorage.setItem("chatbot_open", this.isChatOpen);
       },
       startResize(event) {
     event.preventDefault();

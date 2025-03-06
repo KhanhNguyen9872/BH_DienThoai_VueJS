@@ -1,4 +1,5 @@
 const API_URL = "http://127.0.0.1:5000";
+const API_VERSION = "v1"
 
 export default {
     getAPI_URL() {
@@ -10,7 +11,7 @@ export default {
 
     async getImg() {
       try {
-        const response = await fetch(`${API_URL}/img`, {
+        const response = await fetch(`${API_URL}/api/${API_VERSION}/img`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -27,10 +28,29 @@ export default {
       }
     },
 
+    async getStatus() {
+      try {
+        const response = await fetch(`${API_URL}/api/${API_VERSION}/status`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch status");
+        const data = await response.json();
+  
+        return data;
+      } catch (error) {
+        console.error("Error fetching status:", error);
+        return null; // Return an object with error
+      }
+    },
+
     async getHistoryChatBot() {
       try {
         const accessToken = localStorage.getItem('accessToken');
-        const response = await fetch(`${API_URL}/chatbot`, {
+        const response = await fetch(`${API_URL}/api/${API_VERSION}/chatbot`, {
           method: "GET",
           headers: {
             'Authorization': `Bearer ${accessToken}`,
@@ -57,7 +77,7 @@ export default {
       }
       try {
         const accessToken = localStorage.getItem('accessToken');
-        const response = await fetch(`${API_URL}/chatbot`, {
+        const response = await fetch(`${API_URL}/api/${API_VERSION}/chatbot`, {
           method: "POST",
           headers: {
             'Authorization': `Bearer ${accessToken}`,
@@ -84,7 +104,7 @@ export default {
     async clearHistoryChatBot() {
       try {
         const accessToken = localStorage.getItem('accessToken');
-        const response = await fetch(`${API_URL}/chatbot`, {
+        const response = await fetch(`${API_URL}/api/${API_VERSION}/chatbot`, {
           method: "DELETE",
           headers: {
             'Authorization': `Bearer ${accessToken}`,
@@ -105,7 +125,7 @@ export default {
   // Get all products
   async getAllProducts() {
     try {
-      const response = await fetch(`${API_URL}/products`);
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/products`);
       if (!response.ok) throw new Error("Failed to fetch products");
       
       const data = await response.json();
@@ -123,7 +143,7 @@ export default {
       return null;
     }
     try {
-      const response = await fetch(`${API_URL}/products/${productId}`);
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/products/${productId}`);
       if (!response.ok) throw new Error(`Failed to fetch product with ID ${productId}`);
       const data = await response.json();
 
@@ -140,7 +160,7 @@ export default {
       return null;
     }
     try {
-      const response = await fetch(`${API_URL}/products/${productId}`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/products/${productId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -162,7 +182,7 @@ export default {
     }
 
     try {
-      const response = await fetch(`${API_URL}/accounts`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/accounts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -184,7 +204,7 @@ export default {
 
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/products/${productId}/favorite`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/products/${productId}/favorite`, {
         method: "POST",
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -206,7 +226,7 @@ export default {
 
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/products/${productId}/favorite`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/products/${productId}/favorite`, {
         method: "DELETE",
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -226,7 +246,7 @@ export default {
       return null;
     }
     try {
-      const response = await fetch(`${API_URL}/users?username=${username}`);
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/users?username=${username}`);
       if (!response.ok) throw new Error(`Failed to fetch user`);
       const data = await response.json();
       if (data.length == 0) {
@@ -244,7 +264,7 @@ export default {
       return null;
     }
     try {
-      const response = await fetch(`${API_URL}/accounts/forgot`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/accounts/forgot`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -271,7 +291,7 @@ export default {
       }
 
       try {
-          const response = await fetch(`${API_URL}/user`, { // Correct endpoint and method
+          const response = await fetch(`${API_URL}/api/${API_VERSION}/user`, { // Correct endpoint and method
               method: 'GET',  // Use GET
               headers: {
                   'Authorization': `Bearer ${accessToken}` // Include the token
@@ -307,7 +327,7 @@ export default {
     }
 
     try {
-      const response = await fetch(`${API_URL}/accounts/auth`, { // Changed to /auth endpoint
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/accounts/auth`, { // Changed to /auth endpoint
         method: 'POST', // Changed to POST
         headers: {
           'Content-Type': 'application/json' // Important!
@@ -351,7 +371,7 @@ export default {
       return null;
     }
     try {
-      const response = await fetch(`${API_URL}/carts`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/carts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -376,7 +396,7 @@ export default {
     }
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/carts`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/carts`, {
         method: "POST",
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -398,7 +418,7 @@ export default {
     }
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/carts/${productId}`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/carts/${productId}`, {
         method: "PUT",
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -421,7 +441,7 @@ export default {
     }
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/carts/${cartId}`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/carts/${cartId}`, {
         method: "DELETE",
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -441,7 +461,7 @@ export default {
   async getCartItemsByUserId() {
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/carts`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/carts`, {
         method: "GET",
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -463,7 +483,7 @@ export default {
     }
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/address`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/address`, {
         method: "GET",
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -486,7 +506,7 @@ export default {
     }
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/address`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/address`, {
         method: "POST",
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -508,7 +528,7 @@ export default {
     }
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/address/${id}`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/address/${id}`, {
         method: "DELETE",
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -530,7 +550,7 @@ export default {
     }
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/address/${id}`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/address/${id}`, {
         method: "PUT",
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -552,7 +572,7 @@ export default {
     }
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/accounts/password`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/accounts/password`, {
         method: "PATCH", // Use PATCH method for updating
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -579,7 +599,7 @@ export default {
     }
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/vouchers/${voucherCode}`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/vouchers/${voucherCode}`, {
         method: "GET", // Use PATCH method for updating
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -631,7 +651,7 @@ export default {
     }
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/vouchers/${voucherCode}`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/vouchers/${voucherCode}`, {
         method: "POST", // Use PATCH method for updating
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -656,7 +676,7 @@ export default {
   async getAllOrder() {
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/orders`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/orders`, {
         method: "GET",
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -676,7 +696,7 @@ export default {
   async getAOrder(orderId) {
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/orders/${orderId}`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/orders/${orderId}`, {
         method: "GET",
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -696,7 +716,7 @@ export default {
   async cancelOrder(orderId) {
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/orders/${orderId}`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/orders/${orderId}`, {
         method: "DELETE",
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -715,7 +735,7 @@ export default {
   async successPaymentOrder(orderId) {
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/orders/${orderId}/success`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/orders/${orderId}/success`, {
         method: "POST",
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -739,7 +759,7 @@ export default {
 
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/orders`, {
+      const response = await fetch(`${API_URL}/api/${API_VERSION}/orders`, {
         method: "POST",
         headers: {
           'Authorization': `Bearer ${accessToken}`,

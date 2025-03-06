@@ -80,11 +80,7 @@ export default {
     },
     async checkMaintenanceStatus() {
       try {
-        const response = await fetch(`${db.getAPI_URL()}/status`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch maintenance status');
-        }
-        const data = await response.json();
+        const data = await db.getStatus();
 
         // Assuming the API response has a 'status' field that can be 'MAINTENANCE'
         if (data.status == 'MAINTENANCE') {
