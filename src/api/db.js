@@ -1,5 +1,3 @@
-import CryptoJS from "crypto-js";
-
 const API_URL = "http://127.0.0.1:5000";
 
 export default {
@@ -163,7 +161,6 @@ export default {
       return null;
     }
 
-    newUser.password = CryptoJS.MD5(newUser.password).toString();
     try {
       const response = await fetch(`${API_URL}/accounts`, {
         method: "POST",
@@ -556,7 +553,7 @@ export default {
     try {
       const accessToken = localStorage.getItem('accessToken');
       const response = await fetch(`${API_URL}/accounts/password`, {
-        method: "PUT", // Use PATCH method for updating
+        method: "PATCH", // Use PATCH method for updating
         headers: {
           'Authorization': `Bearer ${accessToken}`,
           "Content-Type": "application/json",
