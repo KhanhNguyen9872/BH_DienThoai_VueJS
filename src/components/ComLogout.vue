@@ -7,9 +7,11 @@
 <script>
 export default {
     async created() {
-        document.title = "Đăng xuất | KhanhStore";
-        localStorage.removeItem('accessToken');
-        await new Promise(resolve => setTimeout(resolve, 1750));
+        if (localStorage.getItem('accessToken')) {
+            document.title = "Đăng xuất | KhanhStore";
+            localStorage.removeItem('accessToken');
+            await new Promise(resolve => setTimeout(resolve, 1750));
+        }
         window.location.href = '/';
     }
 }
