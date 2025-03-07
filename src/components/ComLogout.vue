@@ -5,12 +5,14 @@
 </template>
 
 <script>
+import db from '@/api/db';
 export default {
     async created() {
         if (localStorage.getItem('accessToken')) {
             document.title = "Đăng xuất | KhanhStore";
+            db.logout();
             localStorage.removeItem('accessToken');
-            await new Promise(resolve => setTimeout(resolve, 1750));
+            await new Promise(resolve => setTimeout(resolve, 1000));
         }
         window.location.href = '/';
     }
