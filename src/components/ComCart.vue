@@ -101,16 +101,18 @@ export default {
         document.title = "Giỏ hàng | KhanhStore";
 
         // get items from cart
-        let infoCart = await db.getCartItemsByUserId();
+        let infoCartData = await db.getCartItemsByUserId();
+        let infoCart = {};
+        infoCart.id = this.user.id;
+
         if (infoCart == undefined) {
             // // create a new cart
             // db.createCart(this.user.id);
-            infoCart = {};
-            infoCart.id = this.user.id;
             infoCart.carts = [];
         }
-        
 
+        infoCart.carts = infoCartData;
+        
         this.cartItems = [];
         let needSaveCart = false;
         let removedProduct = 0;

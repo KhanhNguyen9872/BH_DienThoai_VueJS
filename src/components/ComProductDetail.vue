@@ -254,7 +254,18 @@ export default {
 
                 this.error = "";
                 
-                let infoCart = await db.getCartItemsByUserId(this.userId);
+                let infoCartData = await db.getCartItemsByUserId();
+                let infoCart = {};
+                infoCart.id = this.userId;
+
+                if (infoCart == undefined) {
+                    // // create a new cart
+                    // db.createCart(this.user.id);
+                    infoCart.carts = [];
+                }
+
+                infoCart.carts = infoCartData;
+                
                 if (infoCart == undefined) {
                     infoCart = {};
                     infoCart.id = this.userId;
