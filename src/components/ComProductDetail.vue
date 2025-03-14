@@ -285,6 +285,9 @@ export default {
                     if ((cart.quantity + this.currentQuantity) > this.product.quantity) {
                         this.error = 'Bạn đã có ' + cart.quantity + ' sản phẩm trong giỏ hàng. Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn!';
                         return;
+                    } else {
+                        let newCart = {productId: this.product.id, quantity: this.currentQuantity, color: this.selectedColor};
+                        db.addCart(newCart);
                     }
 
                     cart.quantity = cart.quantity + this.currentQuantity;
