@@ -257,7 +257,7 @@ export default {
         return false;
       }
 
-      let newCart = allCart.carts.filter((item) => {
+      let newCart = allCart.filter((item) => {
         return !this.isItemInPayment(item);
       });
       

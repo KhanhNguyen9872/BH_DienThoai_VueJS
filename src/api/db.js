@@ -9,6 +9,27 @@ export default {
       return Math.random().toString(36).substring(2, 2 + length);
     },
 
+    async deleteAllFromCarts() {
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        const response = await fetch(`${API_URL}/api/${API_VERSION}/carts`, {
+          method: "DELETE",
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          }
+        });
+
+        if (!response.ok) throw new Error("Failed to delete cart");
+        const data = await response.json();
+  
+        return data;
+      } catch (error) {
+        console.error("Error:", error);
+        return null; // Return an object with error
+      }
+    },
+
     async logout() {
       try {
         const accessToken = localStorage.getItem('accessToken');

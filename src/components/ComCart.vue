@@ -47,7 +47,7 @@
                     <p class="error-message" v-if="this.error.length > 0">{{ this.error }}</p>
                     <div class="total-price">Tổng tiền: {{ formatMoney(totalPrice) }} VND</div>
                     <div style="display: flex; justify-content: center; align-items: center;">
-                        <button style="margin-right: 20px;" class="removeitem-btn" @click="proceedRemoteItem()">Xóa mặt hàng</button>
+                        <button style="margin-right: 20px;" class="removeitem-btn" @click="proceedRemoteItem()">Xóa hết</button>
                         <button class="checkout-btn" @click="proceedToCheckout()">Đặt hàng</button>
                     </div>
                     
@@ -242,15 +242,21 @@ export default {
             
             db.deleteProductFromCart(itemId, color);
         },
-        proceedRemoteItem() {
-            if (this.selectedItem > 0) {
-                this.cartItems = this.cartItems.filter((i) => {
-                    return i.selected === false;
-                });
+        async proceedRemoteItem() {
+            // if (this.selectedItem > 0) {
+            //     this.cartItems = this.cartItems.filter((i) => {
+            //         return i.selected === false;
+            //     });
                 
-                this.saveCarts();
+            //     this.saveCarts();
+            // } else {
+            //     this.error = 'XÓA MẶT HÀNG: Vui lòng chọn ít nhất 1 món hàng để xóa mặt hàng';
+            // }
+            const data = await db.deleteAllFromCarts();
+            if (data) {
+                this.cartItems = await db.getCartItemsByUserId();
             } else {
-                this.error = 'XÓA MẶT HÀNG: Vui lòng chọn ít nhất 1 món hàng để xóa mặt hàng';
+                this.error = 'Đã xảy ra lỗi khi xóa tất cả mặt hàng';
             }
         },
         decreaseQuantity(itemId, color) {
